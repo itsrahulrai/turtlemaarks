@@ -205,7 +205,7 @@ foreach ($categories as $cat) {
     }
 }
 
-
+$this->call(ProductSeeder::class);
 
         // TurtleMaarks Settings
         $settings = [

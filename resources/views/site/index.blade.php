@@ -235,105 +235,45 @@
 <!-- service area -->
 <div class="padding-top-50 padding-bottom-50">
     <div class="container">
+
         <div class="row justify-content-center margin-bottom-45">
             <div class="col-lg-8 wow fadeInUp">
                 <div class="common-title2 text-center">
                     <h2>Brands of Hearing Aids Offered</h2>
                     <p class="margin-top-20">
-                        We provide a comprehensive selection of high-quality hearing aids from multiple globally recognized manufacturers.
+                        We provide a comprehensive selection of high-quality hearing aids
+                        from multiple globally recognized manufacturers.
                     </p>
                 </div>
             </div>
         </div>
+
         <div class="shivam slide-option">
             <div id="infinite" class="highway-slider">
                 <div class="container highway-barrier">
                     <ul class="highway-lane">
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/widex.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/signia.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/starkey.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/resound.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/phonak.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/unitron.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/oticon.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/earkart.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/alps-international.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/widex.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/signia.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/starkey.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/resound.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/phonak.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/unitron.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/oticon.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/earkart.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/alps-international.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/widex.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/signia.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/starkey.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/resound.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/phonak.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/unitron.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/oticon.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/earkart.webp')}}" />
-                        </li>
-                        <li class="highway-car">
-                            <img src="{{asset('frontend-assets/images/brand/alps-international.webp')}}" />
-                        </li>
+
+                        @foreach($brands as $brand)
+                            <li class="highway-car">
+                                <img
+                                    src="{{ asset('storage/' . $brand->logo) }}"
+                                    alt="{{ $brand->name }}"
+                                >
+                            </li>
+                        @endforeach
+                        @foreach($brands as $brand)
+                            <li class="highway-car">
+                                <img
+                                    src="{{ asset('storage/' . $brand->logo) }}"
+                                    alt="{{ $brand->name }}"
+                                >
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -882,62 +822,6 @@
 </div>
 
 
-<!-- featured products & brands (dynamic, admin-managed) -->
-@if($featuredProducts->count() || $brands->count())
-<div class="gallery-area padding-top-115 padding-bottom-60">
-    <div class="container">
-
-        @if($brands->count())
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-6">
-                <div class="common-title text-center">
-                    <h2>Brands We <span>Carry</span></h2>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center align-items-center margin-bottom-60 g-4">
-            @foreach($brands as $brand)
-            <div class="col-6 col-md-2 text-center">
-                <img src="{{ $brand->logo_url }}" alt="{{ $brand->name }}" class="img-fluid" style="max-height:60px;object-fit:contain;">
-            </div>
-            @endforeach
-        </div>
-        @endif
-
-        @if($featuredProducts->count())
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-6">
-                <div class="common-title text-center">
-                    <h2>Featured <span>Hearing Aids</span></h2>
-                </div>
-            </div>
-        </div>
-        <div class="row g-4">
-            @foreach($featuredProducts as $product)
-            <div class="col-lg-3 col-md-6">
-                <div class="border rounded-3 h-100 p-3 text-center">
-                    <a href="{{ route('product.show', $product->slug) }}">
-                        <img src="{{ $product->thumbnail_url }}" class="img-fluid rounded mb-2" style="height:160px;object-fit:cover;width:100%;" alt="{{ $product->name }}">
-                    </a>
-                    @if($product->brand)<div class="text-muted small mb-1">{{ $product->brand->name }}</div>@endif
-                    <h6 class="mb-1"><a href="{{ route('product.show', $product->slug) }}" class="text-dark text-decoration-none">{{ $product->name }}</a></h6>
-                    @if($product->sale_price)
-                        <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
-                        <span class="text-muted text-decoration-line-through small">₹{{ number_format($product->price, 2) }}</span>
-                    @else
-                        <span class="fw-bold">₹{{ number_format($product->price, 2) }}</span>
-                    @endif
-                </div>
-            </div>
-            @endforeach
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('products') }}" class="btn2">View All Products</a>
-        </div>
-        @endif
-    </div>
-</div>
-@endif
 
 @if($services->count())
 <div class="gallery-area padding-bottom-60">
