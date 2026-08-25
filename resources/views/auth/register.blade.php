@@ -1,115 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Google Font: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="{{static_asset('front-assets/assets/img/home1/favicon.png')}}" type="image/gif" sizes="20x20">
-
-    <style>
-        body {
-            background: linear-gradient(135deg, #56ccf2, #9b51e0);
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-        }
-
-        .register-btn {
-            background: linear-gradient(to right, #56ccf2, #9b51e0);
-            color: #fff;
-            border: none;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .register-btn:hover {
-            opacity: 0.9;
-        }
-
-        .form-text a {
-            color: #5c7cfa;
-            text-decoration: none;
-        }
-
-        .form-text a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-
-<body class="d-flex align-items-center justify-content-center">
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-                <div class="bg-white rounded-4 shadow p-4">
-                    <h2 class="text-center fw-bold mb-4">Register</h2>
-
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <!-- Name -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input id="name" type="text" name="name" value="{{ old('name') }}"
-                                class="form-control @error('name') is-invalid @enderror" required autofocus>
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+@extends('site.layouts.layout')
+@section('title', 'Register')
+@section('content')
+    <div class="login-page">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login-card">
+                        {{-- Heading --}}
+                        <div class="text-center mb-4">
+                            <h3 class="login-title">
+                                Create Account
+                            </h3>
+                            <p class="login-subtitle">
+                                Join and start shopping premium collections
+                            </p>
                         </div>
-
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}"
-                                class="form-control @error('email') is-invalid @enderror" required>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        {{-- Error --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger border-0 rounded-4 py-2">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+                        {{-- Register Form --}}
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+                            {{-- Name --}}
+                            <div class="mb-3">
+                                <label class="login-label">
+                                    Full Name
+                                </label>
+                                <div class="login-input-wrap">
+                                    <i class="bi bi-person"></i>
+                                    <input type="text" name="name" value="{{ old('name') }}" required
+                                        placeholder="Enter full name" class="form-control login-input">
+                                </div>
+                            </div>
+                            {{-- Email --}}
+                            <div class="mb-3">
+                                <label class="login-label">
+                                    Email Address
+                                </label>
+                                <div class="login-input-wrap">
+                                    <i class="bi bi-envelope"></i>
+                                    <input type="email" name="email" value="{{ old('email') }}" required
+                                        placeholder="Enter email" class="form-control login-input">
+                                </div>
+                            </div>
+                            {{-- Phone --}}
+                            <div class="mb-3">
+                                <label class="login-label">
+                                    Phone Number
+                                </label>
+                                <div class="login-input-wrap">
+                                    <i class="bi bi-telephone"></i>
+                                    <input type="tel" name="phone" value="{{ old('phone') }}" required
+                                        placeholder="+91 XXXXX XXXXX" class="form-control login-input">
+                                </div>
+                            </div>
+                            {{-- Password --}}
+                            <div class="mb-3">
+                                <label class="login-label">
+                                    Password
+                                </label>
+                                <div class="login-input-wrap">
+                                    <i class="bi bi-lock"></i>
+                                    <input type="password" name="password" required minlength="8"
+                                        placeholder="Create password" class="form-control login-input">
+                                </div>
+                            </div>
+                            {{-- Confirm Password --}}
+                            <div class="mb-4">
+                                <label class="login-label">
+                                    Confirm Password
+                                </label>
+                                <div class="login-input-wrap">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <input type="password" name="password_confirmation" required
+                                        placeholder="Confirm password" class="form-control login-input">
+                                </div>
+                            </div>
+                            {{-- Button --}}
+                            <button type="submit" class="login-btn">
+                                Create Account
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+                        {{-- Bottom --}}
+                        <div class="text-center mt-4">
+                            <div class="login-bottom-text">
+                                Already have an account?
+                                <a href="{{ route('login') }}" class="login-link">
+                                    Sign In
+                                </a>
+                            </div>
                         </div>
-
-                        <!-- Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input id="password" type="password" name="password"
-                                class="form-control @error('password') is-invalid @enderror" required>
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation"
-                                class="form-control @error('password_confirmation') is-invalid @enderror" required>
-                            @error('password_confirmation')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Already registered? -->
-                        <div class="mb-3 text-end form-text">
-                            <a href="{{ route('login') }}">Already registered?</a>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="d-grid">
-                            <button type="submit" class="btn register-btn">Register</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+@endsection

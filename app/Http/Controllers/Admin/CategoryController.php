@@ -2,65 +2,85 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct(private ImageService $imageService) {}
+
     public function index()
     {
-         $categories = Category::latest()->paginate(3);
-        return view('profile.blog.cat', compact('categories'));
-    }
+        $categories = Category::withCount('products')->latest()->paginate(10);
 
-    public function create()
-    {
-        return view('profile.blog.add-cat');
+        return view('admin.categories.index', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'slug'  => 'nullable|string|unique:categories,slug',
+        $data = $request->validate([
+            'name'             => 'required|string|max:100',
+            'slug'             => 'nullable|string|unique:categories',
+            'description'      => 'nullable|string',
+            'image'            => 'nullable|image|max:2048',
+            'meta_title'       => 'nullable|string|max:160',
+            'meta_description' => 'nullable|string|max:300',
+            'is_active'        => 'boolean',
+            'is_featured'      => 'boolean',
+            'sort_order'       => 'integer',
         ]);
 
-        $data = $request->only(['name', 'slug','status']);
-        $data['slug'] = $data['slug'] ?: Str::slug($request->name);
+        $data['slug'] = $data['slug'] ?? Str::slug($data['name']);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->imageService->store($request->file('image'), 'categories');
+        }
+
         Category::create($data);
-
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category created.');
     }
 
-    public function edit(string $id)
+    public function create()
     {
-        $category = Category::findOrFail($id);
-        return view('profile.blog.add-cat', compact('category'));
+        return view('admin.categories.create');
     }
 
-    public function update(Request $request, string $id)
-    {
-        $category = Category::findOrFail($id);
 
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'slug'  => 'nullable|string|unique:categories,slug,' . $category->id,
+    public function update(Request $request, Category $category)
+    {
+        $data = $request->validate([
+            'name'             => 'required|string|max:100',
+            'slug'             => 'nullable|string|unique:categories,slug,' . $category->id,
+            'description'      => 'nullable|string',
+            'image'            => 'nullable|image|max:2048',
+            'meta_title'       => 'nullable|string|max:160',
+            'meta_description' => 'nullable|string|max:300',
+            'is_active'        => 'boolean',
+            'is_featured'      => 'boolean',
+            'sort_order'       => 'integer',
         ]);
 
-        $data = $request->only(['name', 'slug', 'status']);
-        $data['slug'] = $data['slug'] ?: Str::slug($request->name);
-        $category->update($data);
+        if ($request->hasFile('image')) {
+            $this->imageService->delete($category->image);
+            $data['image'] = $this->imageService->store($request->file('image'), 'categories');
+        }
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        $category->update($data);
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated.');
     }
 
-    public function destroy(string $id)
+    public function edit(Category $category)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
+        return view('admin.categories.create', compact('category'));
+    }
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+    public function destroy(Category $category)
+    {
+        $this->imageService->delete($category->image);
+        $category->delete();
+        return back()->with('success', 'Category deleted.');
     }
 }
