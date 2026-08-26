@@ -72,24 +72,29 @@
             {{-- Payment Method --}}
             <div class="p-4 bg-white rounded-4 border">
                 <h6 class="fw-700 mb-3">Payment Method</h6>
-                <div class="d-flex flex-column gap-3">
-                    <label class="d-flex align-items-center gap-3 p-3 border rounded-3" style="cursor:pointer;">
-                        <input type="radio" name="payment_method" value="razorpay" checked class="form-check-input mt-0">
-                        <div>
-                            <div class="fw-600" style="font-size:.9rem;">Online Payment</div>
-                            <div style="font-size:.78rem;color:#6c757d;">Cards, UPI, Net Banking, Wallets via Razorpay</div>
-                        </div>
-                        <img src="https://razorpay.com/favicon.png" height="24" class="ms-auto">
+                <div class="d-flex flex-column gap-3 payment-method-group">
+                    <label class="payment-option-tm" style="cursor:pointer;">
+                        <input type="radio" name="payment_method" value="razorpay" checked class="payment-radio-input">
+                        <span class="payment-radio-dot"></span>
+                        <span class="payment-icon-tm payment-icon-online"><i class="bi bi-credit-card-2-front"></i></span>
+                        <span class="payment-option-body">
+                            <span class="payment-option-title">
+                                Online Payment
+                                <span class="payment-badge-recommended">Recommended</span>
+                            </span>
+                            <span class="payment-option-desc">Cards, UPI, Net Banking &amp; Wallets — secured by Razorpay</span>
+                        </span>
+                        <span class="payment-option-check"><i class="bi bi-check-lg"></i></span>
                     </label>
-                    <label class="d-flex align-items-center gap-3 p-3 border rounded-3" style="cursor:pointer;">
-                        <input type="radio" name="payment_method" value="cod" class="form-check-input mt-0">
-                        <div>
-                            <div class="fw-600" style="font-size:.9rem;">Cash on Delivery</div>
-                            <div style="font-size:.78rem;color:#6c757d;">Pay when you receive the order</div>
-                        </div>
-                     <div class="ms-auto fw-bold text-success fs-5">
-                            ₹
-                        </div>
+                    <label class="payment-option-tm" style="cursor:pointer;">
+                        <input type="radio" name="payment_method" value="cod" class="payment-radio-input">
+                        <span class="payment-radio-dot"></span>
+                        <span class="payment-icon-tm payment-icon-cod"><i class="bi bi-cash-coin"></i></span>
+                        <span class="payment-option-body">
+                            <span class="payment-option-title">Cash on Delivery</span>
+                            <span class="payment-option-desc">Pay in cash when your order arrives</span>
+                        </span>
+                        <span class="payment-option-check"><i class="bi bi-check-lg"></i></span>
                     </label>
                 </div>
                 <div class="mt-3">
@@ -106,25 +111,25 @@
                 @foreach($items as $item)
                 <div class="d-flex gap-3 align-items-center mb-3">
                     <div class="position-relative">
-                        <img src="{{ $item->image_url }}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;">
+                        <img src="{{ $item->image_url }}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;" onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-image.jpg') }}';">
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background:var(--kkt-primary);font-size:.65rem;">{{ $item->quantity }}</span>
                     </div>
                     <div class="flex-grow-1">
                         <div style="font-size:.85rem;font-weight:600;">{{ Str::limit($item->name, 30) }}</div>
                         @if(!$item->isService() && $item->productVariant)<div style="font-size:.75rem;color:#6c757d;">{{ $item->productVariant->label }}</div>@endif
                     </div>
-                    <div style="font-weight:700;font-size:.9rem;">₹{{ number_format($item->line_total, 2) }}</div>
+                    <div style="font-weight:700;font-size:.9rem;">₹{{ number_format($item->line_total) }}</div>
                 </div>
                 @endforeach
                 <hr>
-                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:.87rem;">Subtotal</span><span>₹{{ number_format($totals['subtotal'], 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:.87rem;">Subtotal</span><span>₹{{ number_format($totals['subtotal']) }}</span></div>
                 @if($totals['discount'] > 0)
-                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:.87rem;">Discount</span><span class="text-success">-₹{{ number_format($totals['discount'], 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:.87rem;">Discount</span><span class="text-success">-₹{{ number_format($totals['discount']) }}</span></div>
                 @endif
                 {{-- <div class="d-flex justify-content-between mb-2"><span class="text-muted" style="font-size:.87rem;">Shipping</span><span>{{ $totals['shippingCharge'] > 0 ? '₹'.number_format($totals['shippingCharge'],2) : 'Free' }}</span></div> --}}
                 <hr>
                 <div class="d-flex justify-content-between fw-700 mb-4" style="font-size:1.1rem;">
-                    <span>Total</span><span style="color:var(--kkt-primary);">₹{{ number_format($totals['total'], 2) }}</span>
+                    <span>Total</span><span style="color:var(--kkt-primary);">₹{{ number_format($totals['total']) }}</span>
                 </div>
                 <button type="submit" class="btn btn-primary w-100 py-2 fw-700" style="border-radius:10px;font-size:1rem;">
                     <i class="bi bi-lock me-2"></i>Place Order

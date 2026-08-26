@@ -86,7 +86,7 @@ class CartController extends Controller
 
         $subtotal = $this->cartService->getItems()->sum(fn($i) => $i->line_total);
         if ($subtotal < $coupon->min_order_amount) {
-            $msg = 'Minimum order amount ₹' . number_format($coupon->min_order_amount, 2) . ' required.';
+            $msg = 'Minimum order amount ₹' . number_format($coupon->min_order_amount) . ' required.';
             if ($request->ajax()) return response()->json(['success' => false, 'message' => $msg]);
             return back()->with('error', $msg);
         }
@@ -97,7 +97,7 @@ class CartController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success'  => true,
-                'message'  => 'Coupon applied! You saved ₹' . number_format($totals['discount'], 2),
+                'message'  => 'Coupon applied! You saved ₹' . number_format($totals['discount']),
                 'totals'   => $totals,
             ]);
         }
@@ -105,9 +105,18 @@ class CartController extends Controller
         return back()->with('success', 'Coupon applied!');
     }
 
-    public function removeCoupon()
+    public function removeCoupon(Request $request)
     {
         session()->forget('coupon_code');
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Coupon removed.',
+                'totals'  => $this->cartService->totals(null),
+            ]);
+        }
+
         return back()->with('success', 'Coupon removed.');
     }
 }

@@ -33,7 +33,7 @@ class Admin extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         return $this->avatar
-            ? asset('public/storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=2E6F40&color=fff';
+            ? asset('/storage/' . $this->avatar)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=0C3C64&color=fff';
     }
 }

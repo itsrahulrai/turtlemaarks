@@ -106,7 +106,7 @@
         <div class="row">
             {{-- Filters --}}
             <div class="col-lg-3 mb-4">
-                <div class="p-4 bg-white rounded-3 border">
+                <div class="p-4 shop-filter-card">
                     <h6 class="fw-bold mb-3">Filters</h6>
                     <form method="GET" id="filter-form">
                         <div class="mb-4">
@@ -165,7 +165,7 @@
 
             {{-- Product grid --}}
             <div class="col-lg-9">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="shop-toolbar d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">{{ $products->total() }} product(s) found</span>
                     <form method="GET" class="d-flex align-items-center gap-2">
                         @foreach(request()->except('sort') as $k => $v)
@@ -183,32 +183,7 @@
 
                 <div class="row g-4">
                     @forelse($products as $product)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="border rounded-3 h-100 p-3 text-center">
-                            <a href="{{ route('product.show', $product->slug) }}">
-                                <img src="{{ $product->thumbnail_url }}" class="img-fluid rounded mb-2" style="height:180px;object-fit:cover;width:100%;" alt="{{ $product->name }}">
-                            </a>
-                            @if($product->brand)
-                                <div class="text-muted small mb-1">{{ $product->brand->name }}</div>
-                            @endif
-                            <h6 class="mb-1"><a href="{{ route('product.show', $product->slug) }}" class="text-dark text-decoration-none">{{ $product->name }}</a></h6>
-                            <div class="mb-2">
-                                @if($product->sale_price)
-                                    <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
-                                    <span class="text-muted text-decoration-line-through small">₹{{ number_format($product->price, 2) }}</span>
-                                @else
-                                    <span class="fw-bold">₹{{ number_format($product->price, 2) }}</span>
-                                @endif
-                            </div>
-                            <form action="{{ route('cart.add') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="btn2 w-100" {{ ($product->manage_stock && $product->stock <= 0) ? 'disabled' : '' }}>
-                                    {{ ($product->manage_stock && $product->stock <= 0) ? 'Out of Stock' : 'Add to Cart' }}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                    @include('partials.product-card', ['product' => $product])
                     @empty
                     <div class="col-12 text-center py-5">
                         <h6>No products found</h6>

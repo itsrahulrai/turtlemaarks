@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name'))</title>
     <!-- <meta name="meta-title" content="@yield('meta-title', config('app.name'))"> -->
         <meta name="google-site-verification" content="ahiVUWelvmK2tICsQppULgxTOop8f5EwM7-D3aJaDnQ" />
@@ -24,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/font-awsome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/flaticon.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/icofont.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/magnific-popup.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/meanmenu.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend-assets/css/slick.css') }}">
@@ -103,6 +105,12 @@
 
     <!-- Javascript Files -->
     <script src="{{ asset('frontend-assets/js/vendor/jquery-2.2.4.min.js') }}"></script>
+    <script>
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+    });
+    window.APP_BASE_URL = "{{ rtrim(url('/'), '/') }}";
+</script>
     <script src="{{ asset('frontend-assets/js/vendor/bootstrap.min.js') }}"></script>
     <script src="{{ asset('frontend-assets/js/vendor/slick.min.js') }}"></script>
     <script src="{{ asset('frontend-assets/js/vendor/counterup.min.js') }}"></script>
@@ -113,6 +121,7 @@
     <script src="{{ asset('frontend-assets/js/vendor/easing.min.js') }}"></script>
     <script src="{{ asset('frontend-assets/js/vendor/wow.min.js') }}"></script>
     <script src="{{ asset('frontend-assets/js/main.js') }}"></script>
+    <script src="{{ asset('frontend-assets/js/shop.js') }}"></script>
   @stack('scripts')
 </body>
 

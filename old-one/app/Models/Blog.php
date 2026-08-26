@@ -3,31 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'category_id',
-        'title',
-        'slug',
-        'image',
-        'short_content',
-        'content',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-        'canonical_url',
-        'tags',
-        'robots',
-        'status',
+        'admin_id', 'blog_category_id', 'title', 'slug', 'excerpt',
+        'body', 'thumbnail', 'tags', 'status', 'meta_title',
+        'meta_description', 'views', 'published_at',
     ];
-    
 
-    public function category()
+    protected $casts = [
+        'tags'         => 'array',
+        'published_at' => 'datetime',
+    ];
+
+    public function admin(): BelongsTo        { return $this->belongsTo(Admin::class); }
+    public function blogCategory(): BelongsTo { return $this->belongsTo(BlogCategory::class); }
+
+    public function getThumbnailUrlAttribute(): string
     {
-        return $this->belongsTo(Category::class);
+        return $this->thumbnail ? asset('public/storage/' . $this->thumbnail) : asset('images/no-image.png');
     }
+
+    public function scopePublished($q) { return $q->where('status', 'published'); }
 }

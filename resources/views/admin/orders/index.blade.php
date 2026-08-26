@@ -60,7 +60,7 @@
                         <div style="font-size:.76rem;color:#6c757d;">{{ $order->user->email ?? '' }}</div>
                     </td>
                     <td style="font-size:.84rem;">{{ $order->items->count() }} item(s)</td>
-                    <td style="font-weight:700;color:#2E6F40;">₹{{ number_format($order->total, 2) }}</td>
+                    <td style="font-weight:700;color:#0C3C64;">₹{{ number_format($order->total, 2) }}</td>
                     <td>
                         <span class="badge {{ $order->payment_status === 'paid' ? 'bg-success' : ($order->payment_status === 'failed' ? 'bg-danger' : 'bg-warning text-dark') }}">
                             {{ ucfirst($order->payment_status) }}

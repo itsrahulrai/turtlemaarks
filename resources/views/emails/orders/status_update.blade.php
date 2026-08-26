@@ -7,7 +7,7 @@
 <style>
   body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; color: #333; }
   .wrapper { max-width: 600px; margin: 30px auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
-  .header { background: #0F766E; padding: 28px 40px; text-align: center; }
+  .header { background: #0C3C64; padding: 28px 40px; text-align: center; }
   .header h1 { color: #fff; margin: 0; font-size: 22px; }
   .body { padding: 32px 40px; }
   .body p { margin: 0 0 16px; line-height: 1.6; }
@@ -17,15 +17,15 @@
   .status-confirmed   { background: #d1ecf1; color: #0c5460; }
   .status-processing  { background: #cce5ff; color: #004085; }
   .status-shipped     { background: #d4edda; color: #155724; }
-  .status-delivered   { background: #CFFFDC; color: #2E6F40; }
+  .status-delivered   { background: #eaf1f7; color: #0C3C64; }
   .status-cancelled   { background: #f8d7da; color: #721c24; }
   .status-returned    { background: #e2e3e5; color: #383d41; }
-  .order-meta { background: #f8fdf9; border: 1px solid #CFFFDC; border-radius: 6px; padding: 14px 18px; margin: 20px 0; font-size: 14px; }
+  .order-meta { background: #f7fafc; border: 1px solid #eaf1f7; border-radius: 6px; padding: 14px 18px; margin: 20px 0; font-size: 14px; }
   .order-meta table { width: 100%; border-collapse: collapse; }
   .order-meta td { padding: 3px 0; }
   .order-meta td:last-child { text-align: right; font-weight: 600; }
-  .btn { display: inline-block; background: #B51736; color: #fff !important; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
-  .footer { background: #f8fdf9; padding: 18px 40px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #CFFFDC; }
+  .btn { display: inline-block; background: #FF9501; color: #fff !important; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
+  .footer { background: #f7fafc; padding: 18px 40px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eaf1f7; }
 </style>
 </head>
 <body>

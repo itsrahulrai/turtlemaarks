@@ -69,7 +69,7 @@
                     <td style="font-size:.82rem;color:#6c757d;">{{ $product->sku }}</td>
                     <td style="font-size:.84rem;">{{ optional($product->category)->name }}</td>
                     <td>
-                        <div style="font-weight:700;font-size:.9rem;color:#2E6F40;">₹{{ number_format($product->effective_price, 2) }}</div>
+                        <div style="font-weight:700;font-size:.9rem;color:#0C3C64;">₹{{ number_format($product->effective_price, 2) }}</div>
                         @if($product->sale_price)
                         <div style="font-size:.76rem;text-decoration:line-through;color:#6c757d;">₹{{ number_format($product->price, 2) }}</div>
                         @endif

@@ -43,7 +43,7 @@ class User extends Authenticatable
     {
         return $this->avatar
             ? asset('/storage/' . $this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=2E6F40&color=fff';
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=0C3C64&color=fff';
     }
 
     public function isOtpValid(): bool

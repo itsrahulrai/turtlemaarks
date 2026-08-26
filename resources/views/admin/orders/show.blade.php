@@ -51,7 +51,7 @@
                         <tr><td class="text-muted pe-4">Discount</td><td class="text-end text-success">-₹{{ number_format($order->discount_amount, 2) }}</td></tr>
                         @endif
                         {{-- <tr><td class="text-muted pe-4">Shipping</td><td class="text-end">₹{{ number_format($order->shipping_charge, 2) }}</td></tr> --}}
-                        <tr style="border-top:2px solid #e9ecef;"><td class="fw-700 pt-2">Total</td><td class="text-end fw-700 pt-2" style="color:#2E6F40;font-size:1rem;">₹{{ number_format($order->total, 2) }}</td></tr>
+                        <tr style="border-top:2px solid #e9ecef;"><td class="fw-700 pt-2">Total</td><td class="text-end fw-700 pt-2" style="color:#0C3C64;font-size:1rem;">₹{{ number_format($order->total, 2) }}</td></tr>
                     </table>
                 </div>
             </div>

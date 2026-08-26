@@ -7,24 +7,24 @@
 <style>
   body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; color: #333; }
   .wrapper { max-width: 620px; margin: 30px auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
-  .header { background: #0F766E; padding: 32px 40px; text-align: center; }
+  .header { background: #0C3C64; padding: 32px 40px; text-align: center; }
   .header h1 { color: #fff; margin: 0; font-size: 24px; }
-  .header p { color: #CFFFDC; margin: 6px 0 0; font-size: 14px; }
+  .header p { color: #eaf1f7; margin: 6px 0 0; font-size: 14px; }
   .body { padding: 32px 40px; }
   .body p { margin: 0 0 16px; line-height: 1.6; }
-  .order-meta { background: #f8fdf9; border: 1px solid #CFFFDC; border-radius: 6px; padding: 16px 20px; margin-bottom: 24px; }
+  .order-meta { background: #f7fafc; border: 1px solid #eaf1f7; border-radius: 6px; padding: 16px 20px; margin-bottom: 24px; }
   .order-meta table { width: 100%; border-collapse: collapse; font-size: 14px; }
   .order-meta td { padding: 4px 0; }
   .order-meta td:last-child { text-align: right; font-weight: 600; }
   .items-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 24px; }
-  .items-table th { background: #0F766E; color: #fff; padding: 10px 12px; text-align: left; }
+  .items-table th { background: #0C3C64; color: #fff; padding: 10px 12px; text-align: left; }
   .items-table td { padding: 10px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
   .totals { text-align: right; font-size: 14px; margin-bottom: 24px; }
   .totals table { margin-left: auto; }
   .totals td { padding: 4px 0 4px 24px; }
-  .totals .grand-total td { font-size: 16px; font-weight: 700; color: #0F766E; border-top: 2px solid #0F766E; padding-top: 8px; }
-  .btn { display: inline-block; background: #0F766E; color: #fff !important; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
-  .footer { background: #f8fdf9; padding: 20px 40px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #CFFFDC; }
+  .totals .grand-total td { font-size: 16px; font-weight: 700; color: #0C3C64; border-top: 2px solid #0C3C64; padding-top: 8px; }
+  .btn { display: inline-block; background: #0C3C64; color: #fff !important; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
+  .footer { background: #f7fafc; padding: 20px 40px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #eaf1f7; }
 </style>
 </head>
 <body>

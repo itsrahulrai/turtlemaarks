@@ -6,15 +6,15 @@
     <style>
         * { font-family: 'DejaVu Sans', sans-serif; font-size: 12px; }
         body { margin: 0; padding: 20px; color: #333; }
-        .header { border-bottom: 3px solid #0F766E; padding-bottom: 20px; margin-bottom: 20px; }
-        .company-name { font-size: 24px; font-weight: bold; color: #0F766E; }
+        .header { border-bottom: 3px solid #0C3C64; padding-bottom: 20px; margin-bottom: 20px; }
+        .company-name { font-size: 24px; font-weight: bold; color: #0C3C64; }
         .invoice-title { font-size: 18px; color: #253D2C; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; }
-        .items-table th { background: #0F766E; color: white; padding: 8px 10px; text-align: left; }
+        .items-table th { background: #0C3C64; color: white; padding: 8px 10px; text-align: left; }
         .items-table td { padding: 8px 10px; border-bottom: 1px solid #e9ecef; }
         .items-table tr:nth-child(even) td { background: #f8f9fa; }
         .totals-table td { padding: 5px 10px; }
-        .totals-table .total-row td { font-weight: bold; font-size: 14px; border-top: 2px solid #0F766E; padding-top: 8px; }
+        .totals-table .total-row td { font-weight: bold; font-size: 14px; border-top: 2px solid #0C3C64; padding-top: 8px; }
         .info-box { border: 1px solid #e9ecef; border-radius: 6px; padding: 12px; }
         .label { color: #6c757d; font-size: 11px; }
     </style>

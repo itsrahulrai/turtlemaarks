@@ -166,10 +166,10 @@ new Chart(document.getElementById('revenueChart'), {
         datasets: [{
             label: 'Revenue (₹)',
             data: revenues,
-            borderColor: '#2E6F40',
+            borderColor: '#0C3C64',
             backgroundColor: 'rgba(46,111,64,0.08)',
             borderWidth: 2.5,
-            pointBackgroundColor: '#2E6F40',
+            pointBackgroundColor: '#0C3C64',
             tension: 0.4,
             fill: true
         }]

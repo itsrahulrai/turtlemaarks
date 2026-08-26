@@ -25,19 +25,19 @@
                 <div class="position-sticky" style="top: 80px;">
                     <div style="border-radius:16px;overflow:hidden;border:1px solid #e9ecef;background:#f8f9fa;aspect-ratio:1;" class="mb-3">
                         <img id="main-image" src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}"
-                             onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-product.jpg') }}';"
+                             onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-image.jpg') }}';"
                              style="width:100%;height:100%;object-fit:contain;cursor:zoom-in;transition:transform .3s;"
                              onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                     </div>
                     <div class="d-flex gap-2 flex-wrap" id="image-thumbnails">
                         <div class="thumb-item active" onclick="changeImage('{{ $product->thumbnail_url }}', this)"
                              style="width:64px;height:64px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid var(--kkt-primary);">
-                            <img src="{{ $product->thumbnail_url }}" style="width:100%;height:100%;object-fit:cover;"  onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-product.jpg') }}';">
+                            <img src="{{ $product->thumbnail_url }}" style="width:100%;height:100%;object-fit:cover;"  onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-image.jpg') }}';">
                         </div>
                         @foreach($product->images as $img)
                         <div class="thumb-item" onclick="changeImage('{{ $img->url }}', this)"
                              style="width:64px;height:64px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid #e9ecef;">
-                            <img src="{{ $img->url }}"  style="width:100%;height:100%;object-fit:cover;">
+                            <img src="{{ $img->url }}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-image.jpg') }}';">
                         </div>
                         @endforeach
                     </div>
@@ -71,10 +71,10 @@
                 {{-- Price --}}
                 <div class="mb-4">
                     <span id="display-price" style="font-size:2rem;font-weight:900;color:var(--kkt-primary);">
-                        ₹{{ number_format($product->effective_price, 2) }}
+                        ₹{{ number_format($product->effective_price) }}
                     </span>
                     @if($product->sale_price && $product->sale_price < $product->price)
-                    <span style="font-size:1.1rem;text-decoration:line-through;color:#6c757d;margin-left:10px;">₹{{ number_format($product->price, 2) }}</span>
+                    <span style="font-size:1.1rem;text-decoration:line-through;color:#6c757d;margin-left:10px;">₹{{ number_format($product->price) }}</span>
                     <span class="badge-discount ms-2">{{ $product->discount_percent }}% OFF</span>
                     @endif
                 </div>
@@ -97,7 +97,7 @@
                             <button type="button" class="variant-color-btn {{ $loop->first ? 'active' : '' }}"
                                     data-color="{{ $variant->color }}"
                                     title="{{ $variant->color }}"
-                                    style="width:32px;height:32px;border-radius:50%;background:{{ $variant->color_hex ?? '#ccc' }};border:{{ $loop->first ? '3px solid #2E6F40' : '2px solid #ccc' }};cursor:pointer;transition:border .2s;">
+                                    style="width:32px;height:32px;border-radius:50%;background:{{ $variant->color_hex ?? '#ccc' }};border:{{ $loop->first ? '3px solid #0C3C64' : '2px solid #ccc' }};cursor:pointer;transition:border .2s;">
                             </button>
                             @endforeach
                         </div>
@@ -131,7 +131,7 @@
                     </div>
 
                     @if($product->isInStock())
-                    <button class="btn btn-primary px-4 py-2 btn-add-to-cart"
+                    <button id="main-add-to-cart" class="btn btn-primary px-4 py-2 btn-add-to-cart-detail"
                             data-product-id="{{ $product->id }}"
                             style="border-radius:10px;font-weight:700;font-size:1rem;">
                         <i class="bi bi-bag-plus me-2"></i>Add to Cart
@@ -292,18 +292,19 @@
 
         {{-- Related Products --}}
         @if($related->count())
-        <div class="mt-5">
-            <div class="section-header">
+        <div class="mt-5 pt-4 pb-5">
+            <div class="section-header mb-4">
                 <span class="badge-label">You May Also Like</span>
                 <h2>Related Products</h2>
             </div>
-            <div class="row g-3">
+
+            <div class="row g-4">
                 @foreach($related as $p)
                     @include('partials.product-card', ['product' => $p])
                 @endforeach
             </div>
         </div>
-        @endif
+@endif
     </div>
 </section>
 
@@ -330,7 +331,7 @@ function changeQty(delta) {
 document.querySelectorAll('.variant-color-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.variant-color-btn').forEach(b => b.style.border = '2px solid #ccc');
-        this.style.border = '3px solid #2E6F40';
+        this.style.border = '3px solid #0C3C64';
         document.getElementById('selected-color').textContent = this.dataset.color;
         updateVariantPrice();
     });
@@ -342,7 +343,7 @@ document.querySelectorAll('.variant-size-btn').forEach(btn => {
         document.querySelectorAll('.variant-size-btn').forEach(b => {
             b.style.borderColor = '#e9ecef'; b.style.background = '#fff'; b.style.color = '#333';
         });
-        this.style.borderColor = '#2E6F40'; this.style.background = '#2E6F40'; this.style.color = '#fff';
+        this.style.borderColor = '#0C3C64'; this.style.background = '#0C3C64'; this.style.color = '#fff';
         document.getElementById('selected-size').textContent = this.dataset.size;
         updateVariantPrice();
     });
@@ -355,24 +356,38 @@ function updateVariantPrice() {
     if (variant) {
         selectedVariantId = variant.id;
         const price = variant.sale_price || variant.price || {{ $product->effective_price }};
-        document.getElementById('display-price').textContent = '₹' + parseFloat(price).toFixed(2);
+        document.getElementById('display-price').textContent = '₹' + Math.round(parseFloat(price)).toLocaleString('en-IN');
         document.getElementById('main-add-to-cart').dataset.variantId = variant.id;
     }
 }
 
-// Override add-to-cart for this page to include variant
+// Dedicated add-to-cart handler for THIS page only — separate from the
+// generic .btn-add-to-cart delegated handler in shop.js, so a click here
+// doesn't fire twice. This one also sends the selected variant + quantity.
 document.getElementById('main-add-to-cart')?.addEventListener('click', function(e) {
     e.preventDefault();
+    const btn = this;
     const productId = this.dataset.productId;
     const variantId = this.dataset.variantId || null;
-    const qty = parseInt(document.getElementById('qty-input').value);
+    const qty = parseInt(document.getElementById('qty-input').value) || 1;
+
+    btn.disabled = true;
     $.post('{{ route("cart.add") }}', { product_id: productId, product_variant_id: variantId, quantity: qty })
         .done(res => {
             if (res.success) {
-                $('#cart-count').text(res.count);
+                updateCartBadge(res.count);
                 showToast(res.message, 'success');
+            } else {
+                showToast(res.message || 'Could not add to cart.', 'error');
             }
-        });
+        })
+        .fail(xhr => {
+            const msg = xhr.status === 401
+                ? 'Please login to add items to your cart.'
+                : 'Could not add to cart. Please try again.';
+            showToast(msg, 'error');
+        })
+        .always(() => { btn.disabled = false; });
 });
 </script>
 @endpush

@@ -5,7 +5,7 @@
                 <img src="{{ $product->thumbnail_url }}"
                     alt="{{ $product->name }}"
                     loading="lazy"
-                    onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-product.jpg') }}';">
+                    onerror="this.onerror=null;this.src='{{ base_public_url('assets/img/no-image.jpg') }}';">
             </a>
 
             {{-- Badges --}}
@@ -54,9 +54,9 @@
 
             <div class="card-footer-row">
                 <div class="price-block">
-                    <span class="price-current">₹{{ number_format($product->effective_price, 2) }}</span>
+                    <span class="price-current">₹{{ number_format($product->effective_price) }}</span>
                     @if($product->sale_price && $product->sale_price < $product->price)
-                    <span class="price-original">₹{{ number_format($product->price, 2) }}</span>
+                    <span class="price-original">₹{{ number_format($product->price) }}</span>
                     @endif
                 </div>
 
@@ -74,10 +74,12 @@
 
 <style>
     :root {
-    --kkt-green: #0E6B4F;
-    --kkt-green-dark: #0A4A37;
+    /* re-themed to match the Turtle Maarks logo (navy + orange) instead of
+       the original green/gold palette */
+    --kkt-green: #0c3c64;
+    --kkt-green-dark: #092f50;
     --kkt-navy: #16263A;
-    --kkt-gold: #E0A93C;
+    --kkt-gold: #ff9501;
     --kkt-muted: #8A94A0;
     --kkt-border: #EEF2F5;
 }
@@ -299,18 +301,18 @@
     width: 42px; height: 42px;
     border-radius: 18px;
     border: none;
-    background: linear-gradient(135deg, #11815C, var(--kkt-green-dark));
+    background: linear-gradient(135deg, var(--kkt-green), var(--kkt-green-dark));
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.05rem;
-    box-shadow: 0 6px 14px rgba(14,107,79,.32);
+    box-shadow: 0 6px 14px rgba(12,60,100,.32);
     transition: transform .3s cubic-bezier(.25,.8,.25,1), box-shadow .3s ease, background .3s ease;
 }
 
 .btn-add-cart:hover {
     transform: translateY(-3px) scale(1.06);
-    box-shadow: 0 10px 22px rgba(14,107,79,.42), 0 0 0 6px rgba(14,107,79,.1);
-    background: linear-gradient(135deg, #129067, #0E6B4F);
+    box-shadow: 0 10px 22px rgba(12,60,100,.42), 0 0 0 6px rgba(255,149,1,.15);
+    background: linear-gradient(135deg, var(--kkt-gold), var(--kkt-green));
 }
 
 .btn-add-cart:active { transform: translateY(-1px) scale(.98); }

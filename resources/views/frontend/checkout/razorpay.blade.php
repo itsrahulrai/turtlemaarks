@@ -32,7 +32,7 @@ var options = {
     },
 
     theme: {
-        color: '#2E6F40'
+        color: '#0C3C64'
     },
 
     handler: function (response) {
