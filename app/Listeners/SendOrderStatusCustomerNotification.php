@@ -13,9 +13,14 @@ class SendOrderStatusCustomerNotification implements ShouldQueue
 
     public function handle(OrderStatusUpdated $event): void
     {
-        $order = $event->order->load('user');
+        try {
+            $order = $event->order->load('user');
 
-        $order->user?->notify(new OrderStatusUpdatedNotification($order, $event->previousStatus));
+            $order->user?->notify(new OrderStatusUpdatedNotification($order, $event->previousStatus));
+        } catch (\Throwable $e) {
+            // Never let a mail/SMTP outage break the customer-facing transaction.
+            \Illuminate\Support\Facades\Log::error('SendOrderStatusCustomerNotification failed: ' . $e->getMessage());
+        }
     }
 
     public function failed(OrderStatusUpdated $event, \Throwable $exception): void

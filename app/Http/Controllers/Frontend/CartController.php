@@ -15,24 +15,51 @@ class CartController extends Controller
     {
         $items  = $this->cartService->getItems();
         $totals = $this->cartService->totals(session('coupon_code'));
-        return view('frontend.cart.index', compact('items', 'totals'));
+
+        return view('site.cart', compact('items', 'totals'));
+    }
+
+    /** JSON payload consumed by the off-canvas cart drawer (assets/js/cart.js). */
+    public function data()
+    {
+        $items  = $this->cartService->getItems();
+        $totals = $this->cartService->totals(session('coupon_code'));
+
+        return response()->json([
+            'count'  => (int) $this->cartService->count(),
+            'items'  => $items->map(fn ($i) => [
+                'id'       => $i->id,
+                'name'     => $i->name,
+                'brand'    => $i->isService() ? 'Clinical Service' : ($i->product?->brand?->name ?? SITE_SHORT),
+                'image'    => $i->image_url,
+                'price'    => (float) $i->effective_price,
+                'qty'      => (int) $i->quantity,
+                'lineTotal'=> (float) $i->line_total,
+            ])->values(),
+            'totals' => [
+                'subtotal' => (float) $totals['subtotal'],
+                'discount' => (float) $totals['discount'],
+                'shipping' => (float) $totals['shippingCharge'],
+                'total'    => (float) $totals['total'],
+            ],
+        ]);
     }
 
     public function add(Request $request)
     {
         $request->validate([
             'product_id'         => 'required|exists:products,id',
-            'quantity'           => 'integer|min:1|max:50',
+            'quantity'           => 'nullable|integer|min:1|max:50',
             'product_variant_id' => 'nullable|exists:product_variants,id',
         ]);
 
         $this->cartService->add(
-            $request->product_id,
-            $request->input('quantity', 1),
+            (int) $request->product_id,
+            (int) $request->input('quantity', 1),
             $request->product_variant_id
         );
 
-        if ($request->ajax()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Item added to cart!',
@@ -46,22 +73,24 @@ class CartController extends Controller
     public function update(Request $request, int $cartId)
     {
         $request->validate(['quantity' => 'required|integer|min:1|max:50']);
-        $this->cartService->update($cartId, $request->quantity);
+        $this->cartService->update($cartId, (int) $request->quantity);
 
-        $totals = $this->cartService->totals(session('coupon_code'));
-
-        if ($request->ajax()) {
-            return response()->json(['success' => true, 'totals' => $totals]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'totals'  => $this->cartService->totals(session('coupon_code')),
+                'count'   => $this->cartService->count(),
+            ]);
         }
 
-        return back();
+        return back()->with('success', 'Cart updated.');
     }
 
-    public function remove(int $cartId)
+    public function remove(Request $request, int $cartId)
     {
         $this->cartService->remove($cartId);
 
-        if (request()->ajax()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'count'   => $this->cartService->count(),
@@ -78,45 +107,40 @@ class CartController extends Controller
         $coupon = Coupon::where('code', $code)->first();
 
         if (!$coupon || !$coupon->isValid()) {
-            if ($request->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Invalid or expired coupon.']);
-            }
-            return back()->with('error', 'Invalid or expired coupon.');
+            $msg = 'Invalid or expired coupon.';
+            return $request->expectsJson()
+                ? response()->json(['success' => false, 'message' => $msg])
+                : back()->with('error', $msg);
         }
 
-        $subtotal = $this->cartService->getItems()->sum(fn($i) => $i->line_total);
+        $subtotal = $this->cartService->getItems()->sum(fn ($i) => $i->line_total);
         if ($subtotal < $coupon->min_order_amount) {
-            $msg = 'Minimum order amount ₹' . number_format($coupon->min_order_amount) . ' required.';
-            if ($request->ajax()) return response()->json(['success' => false, 'message' => $msg]);
-            return back()->with('error', $msg);
+            $msg = 'Minimum order amount ' . inr($coupon->min_order_amount) . ' required for this coupon.';
+            return $request->expectsJson()
+                ? response()->json(['success' => false, 'message' => $msg])
+                : back()->with('error', $msg);
         }
 
         session(['coupon_code' => $code]);
         $totals = $this->cartService->totals($code);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success'  => true,
-                'message'  => 'Coupon applied! You saved ₹' . number_format($totals['discount']),
-                'totals'   => $totals,
-            ]);
-        }
+        $msg = 'Coupon applied! You saved ' . inr($totals['discount']) . '.';
 
-        return back()->with('success', 'Coupon applied!');
+        return $request->expectsJson()
+            ? response()->json(['success' => true, 'message' => $msg, 'totals' => $totals])
+            : back()->with('success', $msg);
     }
 
     public function removeCoupon(Request $request)
     {
         session()->forget('coupon_code');
 
-        if ($request->ajax()) {
-            return response()->json([
+        return $request->expectsJson()
+            ? response()->json([
                 'success' => true,
                 'message' => 'Coupon removed.',
                 'totals'  => $this->cartService->totals(null),
-            ]);
-        }
-
-        return back()->with('success', 'Coupon removed.');
+            ])
+            : back()->with('success', 'Coupon removed.');
     }
 }

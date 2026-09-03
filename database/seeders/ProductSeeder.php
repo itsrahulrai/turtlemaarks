@@ -10,539 +10,144 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Get existing category
-        |--------------------------------------------------------------------------
-        */
-        $category = DB::table('categories')
-            ->where('slug', 'hearing-aids')
-            ->first();
-
-        if (!$category) {
-            $category = DB::table('categories')
-                ->where('name', 'Hearing Aids')
-                ->first();
-        }
-
-        if (!$category) {
-            throw new \Exception(
-                'Hearing Aids category not found. Please create the category first.'
-            );
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Helper: Find brand
-        |--------------------------------------------------------------------------
-        */
-        $brand = function (string $name) {
-            return DB::table('brands')
-                ->where('name', $name)
-                ->orWhere('slug', Str::slug($name))
-                ->first();
-        };
-
-        /*
-        |--------------------------------------------------------------------------
-        | Helper: Find subcategory
-        |--------------------------------------------------------------------------
-        */
-        $subcategory = function (string $name) use ($category) {
-            return DB::table('subcategories')
-                ->where('category_id', $category->id)
-                ->where(function ($query) use ($name) {
-                    $query->where('name', $name)
-                        ->orWhere('slug', Str::slug($name));
-                })
-                ->first();
-        };
-
-        /*
-        |--------------------------------------------------------------------------
-        | Products
-        |--------------------------------------------------------------------------
-        |
-        | Product names/models are based on the supplied manufacturer
-        | price lists.
-        |
-        |--------------------------------------------------------------------------
-        */
+        // IMPORTANT:
+        // Categories and subcategories are ALREADY in the database.
+        // This seeder inserts PRODUCTS ONLY. It never creates categories,
+        // subcategories, or brands.
 
         $products = [
 
             // =============================================================
-            // PHONAK
+            // WIDEX — 18 PRODUCTS
             // =============================================================
-
-            [
-                'brand' => 'Phonak',
-                'name' => 'Phonak Audéo Infinio Ultra 90',
-                'model_number' => 'Infinio Ultra 90',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Premium',
-                'price' => 0,
-                'features' => [
-                    'technology' => 'Phonak Infinio Ultra',
-                    'technology_level' => '90 Premium',
-                    'platform' => 'Phonak Sphere Infinio',
-                    'wireless' => true,
-                    'rechargeable' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Phonak',
-                'name' => 'Phonak Audéo Infinio Ultra 70',
-                'model_number' => 'Infinio Ultra 70',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Advanced',
-                'price' => 0,
-                'features' => [
-                    'technology' => 'Phonak Infinio Ultra',
-                    'technology_level' => '70 Advanced',
-                    'platform' => 'Phonak Sphere Infinio',
-                    'wireless' => true,
-                    'rechargeable' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Phonak',
-                'name' => 'Phonak Audéo Infinio Ultra 50',
-                'model_number' => 'Infinio Ultra 50',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Standard',
-                'price' => 0,
-                'features' => [
-                    'technology' => 'Phonak Infinio Ultra',
-                    'technology_level' => '50 Standard',
-                    'platform' => 'Phonak Sphere Infinio',
-                    'wireless' => true,
-                    'rechargeable' => true,
-                ],
-            ],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Magnify 50 MBR3D mBTE Hearing Aids', 'model' => 'Magnify 50 MBR3D', 'form' => 'mBTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Magnify MRBO 30 Hearing Aids', 'model' => 'Magnify MRBO 30', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Moment 110 MBR3D Hearing Aid', 'model' => 'Kit Moment 110 MBR3D', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 440 RIC Hearing Aids', 'model' => 'Evoke 440', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Moment 220 Hearing Aids', 'model' => 'Kit Moment 220', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Moment 330 BTE Hearing Aids', 'model' => 'Moment 330', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Enjoy 100 Hearing Aids', 'model' => 'Enjoy 100', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 110 Hearing Aids', 'model' => 'Evoke 110', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 30 Hearing Aids', 'model' => 'Evoke 30', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 50 Hearing Aids', 'model' => 'Evoke 50', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Moment Sheer MRR4D RIC Rechargeable Hearing Aid', 'model' => 'Moment Sheer MRR4D', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Magnify 100 BTE Hearing Aid', 'model' => 'Magnify 100', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 220 Hearing Aids', 'model' => 'Evoke 220', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Evoke 330 Hearing Aids', 'model' => 'Evoke 330', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Magnify Hearing Aid', 'model' => 'Kit Magnify', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Moment 110 Hearing Aids', 'model' => 'Kit Moment 110', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Moment 440 Hearing Aids', 'model' => 'Kit Moment 440', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'widex-hearing-aids', 'brand' => 'Widex', 'name' => 'Widex Kit Moment SmartRIC Hearing Aids', 'model' => 'Kit Moment SmartRIC', 'form' => 'RIC', 'price' => 0],
 
             // =============================================================
-            // OTICON
+            // STARKEY — 12 PRODUCTS
             // =============================================================
-
-            [
-                'brand' => 'Oticon',
-                'name' => 'Oticon More 1',
-                'model_number' => 'More 1',
-                'form_factor' => 'Mini RITE Power',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 250000,
-                'features' => [
-                    'platform' => 'Polaris',
-                    'channels' => '24',
-                    'full_on_gain' => '105 dB',
-                    'battery' => 'Li-ion',
-                    'wireless' => true,
-                    'app_control' => true,
-                    'technology' => 'MoreSound Intelligence',
-                ],
-            ],
-
-            [
-                'brand' => 'Oticon',
-                'name' => 'Oticon More 3',
-                'model_number' => 'More 3',
-                'form_factor' => 'Mini RITE Power',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 175000,
-                'features' => [
-                    'platform' => 'Polaris',
-                    'channels' => '18',
-                    'full_on_gain' => '105 dB',
-                    'battery' => 'Li-ion',
-                    'wireless' => true,
-                    'app_control' => true,
-                    'technology' => 'MoreSound Intelligence',
-                ],
-            ],
-
-            [
-                'brand' => 'Oticon',
-                'name' => 'Oticon Real 1',
-                'model_number' => 'Real 1',
-                'form_factor' => 'Mini RITE Power',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 375000,
-                'features' => [
-                    'platform' => 'Polaris',
-                    'channels' => '24',
-                    'full_on_gain' => '105 dB',
-                    'battery' => 'Li-ion',
-                    'wireless' => true,
-                    'app_control' => true,
-                    'technology' => 'MoreSound Intelligence 2.0',
-                ],
-            ],
-
-            [
-                'brand' => 'Oticon',
-                'name' => 'Oticon Real 2',
-                'model_number' => 'Real 2',
-                'form_factor' => 'Mini RITE Power',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 280000,
-                'features' => [
-                    'platform' => 'Polaris',
-                    'channels' => '20',
-                    'full_on_gain' => '105 dB',
-                    'battery' => 'Li-ion',
-                    'wireless' => true,
-                    'app_control' => true,
-                    'technology' => 'MoreSound Intelligence 2.0',
-                ],
-            ],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 20 RIC Hearing Aid', 'model' => 'Genesis AI 20 RIC', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 MRIC Hearing Aids', 'model' => 'Genesis AI 24 MRIC', 'form' => 'mRIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 ITC Hearing Aids', 'model' => 'Genesis AI 24 ITC', 'form' => 'ITC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 16 ITC Hearing Aids', 'model' => 'Genesis AI 16 ITC', 'form' => 'ITC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 CIC Hearing Aids', 'model' => 'Genesis AI 24 CIC', 'form' => 'CIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 CIC Hearing Aids - Second', 'model' => 'Genesis AI 24 CIC - Second', 'form' => 'CIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 16 CIC Hearing Aids', 'model' => 'Genesis AI 16 CIC', 'form' => 'CIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 20 MRIC R Rechargeable Hearing Aid', 'model' => 'Genesis AI 20 MRIC R', 'form' => 'mRIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 16 MRIC Aids', 'model' => 'Genesis AI 16 MRIC', 'form' => 'mRIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 RIC Hearing Aids', 'model' => 'Genesis AI 24 RIC', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 24 RIC RT Hearing Aids', 'model' => 'Genesis AI 24 RIC RT', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'starkey-hearing-aids', 'brand' => 'Starkey', 'name' => 'Starkey Genesis AI 20 ITC R Hearing Aids', 'model' => 'Genesis AI 20 ITC R', 'form' => 'ITC', 'price' => 0],
 
             // =============================================================
-            // UNITRON
+            // PHONAK — 7 PRODUCTS
             // =============================================================
-
-            [
-                'brand' => 'Unitron',
-                'name' => 'Unitron Moxi S-R Premium',
-                'model_number' => 'Moxi S-R',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Premium',
-                'price' => 307000,
-                'features' => [
-                    'technology' => 'Smile',
-                    'technology_level' => 'Level 9 Premium',
-                    'channels' => '20',
-                    'battery' => 'Rechargeable',
-                    'charger' => 'ChargerGo RIC S',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Unitron',
-                'name' => 'Unitron Moxi S-R Advanced',
-                'model_number' => 'Moxi S-R',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Advanced',
-                'price' => 212000,
-                'features' => [
-                    'technology' => 'Smile',
-                    'technology_level' => 'Level 7 Advanced',
-                    'channels' => '20',
-                    'battery' => 'Rechargeable',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Unitron',
-                'name' => 'Unitron Moxi S-R Standard',
-                'model_number' => 'Moxi S-R',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Standard',
-                'price' => 127000,
-                'features' => [
-                    'technology' => 'Smile',
-                    'technology_level' => 'Level 5 Standard',
-                    'channels' => '16',
-                    'battery' => 'Rechargeable',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Unitron',
-                'name' => 'Unitron Moxi S-R Essential',
-                'model_number' => 'Moxi S-R',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Essential',
-                'price' => 87000,
-                'features' => [
-                    'technology' => 'Smile',
-                    'technology_level' => 'Level 3 Essential',
-                    'channels' => '12',
-                    'battery' => 'Rechargeable',
-                ],
-            ],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida L70-UP BTE Hearing Aid', 'model' => 'Naida L70-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida L90-UP BTE Hearing Aid', 'model' => 'Naida L90-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida P50-UP Hearing Aid', 'model' => 'Naida P50-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida P90-UP Hearing Aid', 'model' => 'Naida P90-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida L50-UP BTE Hearing Aid', 'model' => 'Naida L50-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida P30 UP Hearing Aid', 'model' => 'Naida P30-UP', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'phonak-hearing-aid', 'brand' => 'Phonak', 'name' => 'Phonak Naida P70-UP Hearing Aid', 'model' => 'Naida P70-UP', 'form' => 'BTE', 'price' => 0],
 
             // =============================================================
-            // RESOUND
+            // RESOUND — 4 PRODUCTS
             // =============================================================
-
-            [
-                'brand' => 'ReSound',
-                'name' => 'ReSound Vivia 9 MicroRIE',
-                'model_number' => 'Vivia 9',
-                'form_factor' => 'MicroRIE',
-                'kit_configuration' => '2 Hearing Aids + Premium Charger',
-                'price' => 849995,
-                'features' => [
-                    'channels' => '17',
-                    'battery' => 'Li-ion',
-                    'technology' => 'Intelligent Focus Directionality',
-                    'noise_reduction' => 'Intelligent Noise Tracker',
-                    'battery_life' => '24 hours',
-                    'waterproof' => 'IP68',
-                ],
-            ],
-
-            [
-                'brand' => 'ReSound',
-                'name' => 'ReSound Vivia 7 MicroRIE',
-                'model_number' => 'Vivia 7',
-                'form_factor' => 'MicroRIE',
-                'kit_configuration' => '2 Hearing Aids + Premium Charger',
-                'price' => 483995,
-                'features' => [
-                    'channels' => '14',
-                    'battery' => 'Li-ion',
-                    'battery_life' => '24 hours',
-                    'waterproof' => 'IP68',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'ReSound',
-                'name' => 'ReSound Vivia 5 MicroRIE',
-                'model_number' => 'Vivia 5',
-                'form_factor' => 'MicroRIE',
-                'kit_configuration' => '2 Hearing Aids + Premium Charger',
-                'price' => 273995,
-                'features' => [
-                    'channels' => '12',
-                    'battery' => 'Li-ion',
-                    'battery_life' => '24 hours',
-                    'waterproof' => 'IP68',
-                ],
-            ],
-
-            [
-                'brand' => 'ReSound',
-                'name' => 'ReSound Savi',
-                'model_number' => 'Savi',
-                'form_factor' => 'RIE',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 0,
-                'features' => [
-                    'platform' => '360 Chip',
-                    'battery' => '24 hours',
-                    'waterproof' => 'IP68',
-                    'connectivity' => 'Bluetooth LE Audio, Auracast',
-                    'directionality' => 'Binaural Directionality III',
-                    'receiver' => 'SF3',
-                ],
-            ],
-
-            [
-                'brand' => 'ReSound',
-                'name' => 'ReSound Enzo IA',
-                'model_number' => 'Enzo IA',
-                'form_factor' => 'BTE',
-                'kit_configuration' => 'Hearing Aid',
-                'price' => 0,
-                'features' => [
-                    'platform' => 'Intelligent Augmented platform',
-                    'waterproof' => 'IP68',
-                    'wireless' => true,
-                ],
-            ],
+            ['category' => 'resound-hearing-aids', 'brand' => 'ReSound', 'name' => 'Resound NEXIA RIE Hearing Aid', 'model' => 'NEXIA RIE', 'form' => 'RIE', 'price' => 0],
+            ['category' => 'resound-hearing-aids', 'brand' => 'ReSound', 'name' => 'Resound Omnia 4 Mini RIC Rechargeable Hearing Aid', 'model' => 'Omnia 4 Mini RIC', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'resound-hearing-aids', 'brand' => 'ReSound', 'name' => 'Resound GN NEXIA 760S MicroRIE Rechargeable Hearing Aid', 'model' => 'GN NEXIA 760S', 'form' => 'MicroRIE', 'price' => 0],
+            ['category' => 'resound-hearing-aids', 'brand' => 'ReSound', 'name' => 'Resound NEXIA 560S CROS MicroRIE Rechargeable Hearing Aid', 'model' => 'NEXIA 560S CROS', 'form' => 'MicroRIE', 'price' => 0],
 
             // =============================================================
-            // STARKEY
+            // VESUVIO — 4 PRODUCTS
             // =============================================================
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Genesis AI 12 CIC NW',
-                'model_number' => 'Genesis AI 12',
-                'form_factor' => 'CIC',
-                'kit_configuration' => 'Wireless',
-                'price' => 70000,
-                'features' => [
-                    'technology' => 'Genesis AI',
-                    'processor' => 'Starkey Neuro Processor',
-                    'channels' => '12',
-                    'bands' => '12',
-                    'wireless' => true,
-                    'healthable' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Genesis AI 12 ITC R',
-                'model_number' => 'Genesis AI 12',
-                'form_factor' => 'ITC R',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 80000,
-                'features' => [
-                    'technology' => 'Genesis AI',
-                    'processor' => 'Starkey Neuro Processor',
-                    'channels' => '12',
-                    'bands' => '12',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Genesis AI 12 mRIC R',
-                'model_number' => 'Genesis AI 12',
-                'form_factor' => 'mRIC R',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 100000,
-                'features' => [
-                    'technology' => 'Genesis AI',
-                    'processor' => 'Starkey Neuro Processor',
-                    'channels' => '12',
-                    'bands' => '12',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Omega AI 24 RIC RT',
-                'model_number' => 'Omega AI 24',
-                'form_factor' => 'RIC RT',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 410000,
-                'features' => [
-                    'technology' => 'Omega AI',
-                    'platform' => 'DNN 360',
-                    'channels' => '24',
-                    'bands' => '24',
-                    'battery_life' => 'Up to 51 hours',
-                    'connectivity' => 'LE Audio, Auracast',
-                    'waterproof' => 'Enhanced waterproof coating',
-                ],
-            ],
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Omega AI 20 RIC RT',
-                'model_number' => 'Omega AI 20',
-                'form_factor' => 'RIC RT',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 290000,
-                'features' => [
-                    'technology' => 'Omega AI',
-                    'platform' => 'DNN 360',
-                    'channels' => '20',
-                    'bands' => '20',
-                    'battery' => 'Rechargeable',
-                ],
-            ],
-
-            [
-                'brand' => 'Starkey',
-                'name' => 'Starkey Omega AI 16 RIC RT',
-                'model_number' => 'Omega AI 16',
-                'form_factor' => 'RIC RT',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 190000,
-                'features' => [
-                    'technology' => 'Omega AI',
-                    'platform' => 'DNN 360',
-                    'channels' => '16',
-                    'bands' => '16',
-                    'battery' => 'Rechargeable',
-                ],
-            ],
+            ['category' => 'vesuvio-hearung-aids', 'brand' => 'Vesuvio', 'name' => 'Vesuvio XTM XP P4 Hearing Aid', 'model' => 'XTM XP P4', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'vesuvio-hearung-aids', 'brand' => 'Vesuvio', 'name' => 'Vesuvio SFT P3 Hearing Aid', 'model' => 'SFT P3', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'vesuvio-hearung-aids', 'brand' => 'Vesuvio', 'name' => 'Vesuvio XTM P4 Hearing Aid', 'model' => 'XTM P4', 'form' => 'BTE', 'price' => 0],
+            ['category' => 'vesuvio-hearung-aids', 'brand' => 'Vesuvio', 'name' => 'Vesuvio SFT XP T3 Hearing Aid', 'model' => 'SFT XP T3', 'form' => 'BTE', 'price' => 0],
 
             // =============================================================
-            // SIGNIA
+            // UNITRON — 4 PRODUCTS
             // =============================================================
+            ['category' => 'unitron-hearing-aids', 'brand' => 'Unitron', 'name' => 'Unitron Moxi S-R Premium', 'model' => 'Moxi S-R Premium', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'unitron-hearing-aids', 'brand' => 'Unitron', 'name' => 'Unitron Moxi S-R Advanced', 'model' => 'Moxi S-R Advanced', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'unitron-hearing-aids', 'brand' => 'Unitron', 'name' => 'Unitron Moxi S-R Standard', 'model' => 'Moxi S-R Standard', 'form' => 'RIC', 'price' => 0],
+            ['category' => 'unitron-hearing-aids', 'brand' => 'Unitron', 'name' => 'Unitron Moxi S-R Essential', 'model' => 'Moxi S-R Essential', 'form' => 'RIC', 'price' => 0],
 
-            [
-                'brand' => 'Signia',
-                'name' => 'Signia Pure Charge&Go IX 7',
-                'model_number' => 'Pure Charge&Go IX 7',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 0,
-                'features' => [
-                    'platform' => 'Integrated Xperience',
-                    'battery' => 'Rechargeable',
-                    'wireless' => true,
-                    'app_control' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Signia',
-                'name' => 'Signia Pure Charge&Go IX 5',
-                'model_number' => 'Pure Charge&Go IX 5',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 0,
-                'features' => [
-                    'platform' => 'Integrated Xperience',
-                    'battery' => 'Rechargeable',
-                    'wireless' => true,
-                ],
-            ],
-
-            [
-                'brand' => 'Signia',
-                'name' => 'Signia Pure Charge&Go IX 3',
-                'model_number' => 'Pure Charge&Go IX 3',
-                'form_factor' => 'RIC',
-                'kit_configuration' => 'Rechargeable',
-                'price' => 0,
-                'features' => [
-                    'platform' => 'Integrated Xperience',
-                    'battery' => 'Rechargeable',
-                    'wireless' => true,
-                ],
-            ],
+            // =============================================================
+            // HEARING AID CHARGER — 1 PRODUCT
+            // =============================================================
+            ['category' => 'hearing-aid-charger', 'brand' => 'Unitron', 'name' => 'Unitron Moxi RS Hearing Aid Charger', 'model' => 'Moxi RS Charger', 'form' => 'Charger', 'price' => 0],
         ];
-
-        /*
-        |--------------------------------------------------------------------------
-        | Insert Products
-        |--------------------------------------------------------------------------
-        */
 
         foreach ($products as $item) {
 
-            $brandRecord = $brand($item['brand']);
+            // Existing category only. NEVER create one.
+            $category = DB::table('categories')
+                ->where('slug', $item['category'])
+                ->first();
 
-            // Skip if brand does not exist.
-            if (!$brandRecord) {
+            if (!$category) {
                 continue;
             }
 
-            $subcat = $subcategory($item['form_factor']);
+            // Existing brand only. NEVER create one.
+            $brand = DB::table('brands')
+                ->where('name', $item['brand'])
+                ->orWhere('slug', Str::slug($item['brand']))
+                ->first();
+
+            if (!$brand) {
+                continue;
+            }
+
+            // Existing subcategory only. NEVER create one.
+            $subcategory = DB::table('subcategories')
+                ->where('category_id', $category->id)
+                ->where(function ($q) use ($item) {
+                    $q->where('name', $item['form'])
+                      ->orWhere('slug', Str::slug($item['form']));
+                })
+                ->first();
 
             $slug = Str::slug($item['name']);
 
             DB::table('products')->updateOrInsert(
-                [
-                    'slug' => $slug,
-                ],
+                ['slug' => $slug],
                 [
                     'category_id' => $category->id,
-                    'subcategory_id' => $subcat?->id,
-                    'brand_id' => $brandRecord->id,
+                    'subcategory_id' => $subcategory?->id,
+                    'brand_id' => $brand->id,
 
                     'name' => $item['name'],
                     'slug' => $slug,
-                    'sku' => 'HA-' . strtoupper(Str::random(8)),
+                    'sku' => 'HA-' . strtoupper(substr(md5($slug), 0, 8)),
 
                     'short_description' =>
-                        $item['brand'] . ' ' .
-                        $item['model_number'] .
-                        ' hearing aid.',
+                        $item['brand'] . ' ' . $item['model'] .
+                        ' designed for clear, comfortable everyday hearing.',
 
                     'description' =>
                         $item['name'] .
-                        ' is a hearing-aid solution from ' .
+                        ' is a hearing solution from ' .
                         $item['brand'] .
-                        '.',
+                        ', designed for reliable performance and everyday listening comfort.',
 
                     'price' => $item['price'],
                     'sale_price' => null,
@@ -554,68 +159,30 @@ class ProductSeeder extends Seeder
 
                     'status' => 'active',
 
-                    'is_featured' => in_array(
-                        $item['model_number'],
-                        [
-                            'Infinio Ultra 90',
-                            'Real 1',
-                            'Vivia 9',
-                            'Omega AI 24',
-                            'Genesis AI 12',
-                        ]
-                    ),
-
-                    'is_trending' => in_array(
-                        $item['brand'],
-                        [
-                            'Phonak',
-                            'ReSound',
-                            'Starkey',
-                        ]
-                    ),
-
-                    'is_new_arrival' => in_array(
-                        $item['brand'],
-                        [
-                            'ReSound',
-                            'Starkey',
-                        ]
-                    ),
-
-                    'is_best_seller' => in_array(
-                        $item['model_number'],
-                        [
-                            'Real 1',
-                            'Moxi S-R',
-                            'Vivia 7',
-                        ]
-                    ),
-
+                    'is_featured' => false,
+                    'is_trending' => false,
+                    'is_new_arrival' => false,
+                    'is_best_seller' => false,
                     'is_on_sale' => false,
 
                     'tax_rate' => 0,
 
-                    'product_kind' => 'hearing_aid',
-                    'model_number' => $item['model_number'],
-                    'form_factor' => $item['form_factor'],
-                    'kit_configuration' => $item['kit_configuration'],
+                    'product_kind' =>
+                        $item['form'] === 'Charger'
+                            ? 'accessory'
+                            : 'hearing_aid',
+
+                    'model_number' => $item['model'],
+                    'form_factor' => $item['form'],
+                    'kit_configuration' => 'Standard',
 
                     'warranty_months' => 24,
 
-                    'channels' => $item['features']['channels'] ?? null,
-
-                    'fitting_range' =>
-                        $item['features']['fitting_range'] ?? null,
-
-                    'battery_type' =>
-                        $item['features']['battery'] ?? 'Rechargeable',
-
-                    'receiver_options' =>
-                        $item['features']['receiver'] ?? null,
-
-                    'connectivity' =>
-                        $item['features']['connectivity'] ??
-                        'Wireless',
+                    'channels' => null,
+                    'fitting_range' => null,
+                    'battery_type' => 'Rechargeable',
+                    'receiver_options' => null,
+                    'connectivity' => 'Wireless',
 
                     'colour_options' => json_encode([
                         'Standard Beige',
@@ -623,29 +190,29 @@ class ProductSeeder extends Seeder
                         'Brown',
                     ]),
 
-                    'specifications' => json_encode(
-                        $item['features'],
-                        JSON_UNESCAPED_UNICODE
-                    ),
+                    'specifications' => json_encode([
+                        'brand' => $item['brand'],
+                        'model' => $item['model'],
+                        'form_factor' => $item['form'],
+                    ]),
 
                     'tags' => json_encode([
                         'hearing aid',
                         strtolower($item['brand']),
-                        strtolower($item['model_number']),
-                        strtolower($item['form_factor']),
+                        strtolower($item['model']),
+                        strtolower($item['form']),
                     ]),
 
-                    'meta_title' =>
-                        $item['name'] . ' | Hearing Aid',
+                    'meta_title' => $item['name'] . ' | Hearing Aid',
 
                     'meta_description' =>
-                        'Buy ' . $item['name'] .
-                        ' hearing aid. Explore features, technology and pricing.',
+                        'Explore ' . $item['name'] .
+                        '. View features, specifications and pricing.',
 
                     'meta_keywords' =>
                         strtolower(
                             $item['brand'] . ', ' .
-                            $item['model_number'] . ', hearing aid'
+                            $item['model'] . ', hearing aid'
                         ),
 
                     'views' => 0,

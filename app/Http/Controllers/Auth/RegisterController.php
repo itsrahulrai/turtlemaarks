@@ -14,7 +14,7 @@ class RegisterController extends Controller
     public function __construct(private CartService $cartService) {}
 
     public function showForm() {
-        return view('auth.register');
+        return view('site.auth.register');
     }
 
     public function register(Request $request) {

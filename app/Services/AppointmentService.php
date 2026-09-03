@@ -22,7 +22,23 @@ class AppointmentService
 
         $setting = AppointmentSetting::where('day_of_week', $carbonDate->dayOfWeek)->first();
 
-        if (!$setting || !$setting->is_working_day) {
+        // No row configured yet in the admin panel: fall back to published clinic
+        // hours (Mon-Sat 10:00-19:30, Sunday by prior appointment only) so the
+        // booking page still works on a fresh install.
+        if (!$setting) {
+            $setting = new AppointmentSetting([
+                'day_of_week'           => $carbonDate->dayOfWeek,
+                'is_working_day'        => $carbonDate->dayOfWeek !== 0,
+                'start_time'            => '10:00:00',
+                'end_time'              => '19:30:00',
+                'slot_duration_minutes' => 30,
+                'break_start'           => '14:00:00',
+                'break_end'             => '15:00:00',
+                'gap_minutes'           => 0,
+            ]);
+        }
+
+        if (!$setting->is_working_day) {
             return collect();
         }
 

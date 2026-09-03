@@ -280,5 +280,21 @@ $this->call(ProductSeeder::class);
         $this->command->info(
             'Admin login: admin@turtlemaarks.com / Admin@12345'
         );
+
+        // Default clinic hours — Mon-Sat 10:00-19:30 with a 2-3pm break, Sunday closed.
+        for ($day = 0; $day <= 6; $day++) {
+            \App\Models\AppointmentSetting::firstOrCreate(
+                ['day_of_week' => $day],
+                [
+                    'is_working_day'        => $day !== 0,
+                    'start_time'            => '10:00:00',
+                    'end_time'              => '19:30:00',
+                    'slot_duration_minutes' => 30,
+                    'break_start'           => '14:00:00',
+                    'break_end'             => '15:00:00',
+                    'gap_minutes'           => 0,
+                ]
+            );
+        }
     }
 }

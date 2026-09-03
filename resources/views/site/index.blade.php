@@ -1,884 +1,1152 @@
-@extends('site.layouts.layout')
-@section('title', 'Hearing Aid Clinic in Noida | Turtle Maarks Hearing Health')
-@section('description', 'Turtle Maarks Hearing Health is a trusted Hearing Aid Clinic in Noida offering branded hearing aids, hearing aid repair and specialized speech therapy services.')
-@section('keywords', 'Hearing Aid supplier of all leading brands. Please connect for premium care and services')
+@extends('site.layouts.app')
+
+@section('title', 'Turtle Maarks Hearing Health — Modern Hearing Aids & Audiology Clinic')
+@section('meta_description', 'Authorized clinic for Phonak, Oticon, ReSound, Signia, Starkey, Widex digital hearing aids & sound-booth diagnostic hearing tests in Greater Noida West & Noida.')
+@section('active_nav', 'home')
+
 @section('content')
+<!-- ============ FULL-WIDTH HERO IMAGE BANNER ============ -->
+  <!-- <section class="tm-hero-image-banner p-0 m-0 w-100">
+    <a href="{{ route('appointments.create') }}" class="d-block w-100" title="Book Hearing Health Consultation">
+      <picture class="w-100 d-block">
+        <source media="(max-width: 767.98px)" srcset="{{ tm_asset('images/banners/mobile/mob-banner.png') }}">
+        <img src="{{ tm_asset('images/banners/b7.png') }}" alt="Turtle Maarks Hearing Health — Authorized Clinic for Phonak, Oticon, ReSound, Signia, Starkey, Widex" class="w-100 d-block tm-hero-banner-img">
+      </picture>
+    </a>
+  </section> -->
 
+  <!-- ============ DYNAMIC HERO BANNER SLIDER ============ -->
+<section class="tm-hero-image-banner p-0 m-0 w-100">
 
-<!-- hero area -->
-<div class="container-fluid p-0">
-    <img src="{{asset('frontend-assets/images/banners/banner-1.webp')}}" class="img-fluid w-100 d-block" alt="Banner">
-</div>
+    @if($banners->isNotEmpty())
 
- @include('site.includes.booking')
+        <div id="tmHeroBannerCarousel"
+             class="carousel slide"
+             data-bs-ride="carousel"
+             data-bs-interval="5000">
 
-<!-- about area -->
-<div class="about-area padding-top-50 padding-bottom-50">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-12 col-lg-6 col-xl-5">
-                <div class="about-left">
-                    <img src="{{ asset('frontend-assets/images/about-us.jpg') }}" alt="" class="main-img rounded">
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-6 col-xl-7">
-                <div class="about-right">
-                    <div class="common-title">
-                        <h2>Turtle Maarks <br>
-                            <span>Hearing Health</span>
-                        </h2>
-                    </div>
-                    <p class="margin-top-20" style="text-align: justify;">
-                        At <span style="font-weight: 700;">Turtle Maarks Hearing Health</span>, we are committed to enhancing lives through expert hearing care and speech solutions.
-                        As a trusted
-                        <a href="https://share.google/yjX6IHjYg8WoH0eWC">
-                            <span style="font-weight: 700;">Hearing Aid Clinic near Noida Extension</span>
-                        </a>,
-                        we provide hearing aids from all leading global brands, helping our clients access the latest technology, comfort, and reliable aftercare support.
-                    </p>
+            <div class="carousel-inner">
 
-                    <p class="margin-top-20" style="text-align: justify;">
-                        Whether you're experiencing hearing difficulties, looking for a hearing aid, or seeking advanced audiological solutions, our team is here to guide you at every step.
-                        We offer <span style="font-weight: 700;">comprehensive audiological evaluations</span> conducted by
-                        <span style="font-weight: 700;">RCI-registered Audiologists</span>, ensuring accurate assessment, diagnosis, and personalized recommendations based on your individual hearing needs.
-                    </p>
+                @foreach($banners as $index => $banner)
 
-                    <p class="margin-top-20" style="text-align: justify;">
-                        In addition to hearing care, <span style="font-weight: 700;">Turtle Maarks Hearing Health</span> provides
-                        <span style="font-weight: 700;">specialized Speech Therapy</span> services for individuals of all ages experiencing speech and language difficulties.
-                        Our certified speech-language professionals work with patients compassionately to address challenges related to communication, language development, articulation, fluency, and other speech and language concerns.
-                    </p>
-                    <div class="btn-box margin-top-20">
-                        <a href="{{ route('contact-us') }}" class="btn2">contact now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row about-counter margin-top-60">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="single-counter">
-                    <div class="icon-box">
-                        <span><i class="icofont-stethoscope-alt"></i></span>
-                    </div>
-                    <div class="cont-box">
-                        <h3 class="counter">20</h3>
-                        <h6 class="margin-top-20">Expert Staff</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="single-counter">
-                    <div class="icon-box">
-                        <span><i class="icofont-users-alt-4"></i></span>
-                    </div>
-                    <div class="cont-box">
-                        <h3 class="counter">10000</h3>
-                        <h6 class="margin-top-20">our Patients</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="single-counter">
-                    <div class="icon-box">
-                        <span><i class="icofont-prescription"></i></span>
-                    </div>
-                    <div class="cont-box">
-                        <h3 class="counter">5000</h3>
-                        <h6 class="margin-top-20">check up</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                <div class="single-counter">
-                    <div class="icon-box">
-                        <span><i class="icofont-prescription"></i></span>
-                    </div>
-                    <div class="cont-box">
-                        <h3 class="counter">9000</h3>
-                        <h6 class="margin-top-20">Happy Patient</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row about-counter margin-top-60 text-center">
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
 
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/juOmFzxFBMg?si=Uaj_pKW6P0DubpXe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <!-- Video 1 -->
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250"
-                    src="https://www.youtube.com/embed/4yAlwfAl_i8?autoplay=1&mute=1"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
-                </iframe>
-            </div>
+                        <a href="{{ $banner->link ?: route('appointments.create') }}"
+                           class="d-block w-100"
+                           title="{{ $banner->title ?: 'Book Hearing Health Consultation' }}">
 
-            <!-- Video 2 -->
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250"
-                    src="https://www.youtube.com/embed/zAwpZego-lE?si=53zH3IwZyiKEFExB"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
-                </iframe>
-            </div>
+                            <picture class="d-block w-100">
 
-            <!-- Video 3 -->
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250"
-                    src="https://www.youtube.com/embed/aH7jAW4jz58?si=Hu40IC8etn52WHCw"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
-                </iframe>
-            </div>
+                                {{-- MOBILE --}}
+                                @if(!empty($banner->mobile_image))
+                                    <source
+                                        media="(max-width: 767.98px)"
+                                        srcset="{{ asset('/storage/' . $banner->mobile_image) }}">
+                                @endif
 
-            <!-- Video 4 -->
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/vrF2ciqFfrg?si=TAIp8iY1g2wEbOVd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <!-- Video 5 -->
-
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/vkNae-Vqu0U?si=X_qwvhNpD7nJuspm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <!-- Video 6 -->
-
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/gL8awpcAedw?si=gmeT9JSF-u1SutNz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-<!-- service area -->
-<div class="service-area padding-top-115 padding-bottom-90">
-    <div class="service-shapes">
-        <img src="{{asset('frontend-assets/images/ser-vec1.png')}}" alt="" class="vec1 item-animateTwo">
-        <img src="{{asset('frontend-assets/images/ser-vec2.png')}}" alt="" class="vec2">
-    </div>
-    <div class="container">
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-8">
-                <div class="common-title text-center">
-                    <h2>Diagnostic Services <span>available</span></h2>
-                    <p class="margin-top-20">
-                        Hearing evaluation by under mentioned tests
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay='.2s'>
-                <div class="single-service">
-                    <img src="{{asset('frontend-assets/images/services/pta.webp')}}" alt="">
-                    <div class="cont-box margin-top-20">
-                        <h4><a href="{{ route('pta-pure-tone-audiometry') }}">PTA</a></h4>
-                        <p class="margin-top-15">
-                            ure Tone Audiometry (PTA) is a fundamental hearing test used to evaluate
-                        </p>
-                        <a href="{{route('pta-pure-tone-audiometry')}}" class="link margin-top-10">learn more <span><i
-                                    class="icofont-simple-right"></i></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay='.2s'>
-                <div class="single-service">
-                    <img src="{{asset('frontend-assets/images/services/tymp.webp')}}" alt="">
-                    <div class="cont-box margin-top-20">
-                        <h4><a href="{{route('tymp-tympanometry')}}">Tymp</a></h4>
-                        <p class="margin-top-15">Tympanometry is a quick and painless diagnostic test that evaluates </p>
-                        <a href="{{route('tymp-tympanometry')}}" class="link margin-top-10">learn more <span><i
-                                    class="icofont-simple-right"></i></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay='.4s'>
-                <div class="single-service">
-                    <img src="{{asset('frontend-assets/images/services/bera.webp')}}" alt="">
-                    <div class="cont-box margin-top-20">
-                        <h4><a href="{{route('bera-brain-evoked-response-audiometry')}}">BERA </a></h4>
-                        <p class="margin-top-15">BERA, or Brain Evoked Response Audiometry, is a non-invasive diagnostic</p>
-                        <a href="{{route('bera-brain-evoked-response-audiometry')}}" class="link margin-top-10">learn more <span><i
-                                    class="icofont-simple-right"></i></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay='.6s'>
-                <div class="single-service">
-                    <img src="{{asset('frontend-assets/images/services/oae.webp')}}" alt="">
-                    <div class="cont-box margin-top-20">
-                        <h4><a href="{{route('oae-oto-acoustic-emission')}}">OAE </a></h4>
-                        <p class="margin-top-15">Oto Acoustic Emissions (OAE) is a quick, non-invasive test used </p>
-                        <a href="{{route('oae-oto-acoustic-emission')}}" class="link margin-top-10">learn more <span><i
-                                    class="icofont-simple-right"></i></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- service area -->
-<div class="padding-top-50 padding-bottom-50">
-    <div class="container">
-
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-8 wow fadeInUp">
-                <div class="common-title2 text-center">
-                    <h2>Brands of Hearing Aids Offered</h2>
-                    <p class="margin-top-20">
-                        We provide a comprehensive selection of high-quality hearing aids
-                        from multiple globally recognized manufacturers.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="shivam slide-option">
-            <div id="infinite" class="highway-slider">
-                <div class="container highway-barrier">
-                    <ul class="highway-lane">
-
-                        @foreach($brands as $brand)
-                            <li class="highway-car">
+                                {{-- DESKTOP --}}
                                 <img
-                                    src="{{ asset('storage/' . $brand->logo) }}"
-                                    alt="{{ $brand->name }}"
-                                >
-                            </li>
-                        @endforeach
-                        @foreach($brands as $brand)
-                            <li class="highway-car">
-                                <img
-                                    src="{{ asset('storage/' . $brand->logo) }}"
-                                    alt="{{ $brand->name }}"
-                                >
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
+                                    src="{{ asset('/storage/' . $banner->image) }}"
+                                    alt="{{ $banner->title ?: 'Turtle Maarks Hearing Health' }}"
+                                    class="d-block w-100 tm-hero-banner-img"
+                                    loading="{{ $index === 0 ? 'eager' : 'lazy' }}">
+                                    
+                            </picture>
 
-    </div>
-</div>
-
-<!-- gallery area -->
-<div class="gallery-area padding-top-115 padding-bottom-110">
-    <div class="gallery-shapes">
-        <img src="{{asset('frontend-assets/images/gallery-vec.png')}}" alt="" class="vec1 item-zooming">
-    </div>
-    <div class="container">
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-6">
-                <div class="common-title text-center">
-                    <h2>Hearing Aids <span>Available</span></h2>
-                    <p class="margin-top-20">
-                        We offer a diverse range of hearing aids to suit individual needs, preferences, and lifestyles.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="gallery-wrapper">
-            <div class="row port-galleries gx-3 gy-4">
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/bte.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">BTE Hearing Aid</h6>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/ric.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">RIC Hearing Aid</h6>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/cic.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">CIC Hearing Aid</h6>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/itc.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">ITC Hearing Aid</h6>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/ite.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">ITE Hearing Aid</h6>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-2">
-                    <div class="bg-danger rounded p-2 h-100">
-                        <div class="single-gallery">
-                            <img class="img-fluid rounded" src="{{asset('frontend-assets/images/hearing-aid/iic.webp')}}" alt="">
-                        </div>
-                        <h6 class="text-center text-white">IIC Hearing Aid</h6>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="task-area padding-top-115">
-    <div class="task-shapes">
-        <img src="{{asset('frontend-assets/images/color-vec1.png')}}" alt="" class="vec1">
-    </div>
-    <div class="container">
-        <div class="row justify-content-center margin-bottom-25">
-            <div class="col-lg-8">
-                <div class="common-title text-center">
-                    <h2>Hearing Aid Accessories & <span>Support Services</span></h2>
-                    <p class="margin-top-20">
-                        We offer a comprehensive selection of hearing aid accessories to enhance comfort, performance, and longevity of your hearing devices.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- tab nav -->
-        <div class="row task-tab-nav margin-bottom-50">
-            <div class="col-lg-12">
-                <nav>
-                    <div class="nav task-nav-wrapper justify-content-center " id="nav-tab" role="tablist">
-
-                        <a class="nav-item nav-link active" id="nav-one-tab" data-toggle="tab" href="#nav-one"
-                            role="tab" aria-controls="nav-one" aria-selected="true">
-                            <div class="single-nav active">
-                                <h5>Hearing Aid Batteries</h5>
-                            </div>
                         </a>
 
-                        <a class="nav-item nav-link" id="nav-two-tab" data-toggle="tab" href="#nav-two" role="tab"
-                            aria-controls="nav-two" aria-selected="false">
-                            <div class="single-nav">
-                                <h5>Ear Moulds & Tips</h5>
-                            </div>
-                        </a>
-
-                        <a class="nav-item nav-link" id="nav-three-tab" data-toggle="tab" href="#nav-three"
-                            role="tab" aria-controls="nav-three" aria-selected="false">
-                            <div class="single-nav">
-                                <h5>Hearing Aid Repair Services</h5>
-                            </div>
-                        </a>
                     </div>
-                </nav>
-            </div>
-        </div>
 
-        <!-- tab cont -->
-        <div class="tab-content" id="nav-tabContent">
-            <!-- single item -->
-            <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{asset('frontend-assets/images/batteries.webp')}}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Hearing Aid Batteries
-                            </h3>
+                @endforeach
 
-                            <p class="margin-bottom-20">
-                                We stock high-quality, long-lasting batteries in all standard sizes — 13, 312, 10, and 675 — compatible with leading brands like Widex, Starkey, and Power One.
-                            </p>
-                            <ul>
-                                <li> Battery Sizes — 13</li>
-                                <li> Battery Sizes — 312 </li>
-                                <li> Battery Sizes — 10</li>
-                                <li> Battery Sizes — 675</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" data-toggle="modal" data-target="#bookingModal" class="btn3">booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- single item -->
-            <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{asset('frontend-assets/images/ear-model.jpg')}}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Ear Moulds & Tips
-                            </h3>
+            @if($banners->count() > 1)
 
-                            <p class="margin-bottom-20">
-                                Choose from a variety of soft and hard ear moulds as well as ear tips designed for optimal fit and sound delivery. Each is crafted for comfort and performance.
-                            </p>
-                            <ul>
-                                <li> We offer soft and hard ear moulds tailored for a comfortable and secure fit.</li>
-                                <li> Designed to improve sound delivery and reduce feedback in hearing aids. </li>
-                                <li> Available in various sizes and materials to suit individual ear shapes. </li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" data-toggle="modal" data-target="#bookingModal" class="btn3">booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <button class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#tmHeroBannerCarousel"
+                        data-bs-slide="prev">
 
-            <!-- single item -->
-            <div class="tab-pane fade" id="nav-three" role="tabpanel" aria-labelledby="nav-three-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{asset('frontend-assets/images/hearing-aid-repair-services.webp')}}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Hearing Aid Repair Services
-                            </h3>
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
 
-                            <p class="margin-bottom-20">
-                                We provide expert repair services for all major hearing aid brands listed above. From minor adjustments to complete overhauls, our technicians ensure your devices are working their best.
-                            </p>
-                            <ul>
-                                <li>Expert repairs and adjustments for all major hearing aid brands to restore optimal function.</li>
-                                <li>Skilled technicians handle everything from minor tweaks to full servicing with precision.</li>
-                                <li> Fast turnaround, reliable quality, and personalized support to keep your devices working at their best.</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" data-toggle="modal" data-target="#bookingModal" class="btn3">Booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </button>
+
+                <button class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#tmHeroBannerCarousel"
+                        data-bs-slide="next">
+
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+
+                </button>
+
+            @endif
 
         </div>
 
-    </div>
-</div>
+    @else
+
+        {{-- FALLBACK --}}
+        <a href="{{ route('appointments.create') }}"
+           class="d-block w-100">
+
+            <picture class="d-block w-100">
+
+                <source
+                    media="(max-width: 767.98px)"
+                    srcset="{{ tm_asset('images/banners/mobile/mob-banner.png') }}">
+
+                <img
+                    src="{{ tm_asset('images/banners/b7.png') }}"
+                    alt="Turtle Maarks Hearing Health"
+                    class="d-block w-100 tm-hero-banner-img">
+
+            </picture>
+
+        </a>
+
+    @endif
+
+</section>
 
 
-<div class="emergency-area padding-top-120 padding-bottom-120">
-    <div class="emer-shapes">
-        <img src="{{asset('frontend-assets/images/emergemcy_vec1.png')}}" alt="" class="vec1">
-        <img src="{{asset('frontend-assets/images/emergemcy_vec2.png')}}" alt="" class="vec2">
-    </div>
+  
+
+  <!-- 1. EXPLORE BY FORM FACTOR & CATEGORY -->
+  <section class="py-5 bg-white">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="emergency-cont">
-                    <div class="img-box">
-                        <img src="{{asset('frontend-assets/images/emergemcy_vec3.png')}}" alt="">
-                    </div>
-                    <div class="cont-box common-title2">
-                        <h4 class="margin-bottom-30">Senior Citizens Deserve the Best <br> Enjoy Free Home Visit Services!</h4>
-                        <span class="tel_btn"><span><i class="icofont-telephone"></i></span>
-                            <a href="tel:8130495476" class="text-white"> +91 8130495476 </a></span>
-                    </div>
-                </div>
-            </div>
+      <div class="d-flex justify-content-between align-items-end tm-section-head mb-4">
+        <div>
+          <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-grid-fill"></i> Hearing Solutions</span>
+          <h2 class="tm-section-title mb-1">Explore by <span>Category</span></h2>
+          <p class="tm-section-sub mb-0">Choose by form factor, clinical invisibility, high-power output, or care essentials</p>
         </div>
-    </div>
-</div>
+        <a href="{{ route('products') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm d-none d-sm-inline-flex">View All Models <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-<!-- ht-team area -->
-<div class="ht-team-area  padding-top-115 padding-bottom-90">
-    <div class="team-shapes">
-        <img src="{{asset('frontend-assets/images/team-vec2.png')}}" alt="" class="vec1 item-animateOne">
-        <img src="{{asset('frontend-assets/images/team-vec3.png')}}" alt="" class="vec2 item-rotate2">
-        <img src="{{asset('frontend-assets/images/color-vec4.png')}}" alt="" class="vec3">
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-2 g-md-3">
+        @php
+          $themeColors = ['orange', 'cyan', 'indigo', 'rose', 'emerald', 'amber'];
+          $defaultBadges = ['Bestseller', 'Featured', 'Popular', 'Premium', 'Discreet', 'Essentials'];
+        @endphp
+
+        @forelse($categories->take(6) as $index => $category)
+          @php
+            $theme = $themeColors[$index % count($themeColors)];
+            $badge = $defaultBadges[$index % count($defaultBadges)];
+            $subCount = $category->subcategories ? $category->subcategories->count() : 0;
+            $catImage = $category->image 
+                ? asset('/storage/' . $category->image) 
+                : tm_asset('images/hearing-aid/ric.webp');
+          @endphp
+          <div class="col">
+            <a href="{{ route('products', ['category' => $category->slug]) }}" class="tm-cat-card-lux tm-cat-theme-{{ $theme }}">
+              <span class="tm-cat-badge-top">
+                @if($category->subcategories && $category->subcategories->isNotEmpty())
+                  {{ $category->subcategories->first()->name }}
+                @else
+                  {{ $badge }}
+                @endif
+              </span>
+              <div class="tm-cat-media-lux">
+                <img src="{{ $catImage }}" 
+                     alt="{{ $category->name }}" 
+                     class="tm-cat-img-full"
+                     onerror="this.onerror=null;this.src='{{ tm_asset('images/hearing-aid/ric.webp') }}';">
+              </div>
+              <div class="tm-cat-content-lux">
+                <h6 class="tm-cat-title-lux">{{ $category->name }}</h6>
+                <p class="tm-cat-desc-lux">{{ \Illuminate\Support\Str::limit($category->description ?: 'Explore genuine models with verified clinical warranty & trial', 70) }}</p>
+                <div class="tm-cat-footer-lux">
+                  <span class="tm-cat-count-badge">
+                    @if($subCount > 0)
+                      {{ $subCount }} {{ \Illuminate\Support\Str::plural('Model', $subCount) }}
+                    @else
+                      Explore
+                    @endif
+                  </span>
+                  <span class="tm-cat-arrow-btn"><i class="bi bi-arrow-right"></i></span>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <div class="col-12 text-center py-4">
+            <p class="text-muted">No categories available at the moment.</p>
+          </div>
+        @endforelse
+      </div>
+
+      <div class="text-center mt-3 d-sm-none">
+        <a href="{{ route('products') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm w-100">
+          View All Models <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
     </div>
+  </section>
+
+  <!-- 2. CURATED FEATURED SHOWCASE (TABBED SINGLE-CODE ENGINE) -->
+  <section class="py-5 tm-popular-section-bg border-top border-bottom">
     <div class="container">
-        <div class="row justify-content-center wow fadeInUp margin-bottom-45">
-            <div class="col-lg-7">
-                <div class="common-title2 text-center">
-                    <h2>Our Expertise Team</h2>
-                    <p class="margin-top-20">
-                        Our team comprises experienced audiologists, hearing care specialists, and support professionals who are passionate about improving lives through better hearing.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 wow fadeInUp">
-                <div class="single-team-2">
-                    <div class="img-box">
-                        <img src="{{asset('frontend-assets/images/team/team-01.webp')}}" style="border-radius:10px;" alt="">
-                    </div>
-                    <div class="cont-box">
-                        <h4 class="margin-bottom-10"><a href="">
-                                Name of Employee
-                            </a></h4>
-                        <h6 class="margin-bottom-10">Position</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 wow fadeInDown">
-                <div class="single-team-2">
-                    <div class="img-box">
-                        <img src="{{asset('frontend-assets/images/team/team-02.webp')}}" style="border-radius:10px;" alt="">
-                    </div>
-                    <div class="cont-box">
-                        <h4 class="margin-bottom-10"><a href="">
-                                Name of Employee
-                            </a></h4>
-                        <h6 class="margin-bottom-10">Position</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 wow fadeInUp">
-                <div class="single-team-2">
-                    <div class="img-box">
-                        <img src="{{asset('frontend-assets/images/team/team-03.webp')}}" style="border-radius:10px;" alt="">
-                    </div>
-                    <div class="cont-box">
-                        <h4 class="margin-bottom-10"><a href="">
-                                Name of Employee
-                            </a></h4>
-                        <h6 class="margin-bottom-10">Position</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 wow fadeInUp">
-                <div class="single-team-2">
-                    <div class="img-box">
-                        <img src="{{asset('frontend-assets/images/team/team-01.webp')}}" style="border-radius:10px;" alt="">
-                    </div>
-                    <div class="cont-box">
-                        <h4 class="margin-bottom-10"><a href="">
-                                Name of Employee
-                            </a></h4>
-                        <h6 class="margin-bottom-10">Position</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+      <div class="tm-section-head mb-3">
+        <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-stars"></i> Curated Flagships</span>
+        <h2 class="tm-section-title mb-1">Featured <span>Digital Hearing Aids</span></h2>
+        <p class="tm-section-sub mb-0">Rechargeable models with AI neural noise suppression &amp; Bluetooth streaming</p>
+      </div>
 
-<!-- gallery area -->
-<div class="gallery-area padding-top-115 padding-bottom-110">
-    <div class="gallery-shapes">
-        <img src="{{asset('frontend-assets/images/gallery-vec.png')}}" alt="" class="vec1 item-zooming">
+      <!-- Filter Navigation Pills Carousel (Single Line with Left & Right Arrows) -->
+      <div class="tm-category-carousel-wrap mb-4">
+        <button type="button" class="tm-category-nav-btn tm-category-prev-btn" id="tmCategoryPrevBtn" aria-label="Previous Categories" title="Scroll Left">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <div class="tm-filter-tabs-nav tm-category-tabs-strip" id="tmCategoryTabsStrip">
+          <button class="tm-filter-tab-btn active" data-tm-filter-tab="all">
+            <i class="bi bi-grid-fill text-orange"></i> All Products
+          </button>
+          @foreach($categories as $cat)
+            @php
+              $catIcon = 'bi-soundwave text-primary';
+              $lowerName = strtolower($cat->name);
+              if (str_contains($lowerName, 'charger') || str_contains($lowerName, 'batter')) {
+                $catIcon = 'bi-battery-charging text-success';
+              } elseif (str_contains($lowerName, 'invisible') || str_contains($lowerName, 'cic') || str_contains($lowerName, 'iic')) {
+                $catIcon = 'bi-eye-slash text-info';
+              } elseif (!empty($cat->icon)) {
+                $catIcon = $cat->icon;
+              }
+            @endphp
+            <button class="tm-filter-tab-btn" data-tm-filter-tab="{{ $cat->slug }}">
+              <i class="bi {{ $catIcon }}"></i> {{ $cat->name }}
+            </button>
+          @endforeach
+        </div>
+
+        <button type="button" class="tm-category-nav-btn tm-category-next-btn" id="tmCategoryNextBtn" aria-label="Next Categories" title="Scroll Right">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Unified Card Grid (Single Code Component Engine) -->
+      <div id="tmInteractiveFeaturedGrid" data-tm-products="all" data-tm-limit="8" data-tm-col="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3" class="row g-3">
+        @include('site.partials.product-grid', ['products' => $popularProducts, 'col' => 'col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3'])
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{{ route('products') }}" id="tmFeaturedViewAllBtn" class="tm-btn tm-btn-primary px-4 py-2">
+          View All Products <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
     </div>
+  </section>
+
+  <!-- 3. INTERACTIVE BRAND ECOSYSTEM SHOWCASE -->
+  <section class="py-5 bg-white border-bottom">
     <div class="container">
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-6">
-                <div class="common-title text-center">
-                    <h2>our <span>gallery</span></h2>
-                    <p class="margin-top-20">
-                        Our gallery captures the essence of the support and solutions we provide every day.
-                    </p>
-                </div>
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-700 mx-auto mb-4">
+        <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-patch-check-fill text-success"></i> 100% Authorized Dispenser</span>
+        <h2 class="tm-section-title mb-2">Explore by <span class="text-orange">Brands</span></h2>
+        <p class="tm-section-sub mb-0">Official dispensers for world-leading Swiss, Danish, German, American & Canadian hearing technology.</p>
+      </div>
+
+      <!-- Brand Switcher Logo Tabs with Left & Right Scroll Arrows -->
+      <div class="tm-brand-carousel-wrap mb-4">
+        <button type="button" class="tm-brand-nav-btn tm-brand-prev-btn" id="tmBrandPrevBtn" aria-label="Previous Brands" title="Scroll Left">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <div class="tm-brand-tabs-strip justify-content-lg-start" id="tmBrandTabsStrip">
+          <div class="tm-brand-tab-card active"
+               data-tm-brand-tab="all"
+               data-tm-brand-origin="Global Premium Technology"
+               data-tm-brand-usp="• Official warranty &amp; clinical precision across all global brands"
+               data-tm-brand-url="{{ route('products') }}"
+               title="All Authorized Brands">
+            <span class="fw-bold text-navy text-nowrap"><i class="bi bi-grid-fill text-orange me-1"></i> All Brands</span>
+          </div>
+          @foreach ($brands as $i => $brand)
+            @php
+              $origin = \App\Support\TmCatalog::BRAND_ORIGINS[strtolower($brand->name)] ?? 'Global Manufacturer';
+              $usp = !empty($brand->description) 
+                  ? ('• ' . $brand->description) 
+                  : ('• Official authorized dispenser for genuine ' . $brand->name . ' digital hearing aids & warranty');
+            @endphp
+            <div class="tm-brand-tab-card"
+                 data-tm-brand-tab="{{ $brand->name }}"
+                 data-tm-brand-origin="{{ $origin }}"
+                 data-tm-brand-usp="{{ $usp }}"
+                 data-tm-brand-url="{{ route('products', ['brand' => $brand->name]) }}"
+                 title="{{ $brand->name }} Hearing Aids">
+              <img src="{{ $brand->logo_url }}" alt="{{ $brand->name }}">
             </div>
+          @endforeach
         </div>
-        <div class="gallery-wrapper">
-            <div class="row port-galleries">
-                <div class="col-lg-4 col-md-4 col-12">
-                    <a href="{{asset('frontend-assets/images/gallery/01.webp')}}" target="_blank">
-                        <div class="single-gallery">
-                            <img src="{{asset('frontend-assets/images/gallery/01.webp')}}" class="img-fluid rounded" alt="">
-                            <span><i class="far fa-image"></i></span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-8 col-md-8 col-12"> <a href="{{asset('frontend-assets/images/gallery/02.webp')}}" target="_blank">
-                        <div class="single-gallery">
-                            <img src="{{asset('frontend-assets/images/gallery/02.webp')}}" class="img-fluid rounded" alt="">
-                            <span><i class="far fa-image"></i></span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-4 col-12">
-                    <a href="{{asset('frontend-assets/images/gallery/03.webp')}}" target="_blank">
-                        <div class="single-gallery">
-                            <img class="img-fluid" src="{{asset('frontend-assets/images/gallery/03.webp')}}" alt=""> <span><i
-                                    class="far fa-image"></i></span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-4 col-12"> <a href="{{asset('frontend-assets/images/gallery/04.webp')}}" target="_blank">
-                        <div class="single-gallery">
-                            <img class="img-fluid" src="{{asset('frontend-assets/images/gallery/04.webp')}}" alt="">
-                            <span><i class="far fa-image"></i></span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-4 col-12"><a href="{{asset('frontend-assets/images/gallery/05.webp')}}" target="_blank">
-                        <div class="single-gallery">
-                            <img class="img-fluid" src="{{asset('frontend-assets/images/gallery/05.webp')}}" alt=""> <span><i
-                                    class="far fa-image"></i></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="btn-box text-center margin-top-30">
-                <a href="{{asset('frontend-assets/images/gallery/05.webp')}}" class="btn3" target="_blank">View All Gallery</a>
-            </div>
+
+        <button type="button" class="tm-brand-nav-btn tm-brand-next-btn" id="tmBrandNextBtn" aria-label="Next Brands" title="Scroll Right">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Active Brand Information Banner -->
+      <div class="tm-brand-hero-pill mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <h4 class="fw-bold text-navy mb-0" id="tmActiveBrandName">All Authorized Brands</h4>
+          <span class="badge bg-primary-subtle text-primary border rounded-pill px-3 py-1 small" id="tmActiveBrandOrigin">Global Premium Technology</span>
+          <span class="text-secondary small d-none d-md-inline" id="tmActiveBrandUsp">• Official warranty &amp; clinical precision across all global brands</span>
         </div>
+        <div>
+          <a href="{{ route('products') }}" id="tmBrandViewAllBtn" class="tm-btn tm-btn-outline-navy btn-sm text-nowrap">
+            Explore All Hearing Aids <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Brand Products Grid (Single Code Component Engine) -->
+      <div id="tmBrandShowcaseGrid" data-tm-products="all" data-tm-limit="4" data-tm-col="col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3" class="row g-3">
+        @include('site.partials.product-grid', ['products' => $brandProducts, 'col' => 'col-xl-3 col-lg-3 col-md-6 col-sm-6 mb-3'])
+      </div>
+
+      <!-- Advertisement Banner -->
+      <div class="mt-4 pt-2">
+        <a href="{{ route('appointments.create') }}" class="d-block overflow-hidden rounded-4 shadow-sm border tm-ad-banner-link" title="Book Free Consultation">
+          <img src="{{ tm_asset('images/banners/adds.png') }}" alt="Turtle Maarks Hearing Health — Good Hearing, Stronger Connections" class="w-100 d-block tm-ad-banner-img" loading="lazy">
+        </a>
+      </div>
+
     </div>
-</div>
+  </section>
 
-
-
-
-<!-- testimonial area -->
-<div class="testimonial-area padding-top-115 padding-bottom-145">
-    <div class="testi-shapes">
-        <img src="{{asset('frontend-assets/images/fea-vec2.png')}}" alt="" class="vec1 item-bounce">
-        <img src="{{asset('frontend-assets/images/fea-vec3.png')}}" alt="" class="vec2 item-rotate">
-    </div>
+  <!-- 5. SOUND-BOOTH DIAGNOSTIC HEARING TESTS -->
+  <section class="py-5 bg-white tm-diagnostic-showcase-section border-top border-bottom" id="diagnosticHearingTests">
     <div class="container">
-        <div class="row justify-content-center margin-bottom-25">
-            <div class="col-lg-8">
-                <div class="common-title text-center">
-                    <h2>What Our Patients Are <span>Saying</span></h2>
-                    <p class="margin-top-20">
-                        Our patients are at the heart of everything we do. From the moment they walk through our doors, we’re dedicated to providing compassionate care.
-                    </p>
-                </div>
-            </div>
+      
+      <!-- Section Header -->
+      <div class="d-flex justify-content-between align-items-end tm-section-head mb-4">
+        <div>
+          <span class="tm-pill tm-pill-teal mb-2"><i class="bi bi-soundwave"></i> Sound-Booth Precision Diagnostics</span>
+          <h2 class="tm-section-title mb-1">Diagnostic <span>Hearing Tests</span></h2>
+          <p class="tm-section-sub mb-0">Calibrated audiometer assessments with instant certified clinical reports</p>
+        </div>
+        <a href="{{ route('diagnostic-services') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm d-none d-sm-inline-flex">All Tests <i class="bi bi-arrow-right ms-1"></i></a>
+      </div>
+
+      <!-- 4 Diagnostic Cards Grid -->
+      <div class="row row-cols-2 row-cols-md-2 row-cols-lg-4 g-2 g-md-4">
+        
+        <!-- Service 1: PTA -->
+        <div class="col">
+          <div class="tm-diag-service-card">
+            <a href="{{ route('pta-pure-tone-audiometry') }}" class="d-block w-100 tm-diag-service-img-wrap" title="Pure Tone Audiometry (PTA)">
+              <img src="{{ tm_asset('images/services/pta.webp') }}" alt="PTA Pure Tone Audiometry" class="tm-diag-service-img" loading="lazy">
+            </a>
+            <h3 class="tm-diag-service-title">
+              <a href="{{ route('pta-pure-tone-audiometry') }}" class="text-decoration-none text-reset">PTA</a>
+            </h3>
+            <p class="tm-diag-service-desc">Pure Tone Audiometry (PTA) is a fundamental hearing test used to evaluate</p>
+            <a href="{{ route('pta-pure-tone-audiometry') }}" class="tm-diag-service-link">
+              <span>Learn More</span> <i class="bi bi-chevron-right"></i>
+            </a>
+          </div>
         </div>
 
-        <div class="btn-box text-center margin-top-30">
-            <a href="https://www.google.com/search?num=10&sca_esv=fa25cb492db56b5e&rlz=1C1ONGR_enIN1154IN1154&sxsrf=ANbL-n4mQMXqvOjFcwve9vhgjjfd1kicYA:1770812575708&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qORTwfKEfzY_quV-SU8CroR1tN4H9-cpyApdW3m0Q2cK-hf5ItifnYXv4WA8X8XwqmUY4juTnEEJycxrAaJIrMYR_dz61w8ySsEEUEMC-Q4JkWl5hww%3D%3D&q=Turtle+Maarks+Hearing+Health+Reviews&sa=X&ved=2ahUKEwj7yqf0ttGSAxUOyDgGHfMbEWcQ0bkNegQIPxAH&biw=1366&bih=641&dpr=1" class="btn3" target="_blank">Read Reviews </a>
+        <!-- Service 2: Tymp -->
+        <div class="col">
+          <div class="tm-diag-service-card">
+            <a href="{{ route('tymp-tympanometry') }}" class="d-block w-100 tm-diag-service-img-wrap" title="Tympanometry (Tymp)">
+              <img src="{{ tm_asset('images/services/tymp.webp') }}" alt="Tympanometry (Tymp)" class="tm-diag-service-img" loading="lazy">
+            </a>
+            <h3 class="tm-diag-service-title">
+              <a href="{{ route('tymp-tympanometry') }}" class="text-decoration-none text-reset">Tymp</a>
+            </h3>
+            <p class="tm-diag-service-desc">Tympanometry is a quick and painless diagnostic test that evaluates</p>
+            <a href="{{ route('tymp-tympanometry') }}" class="tm-diag-service-link">
+              <span>Learn More</span> <i class="bi bi-chevron-right"></i>
+            </a>
+          </div>
         </div>
+
+        <!-- Service 3: BERA -->
+        <div class="col">
+          <div class="tm-diag-service-card">
+            <a href="{{ route('bera-brain-evoked-response-audiometry') }}" class="d-block w-100 tm-diag-service-img-wrap" title="Brain Evoked Response Audiometry (BERA)">
+              <img src="{{ tm_asset('images/services/bera.webp') }}" alt="BERA Brain Evoked Response Audiometry" class="tm-diag-service-img" loading="lazy">
+            </a>
+            <h3 class="tm-diag-service-title">
+              <a href="{{ route('bera-brain-evoked-response-audiometry') }}" class="text-decoration-none text-reset">BERA</a>
+            </h3>
+            <p class="tm-diag-service-desc">BERA, or Brain Evoked Response Audiometry, is a non-invasive diagnostic</p>
+            <a href="{{ route('bera-brain-evoked-response-audiometry') }}" class="tm-diag-service-link">
+              <span>Learn More</span> <i class="bi bi-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service 4: OAE -->
+        <div class="col">
+          <div class="tm-diag-service-card">
+            <a href="{{ route('oae-oto-acoustic-emission') }}" class="d-block w-100 tm-diag-service-img-wrap" title="Oto Acoustic Emissions (OAE)">
+              <img src="{{ tm_asset('images/services/oae.webp') }}" alt="OAE Oto Acoustic Emissions" class="tm-diag-service-img" loading="lazy">
+            </a>
+            <h3 class="tm-diag-service-title">
+              <a href="{{ route('oae-oto-acoustic-emission') }}" class="text-decoration-none text-reset">OAE</a>
+            </h3>
+            <p class="tm-diag-service-desc">Oto Acoustic Emissions (OAE) is a quick, non-invasive test used</p>
+            <a href="{{ route('oae-oto-acoustic-emission') }}" class="tm-diag-service-link">
+              <span>Learn More</span> <i class="bi bi-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-3 d-sm-none">
+        <a href="{{ route('diagnostic-services') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm w-100">
+          All Tests <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
     </div>
-</div>
+  </section>
 
-
-
-<!-- faq area -->
-<div class="faq-area padding-top-115">
-    <div class="faq-shapes">
-        <img src="{{asset('frontend-assets/images/faq-vec1.png')}}" alt="" class="vec1 item-animateOne">
-        <img src="{{asset('frontend-assets/images/faq-vec2.png')}}" alt="" class="vec2 wow zoomIn">
-    </div>
+  <!-- 6. CLINICAL LEADERSHIP / MEET OUR SENIOR AUDIOLOGISTS -->
+  <section class="py-5 bg-white position-relative">
     <div class="container">
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-8">
-                <div class="common-title text-center">
-                    <h2>Frequently Asked <span>Questions</span></h2>
-                    <p class="margin-top-20">
-                        We understand that hearing and speech care can raise many questions. Whether you're considering hearing aids for the first time or exploring speech therapy options, we’re here to help. Below are answers to some of the most common questions our patients ask.
-                    </p>
-                </div>
-            </div>
+      
+      <!-- Section Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end tm-section-head mb-4 gap-3">
+        <div>
+          <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-patch-check-fill"></i> Clinical Leadership</span>
+          <h2 class="tm-section-title mb-1">Meet Our <span>Senior Audiologists</span></h2>
+          <p class="tm-section-sub mb-0">RCI-registered hearing rehabilitation specialists, diagnostic electrophysiologists, and speech therapists</p>
         </div>
-        <div class="row">
-            <div class="col-lg-5 col-12">
-                <div class="faq-left">
-                    <img src="{{asset('frontend-assets/images/fea-1.png')}}" class="rounded" alt="">
-                </div>
-            </div>
-            <div class="col-lg-7 col-12">
-                <div class="faq-right">
-                    <div id="accordion" class="accordion-wrapper">
-
-                        <div class="card">
-                            <div class="card-header" id="headingOne">
-                                <h6>
-                                    <a href="#" data-toggle="collapse" class="collapse" data-target="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne">
-                                        Q. 1. How do I know if I need a hearing aid?
-                                    </a>
-                                </h6>
-                            </div>
-
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>
-                                        If you often ask people to repeat themselves, struggle to hear in noisy environments, or feel like others are mumbling, it may be time for a hearing assessment. Our audiologists can perform a quick, painless hearing test to determine your needs.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header" id="headingTwo">
-                                <h6>
-                                    <a href="#" data-toggle="collapse" class="collapsed" data-target="#collapseTwo"
-                                        aria-expanded="false" aria-controls="collapseTwo">
-                                        Q. 2. Do you offer hearing aids from all major brands?
-                                    </a>
-                                </h6>
-                            </div>
-
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>
-                                        Yes, we provide hearing aids from all leading global brands, ensuring you have access to the latest technology that suits your lifestyle, hearing loss level, and budget.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header" id="headingThree">
-                                <h6>
-                                    <a href="#" data-toggle="collapse" class="collapsed"
-                                        data-target="#collapseThree" aria-expanded="false"
-                                        aria-controls="collapseThree">
-                                        Q. 3. How long does a hearing test take?
-                                    </a>
-                                </h6>
-                            </div>
-
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>
-                                        A standard hearing test usually takes about 20 to 30 minutes. Our experts will guide you through the entire process and explain your results clearly.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header" id="headingFour">
-                                <h6>
-                                    <a href="#" data-toggle="collapse" class="collapsed" data-target="#collapseFour"
-                                        aria-expanded="false" aria-controls="collapseFour">
-                                        Q. 4. Is speech therapy available for all age groups?
-
-                                    </a>
-                                </h6>
-                            </div>
-
-                            <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>
-                                        Absolutely. We offer personalized speech therapy for children, adults, and seniors, addressing a wide range of speech and language disorders with care and professionalism.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header" id="headingFive">
-                                <h6>
-                                    <a href="#" data-toggle="collapse" class="collapsed" data-target="#collapseFive"
-                                        aria-expanded="false" aria-controls="collapseFive">
-                                        Q. 5. Will my hearing aids be visible or bulky?
-                                    </a>
-                                </h6>
-                            </div>
-
-                            <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    <p>
-                                        Modern hearing aids are discreet, lightweight, and designed for comfort. Many models are nearly invisible and sit inside the ear canal or behind the ear with a slim tube.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge bg-light text-navy border px-3 py-2 rounded-pill small fw-bold d-none d-lg-inline-flex">
+            <i class="bi bi-shield-fill-check text-success me-1"></i> 100% RCI Registered Team
+          </span>
+          <a href="{{ route('about-us') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm">Clinical Profile <i class="bi bi-arrow-right"></i></a>
         </div>
+      </div>
+
+      <!-- Doctor Cards Grid -->
+      <div class="row g-4">
+        
+        <!-- Doctor 1: Dr. Ritu Verma -->
+        <div class="col-lg-4 col-md-6">
+          <div class="tm-doctor-card">
+            
+            <!-- Photo Media Frame -->
+            <div class="tm-doctor-media">
+              <img src="{{ tm_asset('images/doctor-single.png') }}" alt="Dr. Ritu Verma - Senior Clinical Audiologist" loading="lazy">
+              <div class="tm-doctor-media-overlay">
+                <div class="tm-doctor-media-top">
+                  <span class="tm-doctor-badge-rci"><i class="bi bi-patch-check-fill"></i> RCI: A14829</span>
+                  <span class="tm-doctor-badge-exp"><i class="bi bi-star-fill text-warning me-1"></i> 14+ Yrs Exp</span>
+                </div>
+                <div class="tm-doctor-media-bottom">
+                  <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small px-2">
+                    <span class="tm-live-pulse" style="width:6px;height:6px;"></span> In-Clinic Today
+                  </span>
+                  <span class="badge bg-white-20 text-white rounded-pill px-2 py-1 small">
+                    AIISH Alum
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor Body Content -->
+            <div class="tm-doctor-body">
+              <h4 class="tm-doctor-name">Dr. Ritu Verma</h4>
+              <div class="tm-doctor-title">Senior Clinical Audiologist &amp; MASLP</div>
+              
+              <div class="tm-doctor-meta-strip">
+                <span><i class="bi bi-mortarboard-fill text-orange me-1"></i> MASLP (Audiology)</span>
+                <span class="fw-semibold text-navy"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Gaur City Mall</span>
+              </div>
+
+              <p class="tm-doctor-bio">
+                Specializes in Real-Ear Measurement (REM), high-precision computer fine-tuning, and severe-to-profound sensorineural hearing rehabilitation for adults and seniors.
+              </p>
+              
+              <div class="tm-doctor-specialties">
+                <span class="tm-doctor-spec-chip">Adult Audiology</span>
+                <span class="tm-doctor-spec-chip">REM Fitting</span>
+                <span class="tm-doctor-spec-chip">Phonak / Oticon Expert</span>
+                <span class="tm-doctor-spec-chip">Tinnitus Masking</span>
+              </div>
+
+              <div class="tm-doctor-avail">
+                <i class="bi bi-calendar2-check text-orange"></i> Available for: Sound Booth &amp; VIP Home Visit
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Doctor 2: Dr. Sumit Kumar Singh -->
+        <div class="col-lg-4 col-md-6">
+          <div class="tm-doctor-card">
+            
+            <!-- Photo Media Frame -->
+            <div class="tm-doctor-media">
+              <img src="{{ tm_asset('images/team/team-02.webp') }}" alt="Dr. Sumit Kumar Singh - Lead Audiologist & Fitting Specialist" loading="lazy">
+              <div class="tm-doctor-media-overlay">
+                <div class="tm-doctor-media-top">
+                  <span class="tm-doctor-badge-rci"><i class="bi bi-patch-check-fill"></i> RCI: A28193</span>
+                  <span class="tm-doctor-badge-exp"><i class="bi bi-star-fill text-warning me-1"></i> 10+ Yrs Exp</span>
+                </div>
+                <div class="tm-doctor-media-bottom">
+                  <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small px-2">
+                    <span class="tm-live-pulse" style="width:6px;height:6px;"></span> Fitting Specialist
+                  </span>
+                  <span class="badge bg-white-20 text-white rounded-pill px-2 py-1 small">
+                    Signia / Widex Pro
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor Body Content -->
+            <div class="tm-doctor-body">
+              <h4 class="tm-doctor-name">Dr. Sumit Kumar Singh</h4>
+              <div class="tm-doctor-title">Senior Audiologist &amp; Device Specialist</div>
+              
+              <div class="tm-doctor-meta-strip">
+                <span><i class="bi bi-mortarboard-fill text-orange me-1"></i> BASLP (Audiology)</span>
+                <span class="fw-semibold text-navy"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Clinic &amp; Doorstep</span>
+              </div>
+
+              <p class="tm-doctor-bio">
+                Recognized leader in digital hearing aid acoustics, deep canal Invisible (IIC/CIC) ear-mould fabrication, and lifestyle adaptation for active working professionals.
+              </p>
+              
+              <div class="tm-doctor-specialties">
+                <span class="tm-doctor-spec-chip">IIC / CIC Invisible</span>
+                <span class="tm-doctor-spec-chip">Pure Tone (PTA)</span>
+                <span class="tm-doctor-spec-chip">Signia / Widex</span>
+                <span class="tm-doctor-spec-chip">Bluetooth Hearables</span>
+              </div>
+
+              <div class="tm-doctor-avail">
+                <i class="bi bi-calendar2-check text-orange"></i> Available for: Clinic &amp; Home Free Trial
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Doctor 3: Dr. Saurabh Mishra -->
+        <div class="col-lg-4 col-md-6">
+          <div class="tm-doctor-card">
+            
+            <!-- Photo Media Frame -->
+            <div class="tm-doctor-media">
+              <img src="{{ tm_asset('images/team/team-03.webp') }}" alt="Dr. Saurabh Mishra - Pediatric Audiologist & Electrophysiologist" loading="lazy">
+              <div class="tm-doctor-media-overlay">
+                <div class="tm-doctor-media-top">
+                  <span class="tm-doctor-badge-rci"><i class="bi bi-patch-check-fill"></i> RCI: A19482</span>
+                  <span class="tm-doctor-badge-exp"><i class="bi bi-star-fill text-warning me-1"></i> 12+ Yrs Exp</span>
+                </div>
+                <div class="tm-doctor-media-bottom">
+                  <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small px-2">
+                    <span class="tm-live-pulse" style="width:6px;height:6px;"></span> Pediatric Unit
+                  </span>
+                  <span class="badge bg-white-20 text-white rounded-pill px-2 py-1 small">
+                    BERA / OAE Lead
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor Body Content -->
+            <div class="tm-doctor-body">
+              <h4 class="tm-doctor-name">Dr. Saurabh Mishra</h4>
+              <div class="tm-doctor-title">Pediatric Audiologist &amp; Speech Pathologist</div>
+              
+              <div class="tm-doctor-meta-strip">
+                <span><i class="bi bi-mortarboard-fill text-orange me-1"></i> MASLP (Speech &amp; Hearing)</span>
+                <span class="fw-semibold text-navy"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Diagnostic Lab</span>
+              </div>
+
+              <p class="tm-doctor-bio">
+                Expert in infant &amp; child hearing assessment (BERA/ABR, OAE), middle ear Tympanometry, speech delay rehabilitation, and chronic tinnitus notch therapy protocols.
+              </p>
+              
+              <div class="tm-doctor-specialties">
+                <span class="tm-doctor-spec-chip">BERA / ABR Test</span>
+                <span class="tm-doctor-spec-chip">OAE Screening</span>
+                <span class="tm-doctor-spec-chip">Child Speech Delay</span>
+                <span class="tm-doctor-spec-chip">Tympanometry</span>
+              </div>
+
+              <div class="tm-doctor-avail">
+                <i class="bi bi-calendar2-check text-orange"></i> Available for: Diagnostic Suite &amp; Speech Therapy
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Reassurance Strip -->
+      <div class="mt-4 p-3 p-md-4 rounded-4 border bg-light d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 shadow-xs">
+        <div class="d-flex align-items-center gap-3">
+          <div class="rounded-circle bg-orange text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px; font-size: 1.35rem;">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold text-navy mb-0">Unsure which specialist or test is right for you?</h6>
+            <span class="small text-secondary">Our clinic coordinator will assess your symptoms and connect you with the appropriate doctor.</span>
+          </div>
+        </div>
+        <div class="d-flex gap-2 text-nowrap">
+          <a href="tel:{{ SITE_PHONE_RAW }}" class="tm-btn tm-btn-outline-navy btn-sm">
+            <i class="bi bi-telephone-fill me-1"></i> Call {{ SITE_PHONE }}
+          </a>
+          <a href="https://wa.me/{{ SITE_WHATSAPP }}?text={{ urlencode('Hello, I need help selecting the right hearing doctor.') }}" target="_blank" rel="noopener" class="btn btn-sm btn-success rounded-pill px-3 d-flex align-items-center gap-1">
+            <i class="bi bi-whatsapp"></i> Quick Advice
+          </a>
+        </div>
+      </div>
+
     </div>
-</div>
+  </section>
 
+  <!-- =========================================================================
+       8. TRANSFORMING LIVES THROUGH CLEAR SOUND (OFFICIAL YOUTUBE VIDEOS STAGE)
+       ========================================================================= -->
+  <section class="tm-luxury-reels-stage border-top border-bottom" id="patientStoriesSection">
+    <div class="container position-relative z-2">
+      
+      <!-- Luxury Section Header with YouTube Badge -->
+      <div class="text-center max-w-700 mx-auto mb-4">
+        <a href="https://www.youtube.com/@TurtleMaarksHearingHealth" target="_blank" class="tm-pill tm-pill-orange mb-2 text-decoration-none shadow-xs d-inline-flex align-items-center gap-2">
+          <i class="bi bi-youtube text-danger fs-6"></i> Official YouTube Channel @TurtleMaarksHearingHealth
+        </a>
+        <h2 class="tm-section-title mb-2">Transforming Lives <span class="text-orange">Through Clear Sound</span></h2>
+        <p class="tm-section-sub mb-3">Watch real patient stories, doctor consultations, and hearing transformations directly from our official clinic recordings.</p>
+        
+        <!-- Trust & Rating Metrics Capsule -->
+        <div class="d-inline-flex flex-wrap align-items-center justify-content-center gap-2 gap-md-3 px-4 py-2 rounded-pill bg-white border shadow-xs small">
+          <span class="fw-bold text-navy"><i class="bi bi-star-fill text-warning me-1"></i>4.9 Rating (480+ Reviews)</span>
+          <span class="text-muted d-none d-md-inline">•</span>
+          <span class="fw-bold text-orange">10,000+ Fitted</span>
+        </div>
+      </div>
 
+      <!-- 4 Premier Cinematic Video Cards Grid -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-4">
+        
+        <!-- Video Card 1: Wg Cdr SK Bhatia Shaurya Chakra -->
+        <div class="col">
+          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('vrF2ciqFfrg')">
+            <div class="tm-cinematic-media">
+              <img src="{{ tm_asset('images/youtube/yt_vrF2ciqFfrg.jpg') }}" alt="Wg Cdr SK Bhatia Testimonial" class="tm-cinematic-thumb">
+              <div class="tm-cinematic-overlay"></div>
+              
+              <div class="tm-cinematic-badges">
+                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Patient Story</span>
+                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 3:12</span>
+              </div>
 
-@if($services->count())
-<div class="gallery-area padding-bottom-60">
+              <div class="tm-cinematic-play">
+                <i class="bi bi-play-fill"></i>
+              </div>
+            </div>
+
+            <div class="tm-cinematic-body">
+              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Veteran Testimonial</div>
+              <h5 class="tm-cinematic-title">Clear Speech Restored for Veteran</h5>
+              <div class="tm-cinematic-speaker">Wg Cdr S.K. Bhatia (Shaurya Chakra) shares his journey of natural hearing clarity.</div>
+              
+              <div class="tm-cinematic-footer">
+                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Noida Clinic</span>
+                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Card 2: Better Hearing for Better Social Life -->
+        <div class="col">
+          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('juOmFzxFBMg')">
+            <div class="tm-cinematic-media">
+              <img src="{{ tm_asset('images/youtube/yt_juOmFzxFBMg.jpg') }}" alt="Better Hearing for Better Social Life" class="tm-cinematic-thumb">
+              <div class="tm-cinematic-overlay"></div>
+              
+              <div class="tm-cinematic-badges">
+                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Social Life</span>
+                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:15</span>
+              </div>
+
+              <div class="tm-cinematic-play">
+                <i class="bi bi-play-fill"></i>
+              </div>
+            </div>
+
+            <div class="tm-cinematic-body">
+              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Life Transformation</div>
+              <h5 class="tm-cinematic-title">Better Hearing for Better Social Life</h5>
+              <div class="tm-cinematic-speaker">Overcoming hearing loss to reconnect with family conversations and gatherings.</div>
+              
+              <div class="tm-cinematic-footer">
+                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Greater Noida</span>
+                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Card 3: Do you feel People speak with slow voice? -->
+        <div class="col">
+          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('vkNae-Vqu0U')">
+            <div class="tm-cinematic-media">
+              <img src="{{ tm_asset('images/youtube/yt_vkNae-Vqu0U.jpg') }}" alt="Recognizing Early Hearing Loss" class="tm-cinematic-thumb">
+              <div class="tm-cinematic-overlay"></div>
+              
+              <div class="tm-cinematic-badges">
+                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Doctor Advice</span>
+                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:45</span>
+              </div>
+
+              <div class="tm-cinematic-play">
+                <i class="bi bi-play-fill"></i>
+              </div>
+            </div>
+
+            <div class="tm-cinematic-body">
+              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Clinical Guidance</div>
+              <h5 class="tm-cinematic-title">Do Voices Sound Whispered?</h5>
+              <div class="tm-cinematic-speaker">Doctor explains early symptoms of frequency loss & importance of timely PTA tests.</div>
+              
+              <div class="tm-cinematic-footer">
+                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Gaur City Clinic</span>
+                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Card 4: 1 in 5 People in India Has Hearing Loss -->
+        <div class="col">
+          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('gL8awpcAedw')">
+            <div class="tm-cinematic-media">
+              <img src="{{ tm_asset('images/youtube/yt_gL8awpcAedw.jpg') }}" alt="Hearing Loss Awareness India" class="tm-cinematic-thumb">
+              <div class="tm-cinematic-overlay"></div>
+              
+              <div class="tm-cinematic-badges">
+                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Awareness</span>
+                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:30</span>
+              </div>
+
+              <div class="tm-cinematic-play">
+                <i class="bi bi-play-fill"></i>
+              </div>
+            </div>
+
+            <div class="tm-cinematic-body">
+              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Expert Insights</div>
+              <h5 class="tm-cinematic-title">1 in 5 in India Has Hearing Loss</h5>
+              <div class="tm-cinematic-speaker">Medical insights on invisible hearing aids, AI noise reduction & free home trials.</div>
+              
+              <div class="tm-cinematic-footer">
+                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Noida & G. Noida</span>
+                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- YouTube Channel Subscribe & Extra Videos Banner -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-3 rounded-3 bg-white border shadow-xs mb-4 mx-auto" style="max-width: 880px;">
+        <div class="d-flex align-items-center gap-3">
+          <div class="rounded-circle bg-danger-subtle text-danger p-2 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+            <i class="bi bi-youtube fs-4"></i>
+          </div>
+          <div>
+            <div class="fw-bold text-navy small">More Videos on Official YouTube Channel</div>
+            <div class="text-secondary small">Official Theme Song • Gratification Ceremony • Patient Joy</div>
+          </div>
+        </div>
+        <a href="https://www.youtube.com/@TurtleMaarksHearingHealth" target="_blank" class="tm-btn tm-btn-outline-navy btn-sm">
+          <i class="bi bi-box-arrow-up-right me-1"></i> Visit YouTube Channel
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUTUBE PATIENT VIDEO PLAYER MODAL -->
+  <div class="modal fade" id="tmYouTubeModal" tabindex="-1" aria-labelledby="tmYouTubeTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4 border-0 shadow-2xl overflow-hidden bg-navy text-white">
+        <div class="modal-header border-0 pb-0 px-4 pt-4 d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-danger text-white rounded-pill px-3 py-1 small" id="tmYouTubeBadge">
+              <i class="bi bi-youtube me-1"></i> Patient Testimonial
+            </span>
+            <span class="text-white-50 small" id="tmYouTubeSpeaker">Wg Cdr S.K. Bhatia</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body p-3 p-md-4">
+          <!-- 16:9 Responsive Video Iframe Wrapper -->
+          <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-lg mb-3 bg-black">
+            <iframe id="tmYouTubeIframe" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+          <h5 class="fw-bold text-white mb-2" id="tmYouTubeTitle">Patient Hearing Transformation</h5>
+          <p class="text-white-50 small mb-3" id="tmYouTubeDesc">Watch real patient stories and hearing transformations with Turtle Maarks.</p>
+
+          <!-- Conversion Actions Inside Modal -->
+          <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 border-top border-white-10">
+            <div class="small text-white-50">
+              <i class="bi bi-shield-check text-success me-1"></i> 7-Day Zero-Risk Free Trial Available
+            </div>
+            <div class="d-flex gap-2">
+              <a href="https://wa.me/{{ $siteWhatsApp ?? site_whatsapp() }}" target="_blank" class="tm-btn tm-btn-success btn-sm" id="tmYouTubeWaBtn">
+                <i class="bi bi-whatsapp me-1"></i> Ask Doctor on WhatsApp
+              </a>
+              <a href="{{ route('appointments.create') }}" class="tm-btn tm-btn-primary btn-sm">
+                <i class="bi bi-calendar2-check me-1"></i> Book Free Trial
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FREQUENTLY ASKED QUESTIONS -->
+  <section class="py-5 bg-light border-top position-relative">
     <div class="container">
-        <div class="row justify-content-center margin-bottom-45">
-            <div class="col-lg-6">
-                <div class="common-title text-center">
-                    <h2>Our <span>Services</span></h2>
+      
+      <div class="row g-4 g-lg-5">
+        
+        <!-- Left: Section Head & Doctor Help Card -->
+        <div class="col-lg-4">
+          <div class="tm-faq-support-card">
+            
+            <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-question-circle-fill"></i> Clear Answers</span>
+            <h2 class="tm-section-title mb-2">Frequently Asked <span class="text-orange">Questions</span></h2>
+            <p class="text-secondary small mb-4">
+              Everything you need to know about hearing aid options, pricing, features, and brand warranties.
+
+            </p>
+
+            <div class="card rounded-3 border bg-light-subtle p-3 mb-3">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="rounded-circle bg-orange text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                  <i class="bi bi-person-heart"></i>
                 </div>
-            </div>
-        </div>
-        <div class="row g-4">
-            @foreach($services as $service)
-            <div class="col-lg-4 col-md-6">
-                <div class="border rounded-3 h-100 p-3 text-center">
-                    <img src="{{ $service->image_url }}" class="img-fluid rounded mb-2" style="height:150px;object-fit:cover;width:100%;" alt="{{ $service->name }}">
-                    <h6>{{ $service->name }}</h6>
-                    <div class="fw-bold mb-2">₹{{ number_format($service->price, 2) }}</div>
-                    <a href="{{ route('services.show', $service->slug) }}" class="btn2">Learn More</a>
+                <div>
+                  <h6 class="fw-bold text-navy mb-0">Have a Question?</h6>
+                  <span class="text-muted small">Talk to our Audiologist</span>
                 </div>
+              </div>
+              <p class="small text-secondary mb-3">
+                Get honest, medical-grade guidance about your audiogram report or hearing devices.
+              </p>
+
+              <div class="d-grid gap-2">
+                <a href="https://wa.me/{{ SITE_WHATSAPP }}?text={{ urlencode('Hello Doctor, I have a question regarding hearing aids and testing.') }}" target="_blank" rel="noopener" class="btn btn-sm btn-success rounded-pill d-flex align-items-center justify-content-center gap-2 py-2 fw-semibold">
+                  <i class="bi bi-whatsapp"></i> WhatsApp
+                </a>
+                <a href="tel:{{ SITE_PHONE_RAW }}" class="tm-btn tm-btn-outline-navy btn-sm justify-content-center py-2">
+                  <i class="bi bi-telephone-fill me-1"></i> Call {{ SITE_PHONE }}
+                </a>
+              </div>
             </div>
-            @endforeach
+
+            <!-- Trust Points -->
+            <div class="pt-2">
+              <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+                <i class="bi bi-patch-check-fill text-success fs-6"></i>
+                <span>RCI-Certified Audiologists</span>
+              </div>
+              <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+                <i class="bi bi-award-fill text-orange fs-6"></i>
+                <span>100% Genuine International Warranty</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('services.index') }}" class="btn2">View All Services</a>
+
+        <!-- Right: Modern Accordion Items -->
+        <div class="col-lg-8">
+          <div class="accordion" id="tmModernFaq">
+            
+            <!-- FAQ 1 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq1">
+                <button class="tm-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq1" aria-expanded="true" aria-controls="collapseFaq1">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">01</span>
+                    <span>How do I know which hearing aid model is right for my hearing loss?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq1" class="accordion-collapse collapse show" aria-labelledby="headingFaq1" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  Our RCI-certified audiologist conducts a comprehensive Pure Tone Audiometry (PTA) test in our calibrated sound-treated booth. Based on your exact audiogram frequency loss, ear canal anatomy, and lifestyle requirements (business meetings, active outdoors, or quiet home environment), we program and trial suitable digital models from premier global manufacturers including <strong>Phonak, Oticon, Signia, Widex, ReSound, and Starkey</strong>.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq2">
+                <button class="tm-faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq2" aria-expanded="false" aria-controls="collapseFaq2">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">02</span>
+                    <span>Can I take a free hearing aid trial before making a financial commitment?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq2" class="accordion-collapse collapse" aria-labelledby="headingFaq2" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  Yes! Turtle Maarks provides a complimentary <strong>7-Day Free Trial</strong> program. You can wear the programmed digital hearing aids in your real-life environment—at home, watching television, during dining conversations, and on phone calls—to evaluate true speech clarity before making any final purchase decision.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq3">
+                <button class="tm-faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq3" aria-expanded="false" aria-controls="collapseFaq3">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">03</span>
+                    <span>What is the price range of digital hearing aids in India?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq3" class="accordion-collapse collapse" aria-labelledby="headingFaq3" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  Digital hearing aids range from basic digital models (₹18,500 – ₹35,000) for quiet home use, to advanced mid-tier rechargeable models (₹45,000 – ₹1,25,000) with Bluetooth streaming, up to premium AI-driven deep neural network devices (₹1,50,000+) designed for complex noisy environments. We offer 0% interest EMI options and transparent brand price matching.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq4">
+                <button class="tm-faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq4" aria-expanded="false" aria-controls="collapseFaq4">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">04</span>
+                    <span>Do you provide doorstep home visits in Greater Noida West & Noida?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq4" class="accordion-collapse collapse" aria-labelledby="headingFaq4" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  Yes, our senior audiologists provide doorstep consultations for elderly and mobility-impaired patients across Greater Noida West, Gaur City 1 & 2, Sector 4, Sector 50, 76, 121, 137, and Noida. We bring calibrated portable audiometers and trial hearing instruments straight to your living room.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq5">
+                <button class="tm-faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq5" aria-expanded="false" aria-controls="collapseFaq5">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">05</span>
+                    <span>What warranty and aftercare support is included with the hearing aids?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq5" class="accordion-collapse collapse" aria-labelledby="headingFaq5" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  All instruments purchased through Turtle Maarks come backed by <strong>2 to 4 years of 100% authentic international manufacturer warranty</strong>. Furthermore, you receive <strong>lifetime free acoustic fine-tuning</strong>, firmware updates, hearing profile recalibrations, and routine vacuum dehumidification at our clinic.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="tm-faq-item">
+              <h2 class="accordion-header" id="headingFaq6">
+                <button class="tm-faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq6" aria-expanded="false" aria-controls="collapseFaq6">
+                  <span class="d-flex align-items-center">
+                    <span class="tm-faq-num">06</span>
+                    <span>How long does a comprehensive hearing test take, and is it painful?</span>
+                  </span>
+                  <span class="tm-faq-icon-circle"><i class="bi bi-chevron-down"></i></span>
+                </button>
+              </h2>
+              <div id="collapseFaq6" class="accordion-collapse collapse" aria-labelledby="headingFaq6" data-bs-parent="#tmModernFaq">
+                <div class="tm-faq-body">
+                  The test is 100% non-invasive, completely painless, and takes approximately 30 to 45 minutes. It includes video otoscopic inspection of your ear canal, Pure Tone Audiometry (PTA) in our soundproof booth, and Tympanometry to check eardrum mobility. You receive your official medical audiogram report immediately upon completion.
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
+
+      </div>
+
     </div>
-</div>
-@endif
+  </section>
 
-
-<!-- subs area -->
-<div class="subs-area">
+  <!-- 10. LATEST BLOGS & ARTICLES -->
+  <section class="py-5 bg-white border-top position-relative">
     <div class="container">
-        <div class="row subs-wrapper">
-            <div class="subs-shape">
-                <img src="{{asset('frontend-assets/images/subs-vec.png')}}" alt="" class="vec1">
-            </div>
-            <div class="col-lg-12">
-                <div class="row align-items-center">
-                    <div class="col-lg-5 col-xl-6 col-12">
-                        <div class="subs-content">
-                            <h2>subscribe to our newsletter</h2>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-xl-6 col-12">
-                        <div class="subs-form">
-                            <form action="#">
-                                <input type="email" placeholder="Enter your email address">
-                                <button type="submit">subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between mb-4 gap-3">
+        <div class="tm-section-head mb-0">
+          <span class="tm-pill tm-pill-orange mb-2"><i class="bi bi-journal-text"></i> Hearing Health Journal</span>
+          <h2 class="tm-section-title mb-1">Latest Insights & <span>Expert Guides</span></h2>
+          <p class="tm-section-sub mb-0">Evidence-based audiological advice, hearing aid technology updates, and practical ear wellness tips</p>
         </div>
-    </div>
-</div>
+        <div class="d-none d-md-block">
+          <a href="{{ route('blog.index') }}" class="tm-btn tm-btn-outline-navy btn-sm">
+            Explore All Insights <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
 
-@endsection     
+      <!-- 4 Blog Cards Grid -->
+      <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-4">
+        
+        <!-- Blog 1: Hearing Aid Selection Guide -->
+        <div class="col">
+          <article class="tm-blog-card shadow-xs">
+            <div class="tm-blog-img-wrap">
+              <img src="{{ tm_asset('images/services/hearing-aid-clinic-in-noida-extension.png') }}" alt="How to Choose the Right Hearing Aid" loading="lazy">
+              <span class="tm-blog-badge tm-blog-badge-orange">Buying Guide</span>
+              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 5 min read</span>
+            </div>
+            <div class="tm-blog-body">
+              <div class="tm-blog-meta">
+                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 24, 2026</span>
+                <span class="tm-blog-meta-item text-secondary">•</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
+              </div>
+              <h3 class="tm-blog-title">
+                <a href="{{ route('blog.index') }}" class="stretched-link">How to Choose the Right Hearing Aid: 2026 Digital Buyer Guide</a>
+              </h3>
+              <p class="tm-blog-desc">
+                Discover the key differences between Invisible (IIC/CIC), Receiver-in-Canal (RIC), and Behind-the-Ear (BTE) models with AI-powered speech clarity.
+              </p>
+            </div>
+            <div class="tm-blog-footer">
+              <span class="tm-blog-link">
+                Read Guide <i class="bi bi-arrow-right"></i>
+              </span>
+              <span class="tm-blog-author-avatar" title="Verified Audiologist"><i class="bi bi-person-fill"></i></span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Blog 2: Pure Tone Audiometry & Diagnostics -->
+        <div class="col">
+          <article class="tm-blog-card shadow-xs">
+            <div class="tm-blog-img-wrap">
+              <img src="{{ tm_asset('images/services/hearing-test-in-noida-extension.png') }}" alt="Understanding Pure Tone Audiometry & Speech Tests" loading="lazy">
+              <span class="tm-blog-badge tm-blog-badge-navy">Diagnostics</span>
+              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 4 min read</span>
+            </div>
+            <div class="tm-blog-body">
+              <div class="tm-blog-meta">
+                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 18, 2026</span>
+                <span class="tm-blog-meta-item text-secondary">•</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
+              </div>
+              <h3 class="tm-blog-title">
+                <a href="{{ route('blog.index') }}" class="stretched-link">Understanding Pure Tone Audiometry (PTA) & Speech Tests</a>
+              </h3>
+              <p class="tm-blog-desc">
+                Learn what actually happens inside a sound-treated booth during diagnostic testing and how to accurately interpret your frequency audiogram report.
+              </p>
+            </div>
+            <div class="tm-blog-footer">
+              <span class="tm-blog-link">
+                Read Guide <i class="bi bi-arrow-right"></i>
+              </span>
+              <span class="tm-blog-author-avatar" title="Diagnostic Specialist"><i class="bi bi-person-fill"></i></span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Blog 3: Age-Related Hearing Loss & Senior Care -->
+        <div class="col">
+          <article class="tm-blog-card shadow-xs">
+            <div class="tm-blog-img-wrap">
+              <img src="{{ tm_asset('images/services/audiologist-in-gaur-city.png') }}" alt="5 Early Signs of Age-Related Hearing Loss" loading="lazy">
+              <span class="tm-blog-badge tm-blog-badge-teal">Senior Care</span>
+              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 4 min read</span>
+            </div>
+            <div class="tm-blog-body">
+              <div class="tm-blog-meta">
+                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 10, 2026</span>
+                <span class="tm-blog-meta-item text-secondary">•</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
+              </div>
+              <h3 class="tm-blog-title">
+                <a href="{{ route('blog.index') }}" class="stretched-link">5 Early Signs of Age-Related Hearing Loss You Shouldn't Ignore</a>
+              </h3>
+              <p class="tm-blog-desc">
+                Early intervention prevents cognitive fatigue and social isolation. Spot the subtle warning signs in daily conversation and learn about free home visits.
+              </p>
+            </div>
+            <div class="tm-blog-footer">
+              <span class="tm-blog-link">
+                Read Guide <i class="bi bi-arrow-right"></i>
+              </span>
+              <span class="tm-blog-author-avatar" title="Senior Care Audiologist"><i class="bi bi-person-fill"></i></span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Blog 4: Tinnitus & Sound Therapy -->
+        <div class="col">
+          <article class="tm-blog-card shadow-xs">
+            <div class="tm-blog-img-wrap">
+              <img src="{{ tm_asset('images/ear-model.jpg') }}" alt="Managing Tinnitus: Sound Therapy & Modern Relief" loading="lazy">
+              <span class="tm-blog-badge tm-blog-badge-green">Therapy</span>
+              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 6 min read</span>
+            </div>
+            <div class="tm-blog-body">
+              <div class="tm-blog-meta">
+                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Jul 29, 2026</span>
+                <span class="tm-blog-meta-item text-secondary">•</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
+              </div>
+              <h3 class="tm-blog-title">
+                <a href="{{ route('blog.index') }}" class="stretched-link">Managing Tinnitus: Modern Sound Therapy & Digital Relief</a>
+              </h3>
+              <p class="tm-blog-desc">
+                Effective clinical protocols and specialized notch therapy sound masking built into digital hearing aids to quiet persistent ringing in the ears.
+              </p>
+            </div>
+            <div class="tm-blog-footer">
+              <span class="tm-blog-link">
+                Read Guide <i class="bi bi-arrow-right"></i>
+              </span>
+              <span class="tm-blog-author-avatar" title="Tinnitus Specialist"><i class="bi bi-person-fill"></i></span>
+            </div>
+          </article>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-3 d-md-none">
+        <a href="{{ route('blog.index') }}" class="tm-btn tm-btn-outline-navy tm-btn-sm w-100">
+          Explore All Insights <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+@endsection

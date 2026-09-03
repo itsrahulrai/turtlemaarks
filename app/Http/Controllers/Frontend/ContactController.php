@@ -10,28 +10,39 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
+    public function show()
+    {
+        return view('site.contact');
+    }
+
     public function send(Request $request)
     {
         $data = $request->validate([
             'name'    => 'required|string|max:100',
             'email'   => 'required|email|max:150',
             'phone'   => 'required|string|max:15',
-            'message' => 'nullable|string|max:2000',
+            'subject' => 'nullable|string|max:200',
+            'message' => 'required|string|max:2000',
         ]);
 
-        // Log the enquiry so nothing is lost even if mail isn't configured yet.
+        // Log every enquiry so nothing is lost even if SMTP isn't configured yet.
         Log::info('Contact form submission', $data);
 
         $adminEmail = Admin::where('is_active', true)->whereNotNull('email')->value('email')
-            ?? config('services.admin_notifications.email');
+            ?? config('services.admin_notifications.email')
+            ?? SITE_EMAIL;
 
         if ($adminEmail) {
             try {
                 Mail::raw(
-                    "New contact form enquiry:\n\nName: {$data['name']}\nEmail: {$data['email']}\nPhone: {$data['phone']}\nMessage: " . ($data['message'] ?? '-'),
+                    "New contact form enquiry:\n\n"
+                    . "Name: {$data['name']}\n"
+                    . "Email: {$data['email']}\n"
+                    . "Phone: {$data['phone']}\n"
+                    . 'Subject: ' . ($data['subject'] ?? 'General Enquiry') . "\n"
+                    . 'Message: ' . $data['message'],
                     function ($mail) use ($adminEmail, $data) {
-                        $mail->to($adminEmail)
-                            ->subject('New Contact Enquiry from ' . $data['name']);
+                        $mail->to($adminEmail)->subject('New Contact Enquiry from ' . $data['name']);
                     }
                 );
             } catch (\Throwable $e) {
@@ -39,6 +50,6 @@ class ContactController extends Controller
             }
         }
 
-        return redirect()->route('thank-you');
+        return back()->with('success', 'Thank you! Our clinical team will connect with you shortly.');
     }
 }

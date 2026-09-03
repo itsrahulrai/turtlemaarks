@@ -15,13 +15,18 @@ class SendNewOrderAdminNotification implements ShouldQueue
 
     public function handle(OrderPlaced $event): void
     {
-        $order  = $event->order;
-        $admins = Admin::where('is_active', true)->whereNotNull('email')->get();
+        try {
+            $order  = $event->order;
+            $admins = Admin::where('is_active', true)->whereNotNull('email')->get();
 
-        if ($admins->isNotEmpty()) {
-            Notification::send($admins, new NewOrderAdminNotification($order));
-        } elseif ($fallback = config('services.admin_notifications.email')) {
-            Notification::route('mail', $fallback)->notify(new NewOrderAdminNotification($order));
+            if ($admins->isNotEmpty()) {
+                Notification::send($admins, new NewOrderAdminNotification($order));
+            } elseif ($fallback = config('services.admin_notifications.email')) {
+                Notification::route('mail', $fallback)->notify(new NewOrderAdminNotification($order));
+            }
+        } catch (\Throwable $e) {
+            // Never let a mail/SMTP outage break the customer-facing transaction.
+            \Illuminate\Support\Facades\Log::error('SendNewOrderAdminNotification failed: ' . $e->getMessage());
         }
     }
 

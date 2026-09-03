@@ -36,43 +36,37 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Frontend Routes
+| Frontend Routes — Turtle Maarks 2026 design
 |--------------------------------------------------------------------------
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Static marketing / SEO content pages (Turtle Maarks frontend)
-Route::view('/about-us', 'site.about-us')->name('about-us');
-Route::view('/contact-us', 'site.contact-us')->name('contact-us');
-Route::post('/contact-us', [ContactController::class, 'send'])->name('contact.send');
+/* ---------- Static marketing / SEO pages ---------- */
+Route::view('/about-us', 'site.about')->name('about-us');
 Route::view('/gallery', 'site.gallery')->name('gallery');
 Route::view('/repair', 'site.repair')->name('repair');
-Route::view('/thank-you', 'site.thank-you')->name('thank-you');
-Route::view('/privacy-statement', 'site.privacy-statement')->name('privacy-statement');
-Route::view('/return-refund-policy', 'site.return-refund-policy')->name('return-refund-policy');
-Route::view('/shipping-policy', 'site.shipping-policy')->name('shipping-policy');
-Route::view('/terms-and-conditions', 'site.terms-and-conditions')->name('terms-and-conditions');
+Route::view('/diagnostic-services', 'site.diagnostic-services')->name('diagnostic-services');
 
-// Diagnostic service SEO pages
+// Diagnostic test detail pages
 Route::view('/pta-pure-tone-audiometry', 'site.pta-pure-tone-audiometry')->name('pta-pure-tone-audiometry');
 Route::view('/tymp-tympanometry', 'site.tymp-tympanometry')->name('tymp-tympanometry');
 Route::view('/bera-brain-evoked-response-audiometry', 'site.bera-brain-evoked-response-audiometry')->name('bera-brain-evoked-response-audiometry');
 Route::view('/oae-oto-acoustic-emission', 'site.oae-oto-acoustic-emission')->name('oae-oto-acoustic-emission');
-Route::view('/pta-test-in-noida-extension', 'site.pta-test-in-noida-extension')->name('pta-test-in-noida-extension');
-Route::view('/bera-test-in-noida-extension', 'site.bera-test-in-noida-extension')->name('bera-test-in-noida-extension');
-Route::view('/oae-test-in-gaur-city', 'site.oae-test-in-gaur-city')->name('oae-test-in-gaur-city');
-Route::view('/hearing-test-in-noida-extension', 'site.hearing-test-in-noida-extension')->name('hearing-test-in-noida-extension');
 
-// Location / brand clinic SEO pages
-Route::view('/audiologist-in-gaur-city', 'site.audiologist-in-gaur-city')->name('audiologist-in-gaur-city');
-Route::view('/hearing-aid-clinic-in-noida-extension', 'site.hearing-aid-clinic-in-noida-extension')->name('hearing-aid-clinic-in-noida-extension');
-Route::view('/widex-hearing-aid-clinic-in-noida-extension', 'site.widex-hearing-aid-clinic-in-noida-extension')->name('widex-hearing-aid-clinic-in-noida-extension');
-Route::view('/oticon-hearing-aid-clinic-in-noida-extension', 'site.oticon-hearing-aid-clinic-in-noida-extension')->name('oticon-hearing-aid-clinic-in-noida-extension');
-Route::view('/horizon-hearing-aid-clinic-in-noida-extension', 'site.horizon-hearing-aid-clinic-in-noida-extension')->name('horizon-hearing-aid-clinic-in-noida-extension');
+// Clinical service detail pages
+Route::view('/service-video-otoscopy', 'site.service-video-otoscopy')->name('service-video-otoscopy');
+Route::view('/service-hearing-aid-trial', 'site.service-hearing-aid-trial')->name('service-hearing-aid-trial');
+Route::view('/service-ear-moulds', 'site.service-ear-moulds')->name('service-ear-moulds');
+Route::view('/service-speech-therapy', 'site.service-speech-therapy')->name('service-speech-therapy');
+Route::view('/service-home-visit', 'site.service-home-visit')->name('service-home-visit');
+Route::view('/service-tinnitus-therapy', 'site.service-tinnitus-therapy')->name('service-tinnitus-therapy');
 
+/* ---------- Contact ---------- */
+Route::get('/contact-us', [ContactController::class, 'show'])->name('contact-us');
+Route::post('/contact-us', [ContactController::class, 'send'])->name('contact.send');
 
-// Auth
+/* ---------- Auth ---------- */
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
@@ -82,22 +76,29 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/otp/send', [LoginController::class, 'sendOtp'])->name('login.otp.send');
     Route::get('/login/otp/verify', [LoginController::class, 'showOtpForm'])->name('login.otp.verify');
     Route::post('/login/otp/verify', [LoginController::class, 'verifyOtp'])->name('login.otp.verify.submit');
+
+    // Password reset
+    Route::get('/forgot-password', [LoginController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [LoginController::class, 'resetPassword'])->name('password.update');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Shop
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+/* ---------- Shop / catalogue ---------- */
 Route::get('/products', [ShopController::class, 'index'])->name('products');
+Route::redirect('/shop', '/products')->name('shop');
+Route::get('/rechargeable-hearing-aids', [ShopController::class, 'rechargeable'])->name('product-category');
 Route::get('/search', [ShopController::class, 'search'])->name('search');
 Route::get('/search/ajax', [ShopController::class, 'ajaxSearch'])->name('search.ajax');
-Route::get('/shop/{categorySlug}', [ShopController::class, 'category'])->name('shop.category');
-Route::get('/shop/{categorySlug}/{subcategorySlug}', [ShopController::class, 'subcategory'])->name('shop.subcategory');
 Route::get('/product/{slug}', [ShopController::class, 'show'])->name('product.show');
+Route::redirect('/compare', '/products')->name('compare');
 
-// Cart
+/* ---------- Cart ---------- */
 Route::prefix('cart')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::get('/data', [CartController::class, 'data'])->name('data');            // JSON for the drawer
     Route::post('/add', [CartController::class, 'add'])->name('add');
     Route::patch('/{cartId}', [CartController::class, 'update'])->name('update');
     Route::delete('/{cartId}', [CartController::class, 'remove'])->name('remove');
@@ -105,14 +106,14 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::delete('/coupon/remove', [CartController::class, 'removeCoupon'])->name('coupon.remove');
 });
 
-// Services
+/* ---------- Services ---------- */
 Route::prefix('services')->name('services.')->group(function () {
     Route::get('/', [ServiceController::class, 'index'])->name('index');
     Route::get('/{slug}', [ServiceController::class, 'show'])->name('show');
     Route::post('/{service}/add-to-cart', [ServiceController::class, 'addToCart'])->name('add-to-cart');
 });
 
-// Appointment booking (guest-friendly, no auth required)
+/* ---------- Appointment booking (guest-friendly) ---------- */
 Route::prefix('book-appointment')->name('appointments.')->group(function () {
     Route::get('/', [AppointmentController::class, 'create'])->name('create');
     Route::get('/slots', [AppointmentController::class, 'slots'])->name('slots');
@@ -120,14 +121,15 @@ Route::prefix('book-appointment')->name('appointments.')->group(function () {
     Route::get('/confirmation/{appointment:appointment_number}', [AppointmentController::class, 'confirmation'])->name('confirmation');
 });
 
-// Wishlist (auth required)
+/* ---------- Wishlist ---------- */
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::middleware('auth')->group(function () {
-    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
-    Route::post('/products/{product}/review',[FrontendReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/wishlist', [WishlistController::class, 'clear'])->name('wishlist.clear');
+    Route::post('/products/{product}/review', [FrontendReviewController::class, 'store'])->name('reviews.store');
 });
 
-// Checkout (auth required)
+/* ---------- Checkout ---------- */
 Route::middleware('auth')->prefix('checkout')->name('checkout.')->group(function () {
     Route::get('/', [CheckoutController::class, 'index'])->name('index');
     Route::post('/', [CheckoutController::class, 'process'])->name('process');
@@ -136,7 +138,10 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->group(function
     Route::get('/failure', [CheckoutController::class, 'failure'])->name('failure');
 });
 
-// Customer Dashboard
+/* ---------- Public order tracking ---------- */
+Route::get('/order-tracking', [CustomerDashboardController::class, 'tracking'])->name('order.tracking');
+
+/* ---------- Patient portal ---------- */
 Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
     Route::get('/', [CustomerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/orders', [CustomerDashboardController::class, 'orders'])->name('orders');
@@ -144,6 +149,7 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::post('/orders/{order}/cancel', [CustomerDashboardController::class, 'cancelOrder'])->name('orders.cancel');
     Route::get('/orders/{order}/invoice', [CustomerDashboardController::class, 'downloadInvoice'])->name('orders.invoice');
     Route::post('/orders/{order}/return', [CustomerDashboardController::class, 'returnRequest'])->name('orders.return');
+    Route::get('/appointments', [CustomerDashboardController::class, 'appointments'])->name('appointments');
     Route::get('/profile', [CustomerDashboardController::class, 'profile'])->name('profile');
     Route::put('/profile', [CustomerDashboardController::class, 'updateProfile'])->name('profile.update');
     Route::put('/password', [CustomerDashboardController::class, 'changePassword'])->name('password.update');
@@ -152,37 +158,37 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::delete('/addresses/{address}', [CustomerDashboardController::class, 'deleteAddress'])->name('addresses.destroy');
 });
 
-// Blog
+/* ---------- Blog ---------- */
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
-// Static pages
-Route::redirect('/about', '/about-us')->name('about');
-Route::get('/profile', [PageController::class, 'profile'])->name('profile');
-
-
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
-Route::get('/faq', [PageController::class, 'faq'])->name('faq');
-// Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('privacy');
-// Route::get('/terms-conditions', [PageController::class, 'terms'])->name('terms');
-// Route::get('/refund-policy', [PageController::class, 'refund'])->name('refund');
+/* ---------- Misc ---------- */
 Route::post('/newsletter/subscribe', [PageController::class, 'newsletter'])->name('newsletter.subscribe');
-
-
-
-
-
-// Sitemap
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 
+/* ---------- Legacy URL redirects (preserve SEO from the previous design) ---------- */
+Route::permanentRedirect('/about', '/about-us');
+Route::permanentRedirect('/contact', '/contact-us');
+Route::permanentRedirect('/blogs', '/blog');
+Route::permanentRedirect('/thank-you', '/contact-us');
+Route::permanentRedirect('/pta-test-in-noida-extension', '/pta-pure-tone-audiometry');
+Route::permanentRedirect('/bera-test-in-noida-extension', '/bera-brain-evoked-response-audiometry');
+Route::permanentRedirect('/oae-test-in-gaur-city', '/oae-oto-acoustic-emission');
+Route::permanentRedirect('/hearing-test-in-noida-extension', '/diagnostic-services');
+Route::permanentRedirect('/audiologist-in-gaur-city', '/about-us');
+Route::permanentRedirect('/hearing-aid-clinic-in-noida-extension', '/products');
+Route::permanentRedirect('/widex-hearing-aid-clinic-in-noida-extension', '/products?brand=Widex');
+Route::permanentRedirect('/oticon-hearing-aid-clinic-in-noida-extension', '/products?brand=Oticon');
+Route::permanentRedirect('/horizon-hearing-aid-clinic-in-noida-extension', '/products');
+
+/* ---------- CMS pages (must stay last) ---------- */
 Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
 
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Admin Routes (unchanged)
 |--------------------------------------------------------------------------
 */
 
@@ -265,14 +271,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('settings/seo', [SettingsController::class, 'seo'])->name('settings.seo');
         Route::post('settings/seo', [SettingsController::class, 'updateSeo'])->name('settings.seo.update');
 
+        Route::resource('pages', AdminPageController::class)->except(['show']);
 
-            Route::resource('pages', AdminPageController::class)->except(['show']);
-
-        
-       Route::get('settings/storage-link',[SettingsController::class, 'storageLink'])->name('settings.storage-link');
-
+        Route::get('settings/storage-link', [SettingsController::class, 'storageLink'])->name('settings.storage-link');
         Route::get('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
-
-
     });
 });

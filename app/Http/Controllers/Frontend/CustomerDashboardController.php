@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Appointment;
 use App\Models\Order;
 use App\Models\ReturnRequest;
 use App\Services\ImageService;
@@ -22,33 +23,80 @@ class CustomerDashboardController extends Controller
 
     public function index()
     {
-        $user         = Auth::user();
+        $user = Auth::user();
+
         $recentOrders = $user->orders()->with('items')->latest()->take(5)->get();
         $totalOrders  = $user->orders()->count();
         $totalSpent   = $user->orders()->where('payment_status', 'paid')->sum('total');
-        $wishlistCount= $user->wishlists()->count();
+        $wishlistCount = $user->wishlists()->count();
 
-        return view('customer.dashboard', compact('user', 'recentOrders', 'totalOrders', 'totalSpent', 'wishlistCount'));
+        $nextAppointment = Appointment::with('service')
+            ->where('user_id', $user->id)
+            ->upcoming()
+            ->orderBy('appointment_date')
+            ->orderBy('appointment_time')
+            ->first();
+
+        $totalAppointments    = Appointment::where('user_id', $user->id)->count();
+        $upcomingAppointments = Appointment::where('user_id', $user->id)->upcoming()->count();
+
+        return view('site.account.dashboard', compact(
+            'user', 'recentOrders', 'totalOrders', 'totalSpent', 'wishlistCount',
+            'nextAppointment', 'totalAppointments', 'upcomingAppointments'
+        ));
     }
 
     public function orders(Request $request)
     {
         $query = Auth::user()->orders()->with('items.product')->latest();
-        if ($request->filled('status')) $query->where('status', $request->status);
-        $orders = $query->paginate(10);
-        return view('customer.orders.index', compact('orders'));
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->paginate(10)->withQueryString();
+
+        return view('site.account.orders', compact('orders'));
     }
 
     public function orderShow(Order $order)
     {
         abort_unless($order->user_id === Auth::id(), 403);
         $order->load(['items.product', 'items.productVariant', 'payment', 'returnRequest']);
-        return view('customer.orders.show', compact('order'));
+
+        return view('site.account.order-detail', compact('order'));
+    }
+
+    /** Public order tracker (also works for guests who know the order number). */
+    public function tracking(Request $request)
+    {
+        $order = null;
+
+        if ($request->filled('order')) {
+            $query = Order::with('items')->where('order_number', trim($request->order));
+
+            // Guests may only look up by exact order number; logged-in users see their own.
+            $order = $query->first();
+        }
+
+        return view('site.order-tracking', compact('order'));
+    }
+
+    public function appointments()
+    {
+        $appointments = Appointment::with('service')
+            ->where('user_id', Auth::id())
+            ->orderByDesc('appointment_date')
+            ->orderByDesc('appointment_time')
+            ->paginate(10);
+
+        return view('site.account.appointments', compact('appointments'));
     }
 
     public function cancelOrder(Order $order)
     {
         abort_unless($order->user_id === Auth::id(), 403);
+
         try {
             $this->orderService->cancel($order);
             return back()->with('success', 'Order cancelled successfully.');
@@ -61,18 +109,23 @@ class CustomerDashboardController extends Controller
     {
         abort_unless($order->user_id === Auth::id(), 403);
         $order->load(['user', 'items.product']);
+
         $pdf = Pdf::loadView('admin.orders.invoice', compact('order'));
+
         return $pdf->download('invoice-' . $order->order_number . '.pdf');
     }
 
     public function profile()
     {
-        return view('customer.profile', ['user' => Auth::user()]);
+        $user = Auth::user()->load('addresses');
+
+        return view('site.account.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
+
         $data = $request->validate([
             'name'   => 'required|string|max:100',
             'phone'  => 'nullable|string|max:15|unique:users,phone,' . $user->id,
@@ -87,6 +140,7 @@ class CustomerDashboardController extends Controller
         }
 
         $user->update($data);
+
         return back()->with('success', 'Profile updated.');
     }
 
@@ -98,33 +152,33 @@ class CustomerDashboardController extends Controller
         ]);
 
         $user = Auth::user();
+
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
 
         $user->update(['password' => $request->password]);
+
         return back()->with('success', 'Password changed successfully.');
     }
 
-    // Addresses
     public function addresses()
     {
-        $addresses = Auth::user()->addresses;
-        return view('customer.addresses', compact('addresses'));
+        return redirect()->route('account.profile');
     }
 
     public function storeAddress(Request $request)
     {
         $data = $request->validate([
-            'name'             => 'required|string|max:100',
-            'phone'            => 'required|string|max:15',
-            'address_line1'    => 'required|string|max:200',
-            'address_line2'    => 'nullable|string|max:200',
-            'city'             => 'required|string|max:100',
-            'state'            => 'required|string|max:100',
-            'pincode'          => 'required|string|max:10',
-            'type'             => 'in:home,work,other',
-            'is_default'       => 'boolean',
+            'name'          => 'required|string|max:100',
+            'phone'         => 'required|string|max:15',
+            'address_line1' => 'required|string|max:200',
+            'address_line2' => 'nullable|string|max:200',
+            'city'          => 'required|string|max:100',
+            'state'         => 'required|string|max:100',
+            'pincode'       => 'required|string|max:10',
+            'type'          => 'nullable|in:home,work,other',
+            'is_default'    => 'nullable|boolean',
         ]);
 
         $data['user_id'] = Auth::id();
@@ -134,6 +188,7 @@ class CustomerDashboardController extends Controller
         }
 
         Address::create($data);
+
         return back()->with('success', 'Address added.');
     }
 
@@ -141,6 +196,7 @@ class CustomerDashboardController extends Controller
     {
         abort_unless($address->user_id === Auth::id(), 403);
         $address->delete();
+
         return back()->with('success', 'Address deleted.');
     }
 
@@ -162,6 +218,7 @@ class CustomerDashboardController extends Controller
         }
 
         ReturnRequest::create($data);
+
         return back()->with('success', 'Return request submitted.');
     }
 }

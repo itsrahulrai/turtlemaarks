@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Payment;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\PaymentService;
@@ -20,12 +22,15 @@ class CheckoutController extends Controller
     public function index()
     {
         $items = $this->cartService->getItems();
-        if ($items->isEmpty()) return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+
+        if ($items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
 
         $totals    = $this->cartService->totals(session('coupon_code'));
         $addresses = Auth::user()->addresses;
 
-        return view('frontend.checkout.index', compact('items', 'totals', 'addresses'));
+        return view('site.checkout', compact('items', 'totals', 'addresses'));
     }
 
     public function process(Request $request)
@@ -42,28 +47,34 @@ class CheckoutController extends Controller
             'notes'                  => 'nullable|string|max:500',
         ]);
 
-        $items = $this->cartService->getItems();
-
-        if ($items->isEmpty()) {
-            return redirect()->route('cart.index');
+        if ($this->cartService->getItems()->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        $order = $this->orderService->createFromCart(array_merge(
-            $data,
-            [
-                'user_id' => Auth::id(),
-                'coupon_code' => session('coupon_code')
-            ]
-        ));
+        $order = $this->orderService->createFromCart(array_merge($data, [
+            'user_id'     => Auth::id(),
+            'coupon_code' => session('coupon_code'),
+        ]));
 
         session()->forget('coupon_code');
 
         if ($request->payment_method === 'razorpay') {
-            $rpData = $this->paymentService->createRazorpayOrder($order);
-            return view('frontend.checkout.razorpay', compact('order', 'rpData'));
+            try {
+                $rpData = $this->paymentService->createRazorpayOrder($order);
+                return view('site.checkout-razorpay', compact('order', 'rpData'));
+            } catch (\Throwable $e) {
+                report($e);
+                return redirect()->route('checkout.failure')
+                    ->with('error', 'The payment gateway is not reachable right now. Your order ' . $order->order_number . ' is saved — please pay on delivery or call us.');
+            }
         }
-            // Fire the event immediately for COD orders
+
+        try {
             event(new \App\Events\OrderPlaced($order));
+        } catch (\Throwable $e) {
+            // Order is already saved — a notification failure must not lose it.
+            report($e);
+        }
 
         return redirect()->route('checkout.success', $order->order_number)
             ->with('success', 'Order placed successfully!');
@@ -74,8 +85,9 @@ class CheckoutController extends Controller
         $success = $this->paymentService->verifyAndCapture($request->all());
 
         if ($success) {
-            $orderNumber = \App\Models\Payment::where('razorpay_order_id', $request->razorpay_order_id)
+            $orderNumber = Payment::where('razorpay_order_id', $request->razorpay_order_id)
                 ->first()?->order?->order_number;
+
             return redirect()->route('checkout.success', $orderNumber)
                 ->with('success', 'Payment successful!');
         }
@@ -84,23 +96,17 @@ class CheckoutController extends Controller
     }
 
     public function success(string $orderNumber)
-{
-    $order = \App\Models\Order::where('order_number', $orderNumber)
-        ->where('user_id', Auth::id())
-        ->with([
-            'items.product',
-            'payment',
-        ])
-        ->firstOrFail();
+    {
+        $order = Order::where('order_number', $orderNumber)
+            ->where('user_id', Auth::id())
+            ->with(['items.product', 'payment'])
+            ->firstOrFail();
 
-        
-
-
-    return view('frontend.checkout.success', compact('order'));
-}
+        return view('site.order-confirmation', compact('order'));
+    }
 
     public function failure()
     {
-        return view('frontend.checkout.failure');
+        return view('site.checkout-failure');
     }
 }

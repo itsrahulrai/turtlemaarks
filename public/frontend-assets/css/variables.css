@@ -1,0 +1,75 @@
+/* ==========================================================================
+   TURTLE MAARKS — DESIGN SYSTEM TOKENS & VARIABLES
+   Premium Healthcare + Technology + Modern E-Commerce
+   ========================================================================== */
+
+:root {
+  /* Brand Primary Colors */
+  --tm-navy: #0B1E36;
+  --tm-navy-dark: #071324;
+  --tm-navy-light: #162E4F;
+  --tm-navy-surface: #0E2442;
+  --tm-navy-rgb: 11, 30, 54;
+
+  /* Brand Accent Colors */
+  --tm-orange: #FF6B00;
+  --tm-orange-hover: #E65800;
+  --tm-orange-light: #FFF4EC;
+  --tm-orange-subtle: #FFE4CE;
+  --tm-orange-rgb: 255, 107, 0;
+
+  /* Secondary & Status Colors */
+  --tm-teal: #0284C7;
+  --tm-teal-light: #F0F9FF;
+  --tm-green: #10B981;
+  --tm-green-light: #ECFDF5;
+  --tm-red: #EF4444;
+  --tm-red-light: #FEF2F2;
+  --tm-amber: #F59E0B;
+  --tm-amber-light: #FFFBEB;
+
+  /* Neutral Surface Palette */
+  --tm-bg: #F8FAFC;
+  --tm-bg-alt: #F1F5F9;
+  --tm-surface: #FFFFFF;
+  --tm-surface-elevated: #FFFFFF;
+  --tm-border: #E2E8F0;
+  --tm-border-light: #F1F5F9;
+  --tm-border-focus: #FF6B00;
+
+  /* Typography Colors */
+  --tm-text-primary: #0F172A;
+  --tm-text-secondary: #475569;
+  --tm-text-muted: #94A3B8;
+  --tm-text-white: #FFFFFF;
+
+  /* Typography Fonts (Raleway — Modern, Elegant & Professional) */
+  --tm-font-sans: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --tm-font-heading: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Border Radii (Modern Crisp Luxury - No Bloated Rounded Pills) */
+  --tm-radius-xs: 4px;
+  --tm-radius-sm: 6px;
+  --tm-radius-md: 8px;
+  --tm-radius-lg: 12px;
+  --tm-radius-xl: 16px;
+  --tm-radius-2xl: 20px;
+  --tm-radius-pill: 8px;
+  --tm-radius-btn: 8px;
+
+  /* Box Shadows */
+  --tm-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --tm-shadow-sm: 0 2px 6px 0 rgba(15, 23, 42, 0.06);
+  --tm-shadow-md: 0 8px 20px -4px rgba(11, 30, 54, 0.08), 0 2px 6px -1px rgba(11, 30, 54, 0.03);
+  --tm-shadow-lg: 0 16px 36px -6px rgba(11, 30, 54, 0.12), 0 4px 12px -2px rgba(11, 30, 54, 0.04);
+  --tm-shadow-xl: 0 24px 48px -12px rgba(11, 30, 54, 0.18);
+  --tm-shadow-orange: 0 10px 25px -4px rgba(255, 107, 0, 0.35);
+  --tm-shadow-navy: 0 12px 28px -6px rgba(11, 30, 54, 0.3);
+
+  /* Transitions */
+  --tm-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tm-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tm-transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --tm-transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+

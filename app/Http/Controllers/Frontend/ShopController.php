@@ -3,161 +3,132 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Subcategory;
+use App\Support\TmCatalog;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    private const PER_PAGE = 9;
+
+    /**
+     * Catalogue page. Honours ?brand[] ?style[] ?category[] ?q ?sort ?max_price ?page
+     * so the grid is populated (and indexable) before filter.js takes over.
+     */
     public function index(Request $request)
     {
-        $query = Product::active()->with(['category', 'images', 'brand']);
+        $criteria = array_filter([
+            'brand'       => (array) $request->input('brand', []),
+            'style'       => (array) $request->input('style', []),
+            'category'    => (array) $request->input('category', []),
+            'search'      => $request->input('q'),
+            'sort'        => $request->input('sort'),
+            'maxPrice'    => $request->input('max_price'),
+            'minPrice'    => $request->input('min_price'),
+        ], fn ($v) => $v !== null && $v !== '' && $v !== []);
 
-        $this->applyFilters($query, $request);
+        $matches = TmCatalog::filter($criteria);
 
-        $products   = $query->paginate(16)->withQueryString();
-        $categories = Category::active()->withCount(['products' => fn($q) => $q->active()])->get();
-        $brands     = Brand::active()->withCount(['products' => fn($q) => $q->active()])->orderBy('sort_order')->get();
+        $total       = count($matches);
+        $lastPage    = max(1, (int) ceil($total / self::PER_PAGE));
+        $currentPage = max(1, min($lastPage, (int) $request->input('page', 1)));
+        $offset      = ($currentPage - 1) * self::PER_PAGE;
 
-        return view('site.products', compact('products', 'categories', 'brands'));
-    }
-
-    public function category(Request $request, $categorySlug)
-    {
-        $category = Category::where('slug', $categorySlug)->firstOrFail();
-        $query    = Product::active()->where('category_id', $category->id)->with(['category', 'images']);
-
-        $this->applyFilters($query, $request);
-
-        $products      = $query->paginate(16)->withQueryString();
-        $subcategories = $category->subcategories;
-        $categories = Category::active()->withCount(['products' => fn($q) => $q->active()])->get();
-
-        return view('frontend.products.category', compact('products', 'category', 'subcategories','categories'));
-    }
-
-
-    public function subcategory(Request $request, $categorySlug, $subcategorySlug)
-    {
-        $category    = Category::where('slug', $categorySlug)->firstOrFail();
-        $subcategory = Subcategory::where('slug', $subcategorySlug)
-            ->where('category_id', $category->id)->firstOrFail();
-
-        $query = Product::active()
-            ->where('subcategory_id', $subcategory->id)
-            ->with(['category', 'images']);
-
-        $this->applyFilters($query, $request);
-
-        $products = $query->paginate(16)->withQueryString();
-        $categories = Category::active()->withCount(['products' => fn($q) => $q->active()])->get();
-
-        return view('frontend.products.subcategory', compact('products', 'category', 'subcategory','categories'));
+        return view('site.products', [
+            'products'           => array_slice($matches, $offset, self::PER_PAGE),
+            'total'              => $total,
+            'from'               => $offset + 1,
+            'to'                 => min($offset + self::PER_PAGE, $total),
+            'currentPage'        => $currentPage,
+            'lastPage'           => $lastPage,
+            'catalogueBrands'    => TmCatalog::brands(),
+            'styles'             => TmCatalog::styles(),
+            'categories'         => Category::active()->orderBy('sort_order')->get(),
+            'subcategories'      => Subcategory::active()->orderBy('sort_order')->get(),
+            'categoryCounts'     => TmCatalog::categoryCounts(),
+            'subcategoryCounts'  => TmCatalog::subcategoryCounts(),
+            'priceBounds'        => TmCatalog::priceBounds(),
+        ]);
     }
 
     public function show(string $slug)
     {
         $product = Product::active()
-            ->with(['category', 'subcategory', 'images', 'variants', 'reviews.user'])
+            ->with(['category', 'subcategory', 'brand', 'images', 'variants'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Increment view count
         $product->increment('views');
 
-        // Recently viewed
-        $recent = session('recently_viewed', []);
-        $recent = array_filter($recent, fn($id) => $id !== $product->id);
-        array_unshift($recent, $product->id);
-        session(['recently_viewed' => array_slice($recent, 0, 10)]);
+        $p = TmCatalog::map($product->loadCount('reviews')->loadAvg('reviews', 'rating'));
 
-        $related = Product::active()
-            ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->with('images')
-            ->take(8)->get();
+        // Related = same brand first, topped up with the same form factor.
+        $related = array_values(array_filter(
+            TmCatalog::filter(['brand' => $p['brand'], 'limit' => 5]),
+            fn ($r) => $r['id'] !== $p['id']
+        ));
 
-        $recentlyViewed = Product::active()
-            ->whereIn('id', array_slice($recent, 1, 5))
-            ->with('images')->get();
+        if (count($related) < 4) {
+            foreach (TmCatalog::filter(['style' => $p['style'], 'limit' => 8]) as $m) {
+                if ($m['id'] !== $p['id'] && !in_array($m['id'], array_column($related, 'id'), true)) {
+                    $related[] = $m;
+                }
+            }
+        }
+        $related = array_slice($related, 0, 4);
 
-        return view('frontend.products.show', compact('product', 'related', 'recentlyViewed'));
+        $reviews = Review::with('user')
+            ->where('product_id', $product->id)
+            ->where('status', 'approved')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        // Star distribution for the ratings bar chart.
+        $counts = Review::where('product_id', $product->id)
+            ->where('status', 'approved')
+            ->selectRaw('rating, COUNT(*) as total')
+            ->groupBy('rating')
+            ->pluck('total', 'rating');
+
+        $totalReviews    = max(1, (int) $counts->sum());
+        $ratingBreakdown = [];
+        for ($star = 1; $star <= 5; $star++) {
+            $ratingBreakdown[$star] = (int) round((($counts[$star] ?? 0) / $totalReviews) * 100);
+        }
+
+        return view('site.product-detail', compact('product', 'p', 'related', 'reviews', 'ratingBreakdown'));
     }
 
     public function search(Request $request)
     {
-        $query    = $request->input('q', '');
-        $products = collect();
+        $q = trim((string) $request->input('q', ''));
 
-        if (strlen($query) >= 2) {
-            $q = Product::active()->with(['category', 'images']);
-            $q->where(function ($qr) use ($query) {
-                $qr->where('name', 'like', '%' . $query . '%')
-                   ->orWhere('sku', 'like', '%' . $query . '%')
-                   ->orWhere('short_description', 'like', '%' . $query . '%')
-                   ->orWhereHas('category', fn($c) => $c->where('name', 'like', '%' . $query . '%'));
-            });
-            $this->applyFilters($q, $request);
-            $products = $q->paginate(16)->withQueryString();
-        }
-
-        return view('frontend.search.results', compact('products', 'query'));
+        return view('site.search', [
+            'q'       => $q,
+            'results' => TmCatalog::filter($q !== '' ? ['search' => $q] : []),
+        ]);
     }
 
     public function ajaxSearch(Request $request)
     {
-        $q = $request->input('q', '');
-        if (strlen($q) < 2) return response()->json([]);
-
-        $products = Product::active()
-            ->where(function ($query) use ($q) {
-                $query->where('name', 'like', '%' . $q . '%')
-                      ->orWhere('sku', 'like', '%' . $q . '%');
-            })
-            ->with('images')
-            ->take(8)->get()
-            ->map(fn($p) => [
-                'id'    => $p->id,
-                'name'  => $p->name,
-                'price' => $p->effective_price,
-                'image' => $p->thumbnail_url,
-                'url'   => route('product.show', $p->slug),
-            ]);
-
-        return response()->json($products);
-    }
-
-    private function applyFilters($query, Request $request): void
-    {
-        if ($request->filled('min_price')) {
-            $query->where(fn($q) => $q->where('sale_price', '>=', $request->min_price)
-                ->orWhere(fn($q2) => $q2->whereNull('sale_price')->where('price', '>=', $request->min_price)));
-        }
-        if ($request->filled('max_price')) {
-            $query->where(fn($q) => $q->where('sale_price', '<=', $request->max_price)
-                ->orWhere(fn($q2) => $q2->whereNull('sale_price')->where('price', '<=', $request->max_price)));
-        }
-        if ($request->filled('brand_id')) {
-            $query->where('brand_id', $request->brand_id);
-        }
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-        if ($request->boolean('in_stock')) {
-            $query->where(fn($q) => $q->where('manage_stock', false)
-                ->orWhere('stock', '>', 0));
-        }
-        if ($request->boolean('on_sale')) {
-            $query->whereNotNull('sale_price');
+        $q = trim((string) $request->input('q', ''));
+        if (mb_strlen($q) < 2) {
+            return response()->json([]);
         }
 
-        match ($request->input('sort', 'latest')) {
-            'price_asc'  => $query->orderByRaw('COALESCE(sale_price, price) ASC'),
-            'price_desc' => $query->orderByRaw('COALESCE(sale_price, price) DESC'),
-            'popular'    => $query->orderByDesc('views'),
-            default      => $query->latest(),
-        };
+        return response()->json(
+            collect(TmCatalog::filter(['search' => $q, 'limit' => 8]))
+                ->map(fn ($p) => [
+                    'id'    => $p['id'],
+                    'name'  => $p['name'],
+                    'price' => $p['price'],
+                    'image' => $p['image'],
+                    'url'   => $p['url'],
+                ])->values()
+        );
     }
 }

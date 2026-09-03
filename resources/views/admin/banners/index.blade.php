@@ -49,7 +49,7 @@
                             <td>
                                 @if($banner->image)
                                     <img 
-                                        src="{{ asset('/public/storage/'.$banner->image) }}"
+                                        src="{{ asset('/storage/'.$banner->image) }}"
                                         alt="{{ $banner->title }}"
                                         width="120"
                                         height="70"

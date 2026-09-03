@@ -3,27 +3,40 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Wishlist;
+use App\Support\TmCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
+    /** Public page — guests see the empty state with a prompt to sign in. */
     public function index()
     {
-        $items = Wishlist::with('product.images')
-            ->where('user_id', Auth::id())->get();
-        return view('frontend.cart.wishlist', compact('items'));
+        $products = [];
+
+        if (Auth::check()) {
+            $ids = Wishlist::where('user_id', Auth::id())->pluck('product_id')->all();
+
+            $products = array_values(array_filter(
+                array_map(fn ($id) => TmCatalog::find((string) $id), $ids)
+            ));
+        }
+
+        return view('site.wishlist', compact('products'));
     }
 
     public function toggle(Request $request)
     {
         $request->validate(['product_id' => 'required|exists:products,id']);
-        $exists = Wishlist::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)->first();
 
-        if ($exists) {
-            $exists->delete();
+        $existing = Wishlist::where('user_id', Auth::id())
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
             $inWishlist = false;
             $message    = 'Removed from wishlist.';
         } else {
@@ -32,9 +45,26 @@ class WishlistController extends Controller
             $message    = 'Added to wishlist!';
         }
 
-        if ($request->ajax()) {
-            return response()->json(['success' => true, 'inWishlist' => $inWishlist, 'message' => $message]);
+        $count = Wishlist::where('user_id', Auth::id())->count();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success'    => true,
+                'inWishlist' => $inWishlist,
+                'count'      => $count,
+                'message'    => $message,
+            ]);
         }
+
         return back()->with('success', $message);
+    }
+
+    public function clear(Request $request)
+    {
+        Wishlist::where('user_id', Auth::id())->delete();
+
+        return $request->expectsJson()
+            ? response()->json(['success' => true, 'count' => 0, 'message' => 'Wishlist cleared.'])
+            : back()->with('success', 'Wishlist cleared.');
     }
 }

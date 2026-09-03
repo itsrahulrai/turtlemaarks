@@ -17,40 +17,38 @@ class AppointmentController extends Controller
     {
         $services = Service::active()->orderBy('sort_order')->get();
 
-        // Pre-fill from the quick-booking widget on marketing pages, or a
-        // "book this service" link from a service detail page.
-        $selectedServiceId = $request->integer('service') ?: null;
+        // Pre-fill from the quick-booking widget, a "book this service" link,
+        // or a "book a trial" link on a product page.
         $prefill = [
             'name'    => $request->get('name'),
             'phone'   => $request->get('phone'),
-            'service' => $selectedServiceId,
+            'service' => $request->integer('service') ?: null,
+            'model'   => $request->get('model'),
         ];
 
-        return view('site.appointments.create', compact('services', 'prefill'));
+        return view('site.book-appointment', compact('services', 'prefill'));
     }
 
-    /** AJAX: return available slots for a given date + service (duration aware). */
+    /** AJAX: genuinely free slots for a date (clinic hours, breaks, blocks, bookings). */
     public function slots(Request $request)
     {
-        $request->validate([
-            'date' => 'required|date|after_or_equal:today',
+        $request->validate(['date' => 'required|date|after_or_equal:today']);
+
+        return response()->json([
+            'slots' => $this->appointmentService->availableSlots($request->date)->values(),
         ]);
-
-        $slots = $this->appointmentService->availableSlots($request->date);
-
-        return response()->json(['slots' => $slots->values()]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'service_id'        => 'required|exists:services,id',
-            'name'              => 'required|string|max:100',
-            'email'             => 'nullable|email|max:150',
-            'phone'             => 'required|string|max:15',
-            'appointment_date'  => 'required|date|after_or_equal:today',
-            'appointment_time'  => 'required',
-            'notes'             => 'nullable|string|max:500',
+            'service_id'       => 'required|exists:services,id',
+            'name'             => 'required|string|max:100',
+            'email'            => 'nullable|email|max:150',
+            'phone'            => 'required|string|max:15',
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'appointment_time' => 'required',
+            'notes'            => 'nullable|string|max:500',
         ]);
 
         if (!$this->appointmentService->isSlotAvailable($data['appointment_date'], $data['appointment_time'])) {
@@ -72,6 +70,7 @@ class AppointmentController extends Controller
     public function confirmation(Appointment $appointment)
     {
         $appointment->load('service');
-        return view('site.appointments.confirmation', compact('appointment'));
+
+        return view('site.appointment-confirmation', compact('appointment'));
     }
 }

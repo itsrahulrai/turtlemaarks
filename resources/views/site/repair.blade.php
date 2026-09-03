@@ -1,174 +1,76 @@
-@extends('site.layouts.layout')
-@section('title', 'Repair - Turtle Maarks Hearing Health')
-@section('description', 'Hearing Aid supplier of all leading brands. Please connect for premium care and services.')
-@section('keywords', 'Hearing Aid supplier of all leading brands. Please connect for premium care and services.')
+@extends('site.layouts.app')
+
+@section('title', 'Hearing Aid Repair & Service Lab — Turtle Maarks')
+@section('meta_description', 'Hearing aid repair, ultrasonic cleaning, receiver replacement, and software reprogramming in Greater Noida West. All brands serviced.')
+@section('active_nav', 'services')
+
 @section('content')
-
-  
-
-
-<!-- breadcrumb area -->
-<div class="breadcrumb-area" style="background-image: url('{{ asset('frontend-assets/images/breadcrumb.png') }}');">
+<!-- HERO BANNER -->
+  <section class="tm-page-hero text-center position-relative">
     <div class="container">
-        <div class="row justify-content-center">
-            <nav aria-label="breadcrumb">
-                <h2 class="page-title">Repair 
-                </h2>
-                <ol class="breadcrumb text-center">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Repair </li>
-                </ol>
-            </nav>
+      <nav aria-label="breadcrumb" class="d-inline-flex mb-2">
+        <div class="tm-breadcrumb-pill">
+          <a href="{{ route('home') }}"><i class="bi bi-house-door"></i> Home</a>
+          <span class="tm-breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+          <span class="tm-breadcrumb-current" aria-current="page">Repair &amp; Servicing</span>
         </div>
+      </nav>
+      <h1 class="display-6 fw-bold text-white mb-2 font-heading">Hearing Aid Repair &amp; Servicing</h1>
+      <p class="text-white-50 mx-auto small mb-0" style="max-width: 620px;">Certified lab diagnostics, ultrasonic dehumidification, mic/receiver replacement, and acoustic reprogramming for all brands.</p>
     </div>
-</div>
+  </section>
 
-
-
-<div class="task-area padding-top-115">
-    <div class="task-shapes">
-        <img src="{{ asset('frontend-assets/images/color-vec1.png') }}" alt="" class="vec1">
-    </div>
+  <!-- COMMON PROBLEMS & PACKAGES -->
+  <section class="py-5 bg-light">
     <div class="container">
-        <div class="row justify-content-center margin-bottom-25">
-            <div class="col-lg-8">
-                <div class="common-title text-center">
-                    <h2>Hearing Aid Accessories & <span>Support Services</span></h2>
-                    <p class="margin-top-20">
-                        We offer a comprehensive selection of hearing aid accessories to enhance comfort, performance, and longevity of your hearing devices.
-                    </p>
-                </div>
+      <div class="row g-4">
+        
+        <!-- Package 1 -->
+        <div class="col-md-4">
+          <div class="card rounded-4 border p-4 bg-white shadow-xs h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="tm-diag-icon"><i class="bi bi-droplet"></i></div>
+              <h5 class="fw-bold text-navy mb-2">Deep Ultrasonic Cleaning</h5>
+              <p class="small text-secondary mb-3">Electronic vacuum moisture extraction, wax guard replacement, mic port clearing, and contact sterilization.</p>
             </div>
+            <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-navy fs-5">₹600</span>
+              <a href="{{ route('appointments.create') }}" class="tm-btn tm-btn-primary tm-btn-sm">Book Service</a>
+            </div>
+          </div>
         </div>
 
-        <!-- tab nav -->
-        <div class="row task-tab-nav margin-bottom-50">
-            <div class="col-lg-12">
-                <nav>
-                    <div class="nav task-nav-wrapper justify-content-center " id="nav-tab" role="tablist">
-
-                        <a class="nav-item nav-link active" id="nav-one-tab" data-toggle="tab" href="#nav-one"
-                            role="tab" aria-controls="nav-one" aria-selected="true">
-                            <div class="single-nav active">
-                                <h5>Hearing Aid Batteries</h5>
-                            </div>
-                        </a>
-
-                        <a class="nav-item nav-link" id="nav-two-tab" data-toggle="tab" href="#nav-two" role="tab"
-                            aria-controls="nav-two" aria-selected="false">
-                            <div class="single-nav">
-                                <h5>Ear Moulds & Tips</h5>
-                            </div>
-                        </a>
-
-                        <a class="nav-item nav-link" id="nav-three-tab" data-toggle="tab" href="#nav-three"
-                            role="tab" aria-controls="nav-three" aria-selected="false">
-                            <div class="single-nav">
-                                <h5>Hearing Aid Repair Services</h5>
-                            </div>
-                        </a>
-                    </div>
-                </nav>
+        <!-- Package 2 -->
+        <div class="col-md-4">
+          <div class="card rounded-4 border p-4 bg-white shadow-xs h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="tm-diag-icon"><i class="bi bi-sliders"></i></div>
+              <h5 class="fw-bold text-navy mb-2">Audiogram Reprogramming</h5>
+              <p class="small text-secondary mb-3">Re-tuning channels and gain parameters based on your latest PTA test audiogram to eliminate whistling feedback.</p>
             </div>
+            <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-navy fs-5">₹800</span>
+              <a href="{{ route('appointments.create') }}" class="tm-btn tm-btn-primary tm-btn-sm">Book Service</a>
+            </div>
+          </div>
         </div>
 
-        <!-- tab cont -->
-        <div class="tab-content" id="nav-tabContent">
-            <!-- single item -->
-            <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{ asset('frontend-assets/images/batteries.webp') }}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Hearing Aid Batteries
-                            </h3>
-
-                            <p class="margin-bottom-20">
-                                We stock high-quality, long-lasting batteries in all standard sizes — 13, 312, 10, and 675 — compatible with leading brands like Widex, Starkey, and Power One.
-                            </p>
-                            <ul>
-                                <li> Battery Sizes — 13</li>
-                                <li> Battery Sizes — 312 </li>
-                                <li> Battery Sizes — 10</li>
-                                <li> Battery Sizes — 675</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="" data-toggle="modal" data-target="#bookingModal" class="btn3">booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Package 3 -->
+        <div class="col-md-4">
+          <div class="card rounded-4 border p-4 bg-white shadow-xs h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div class="tm-diag-icon"><i class="bi bi-cpu"></i></div>
+              <h5 class="fw-bold text-navy mb-2">Receiver / Speaker Overhaul</h5>
+              <p class="small text-secondary mb-3">Replacement of distorted, dead, or crackling speaker wires with original manufacturer-certified receivers.</p>
             </div>
-
-            <!-- single item -->
-            <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{ asset('frontend-assets/images/ear-model.jpg') }}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Ear Moulds & Tips
-                            </h3>
-
-                            <p class="margin-bottom-20">
-                                Choose from a variety of soft and hard ear moulds as well as ear tips designed for optimal fit and sound delivery. Each is crafted for comfort and performance.
-                            </p>
-                            <ul>
-                                <li> We offer soft and hard ear moulds tailored for a comfortable and secure fit.</li>
-                                <li> Designed to improve sound delivery and reduce feedback in hearing aids. </li>
-                                <li> Available in various sizes and materials to suit individual ear shapes. </li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="" data-toggle="modal" data-target="#bookingModal" class="btn3">booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-navy fs-5">₹2,500 <span class="small text-muted">+ Parts</span></span>
+              <a href="{{ route('appointments.create') }}" class="tm-btn tm-btn-primary tm-btn-sm">Book Service</a>
             </div>
-
-            <!-- single item -->
-            <div class="tab-pane fade" id="nav-three" role="tabpanel" aria-labelledby="nav-three-tab">
-                <div class="row task-tab-cont align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-img">
-                            <img src="{{ asset('frontend-assets/images/hearing-aid-repair-services.webp') }}" class="rounded" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12">
-                        <div class="task-cont">
-                            <h3 class="margin-bottom-20">
-                                Hearing Aid Repair Services
-                            </h3>
-
-                            <p class="margin-bottom-20">
-                                We provide expert repair services for all major hearing aid brands listed above. From minor adjustments to complete overhauls, our technicians ensure your devices are working their best.
-                            </p>
-                            <ul>
-                                <li>Expert repairs and adjustments for all major hearing aid brands to restore optimal function.</li>
-                                <li>Skilled technicians handle everything from minor tweaks to full servicing with precision.</li>
-                                <li> Fast turnaround, reliable quality, and personalized support to keep your devices working at their best.</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="" data-toggle="modal" data-target="#bookingModal" class="btn3">booking now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+          </div>
         </div>
 
+      </div>
     </div>
-</div>
-
-
-@endsection     
+  </section>
+@endsection

@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
     public function __construct(private CartService $cartService) {}
 
-    public function showForm() { return view('auth.login'); }
+    public function showForm() { return view('site.auth.login'); }
 
     public function login(Request $request) {
         $request->validate([
@@ -41,15 +42,51 @@ class LoginController extends Controller
         return back()->withErrors(['email' => 'Invalid credentials.'])->withInput($request->only('email'));
     }
 
+    // Password reset
+    public function showForgotForm() { return view('site.auth.forgot-password'); }
+
+    public function sendResetLink(Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', 'A secure password reset link has been sent to your email.')
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function showResetForm(Request $request, string $token) {
+        return view('site.auth.reset-password', ['token' => $token, 'email' => $request->email]);
+    }
+
+    public function resetPassword(Request $request) {
+        $request->validate([
+            'token'    => 'required',
+            'email'    => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill(['password' => $request->password])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('success', 'Password updated. Please sign in.')
+            : back()->withErrors(['email' => __($status)]);
+    }
+
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home');
+        return redirect()->route('login', ['logged_out' => 1]);
     }
 
     // OTP Login
-    public function showOtpForm() { return view('auth.otp'); }
+    public function showOtpForm() { return view('site.auth.otp'); }
 
     public function sendOtp(Request $request) {
         $request->validate(['phone' => 'required|string|max:15']);

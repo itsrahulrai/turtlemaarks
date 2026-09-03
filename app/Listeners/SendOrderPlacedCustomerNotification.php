@@ -13,9 +13,14 @@ class SendOrderPlacedCustomerNotification implements ShouldQueue
 
     public function handle(OrderPlaced $event): void
     {
-        $order = $event->order->load(['items', 'user']);
+        try {
+            $order = $event->order->load(['items', 'user']);
 
-        $order->user?->notify(new OrderPlacedNotification($order));
+            $order->user?->notify(new OrderPlacedNotification($order));
+        } catch (\Throwable $e) {
+            // Never let a mail/SMTP outage break the customer-facing transaction.
+            \Illuminate\Support\Facades\Log::error('SendOrderPlacedCustomerNotification failed: ' . $e->getMessage());
+        }
     }
 
     public function failed(OrderPlaced $event, \Throwable $exception): void
