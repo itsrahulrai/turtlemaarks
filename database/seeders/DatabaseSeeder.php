@@ -206,6 +206,8 @@ foreach ($categories as $cat) {
 }
 
 $this->call(ProductSeeder::class);
+        $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(PatientVideoSeeder::class);
 
         // TurtleMaarks Settings
         $settings = [

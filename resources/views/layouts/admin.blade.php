@@ -59,78 +59,117 @@
     </a>
 </div>
     <nav class="sidebar-nav">
+        @php $__admin = auth('admin')->user(); $__can = fn($slug) => $__admin && ($__admin->isSuperAdmin() || $__admin->hasPermission($slug)); @endphp
+
         <div class="sidebar-section">Main</div>
         <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
 
+        @if($__can('categories') || $__can('subcategories') || $__can('brands') || $__can('products'))
         <div class="sidebar-section">Catalog</div>
+        @endif
+        @if($__can('categories'))
           <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
             <i class="bi bi-grid"></i> Categories
         </a>
-                 
+        @endif
+        @if($__can('subcategories'))
         <a href="{{ route('admin.subcategories.index') }}" class="nav-link {{ request()->routeIs('admin.subcategories.*') ? 'active' : '' }}">
             <i class="bi bi-grid-3x3-gap"></i> Subcategories
         </a>
+        @endif
+        @if($__can('brands'))
         <a href="{{ route('admin.brands.index') }}" class="nav-link {{ request()->routeIs('admin.brands.*') ? 'active' : '' }}">
             <i class="bi bi-award"></i> Brands
         </a>
+        @endif
+        @if($__can('products'))
         <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
             <i class="bi bi-box-seam"></i> Products
         </a>
+        @endif
 
+        @if($__can('services') || $__can('appointments'))
         <div class="sidebar-section">Services &amp; Appointments</div>
+        @endif
+        @if($__can('services'))
         <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
             <i class="bi bi-ear"></i> Services
         </a>
+        @endif
+        @if($__can('appointments'))
         <a href="{{ route('admin.appointments.index') }}" class="nav-link {{ request()->routeIs('admin.appointments.index') || request()->routeIs('admin.appointments.show') ? 'active' : '' }}">
             <i class="bi bi-calendar-check"></i> Appointments
         </a>
         <a href="{{ route('admin.appointments.settings') }}" class="nav-link {{ request()->routeIs('admin.appointments.settings*') ? 'active' : '' }}">
             <i class="bi bi-clock"></i> Working Hours
         </a>
-      
+        @endif
 
+        @if($__can('orders') || $__can('customers') || $__can('coupons') || $__can('reviews'))
         <div class="sidebar-section">Sales</div>
+        @endif
+        @if($__can('orders'))
         <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
             <i class="bi bi-receipt"></i> Orders
         </a>
+        @endif
+        @if($__can('customers'))
         <a href="{{ route('admin.customers.index') }}" class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
             <i class="bi bi-people"></i> Customers
         </a>
+        @endif
+        @if($__can('coupons'))
         <a href="{{ route('admin.coupons.index') }}" class="nav-link {{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
             <i class="bi bi-tag"></i> Coupons
         </a>
+        @endif
+        @if($__can('reviews'))
         <a href="{{ route('admin.reviews.index') }}" class="nav-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
             <i class="bi bi-star"></i> Reviews
         </a>
+        @endif
 
+        @if($__can('banners') || $__can('blogs') || $__can('patient-videos'))
         <div class="sidebar-section">Content</div>
+        @endif
+        @if($__can('banners'))
         <a href="{{ route('admin.banners.index') }}" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
             <i class="bi bi-image"></i> Banners
         </a>
+        @endif
+        @if($__can('blogs'))
         <a href="{{ route('admin.blogs.index') }}" class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
             <i class="bi bi-newspaper"></i> Blogs
         </a>
          <a href="{{ route('admin.blog-categories.index') }}" class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
             <i class="bi bi-newspaper"></i> Blog Category
         </a>
-        
-        {{-- <a href="{{ route('admin.testimonials.index') }}" class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
-            <i class="bi bi-chat-quote"></i> Testimonials
+        @endif
+        @if($__can('patient-videos'))
+        <a href="{{ route('admin.patient-videos.index') }}" class="nav-link {{ request()->routeIs('admin.patient-videos.*') ? 'active' : '' }}">
+            <i class="bi bi-camera-reels"></i> Patient Story Videos
         </a>
+        @endif
 
-        <div class="sidebar-section">Reports</div>
-        <a href="{{ route('admin.reports.sales') }}" class="nav-link {{ request()->routeIs('admin.reports.sales') ? 'active' : '' }}">
-            <i class="bi bi-graph-up"></i> Sales
-        </a>
-        <a href="{{ route('admin.reports.inventory') }}" class="nav-link {{ request()->routeIs('admin.reports.inventory') ? 'active' : '' }}">
-            <i class="bi bi-boxes"></i> Inventory
-        </a>
-        <a href="{{ route('admin.reports.customers') }}" class="nav-link {{ request()->routeIs('admin.reports.customers') ? 'active' : '' }}">
-            <i class="bi bi-person-lines-fill"></i> Customer Report
-        </a> --}}
 
+
+        @if($__can('roles') || $__can('admin-users'))
+        <div class="sidebar-section">Access Control</div>
+        @endif
+        @if($__can('roles'))
+        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+            <i class="bi bi-shield-lock"></i> Roles &amp; Permissions
+        </a>
+        @endif
+        @if($__can('admin-users'))
+        <a href="{{ route('admin.admin-users.index') }}" class="nav-link {{ request()->routeIs('admin.admin-users.*') ? 'active' : '' }}">
+            <i class="bi bi-person-badge"></i> Admin Users
+        </a>
+        @endif
+
+@if($__can('settings') || $__can('pages'))
 <div class="sidebar-section">Settings</div>
 
 <div class="nav-item">
@@ -149,19 +188,25 @@
     <div class="collapse {{ request()->routeIs('admin.settings.*') || request()->routeIs('admin.pages.*') ? 'show' : '' }}"
          id="settingsMenu">
 
+        @if($__can('settings'))
         <a href="{{ route('admin.settings.general') }}"
            class="nav-link ms-3 {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
             <i class="bi bi-globe"></i> Web Settings
         </a>
+        @endif
 
+        @if($__can('pages'))
         <a href="{{ route('admin.pages.index') }}"
            class="nav-link ms-3 {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
             <i class="bi bi-file-earmark-text"></i> Pages
         </a>
+        @endif
 
     </div>
 </div>
+@endif
 
+@if($__can('settings'))
          <div class="sidebar-section">Tools</div>
 
         <a href="{{ route('admin.settings.storage-link') }}"
@@ -177,6 +222,8 @@
             <i class="bi bi-arrow-clockwise"></i>
             Clear Cache
         </a>
+        @endif
+
 
         <div class="mt-3 mb-2 mx-2">
             <form method="POST" action="{{ route('admin.logout') }}">
@@ -203,9 +250,9 @@
             @endif
             <div class="d-flex align-items-center gap-2">
                 <div style="width:36px;height:36px;border-radius:50%;background:var(--admin-light);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--admin-primary);">
-                    {{ strtoupper(substr(Auth::guard('admin')->user()->name, 0, 1)) }}
+                    {{ strtoupper(substr(Auth::guard('admin')->user()?->name ?? 'A', 0, 1)) }}
                 </div>
-                <span style="font-size:.85rem;font-weight:600;">{{ Auth::guard('admin')->user()->name }}</span>
+                <span style="font-size:.85rem;font-weight:600;">{{ Auth::guard('admin')->user()?->name ?? 'Admin' }}</span>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-@extends('site.layouts.layout')
+@extends('site.layouts.app')
 @section('title', '404 — Page Not Found')
 @section('content')
 <section class="py-5" style="min-height:70vh;display:flex;align-items:center;">

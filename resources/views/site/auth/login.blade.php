@@ -58,11 +58,7 @@
               <button type="submit" class="tm-btn tm-btn-primary tm-btn-lg w-100 mb-3"><i class="bi bi-box-arrow-in-right"></i> Sign In to Account</button>
             </form>
 
-            <div class="text-center small text-muted border-top pt-3 mb-2">
-              Prefer OTP? <a href="{{ route('login.otp') }}" class="fw-bold text-orange text-decoration-none">Sign in with your mobile number</a>
-            </div>
-
-            <div class="text-center small text-muted">
+            <div class="text-center small text-muted border-top pt-3">
               Don't have an account? <a href="{{ route('register') }}" class="fw-bold text-orange text-decoration-none">Register Here</a>
             </div>
           </div>

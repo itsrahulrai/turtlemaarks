@@ -108,7 +108,8 @@ const TurtleProducts = {
     // Escape single quotes in names for onclick handlers
     const safeName = p.name.replace(/'/g, "\\'");
     const safeBrand = (p.brand || 'Turtle Maarks').replace(/'/g, "\\'");
-    const safeImage = p.image || (window.TM && window.TM.placeholder) || '';
+    const fallbackImage = (window.TM && window.TM.placeholder) || (window.location.origin + '/frontend-assets/images/no-product/no-product.png');
+    const safeImage = p.image || fallbackImage;
 
     return `
       <div class="${colClass}">
@@ -129,7 +130,7 @@ const TurtleProducts = {
             </div>
 
             <a href="${p.url || '#'}" class="tm-product-img-wrap d-flex align-items-center justify-content-center">
-              <img src="${safeImage}" alt="${p.name}" class="tm-product-img" loading="lazy">
+              <img src="${safeImage}" onerror="this.onerror=null;this.src='${fallbackImage}';" alt="${p.name}" class="tm-product-img" loading="lazy">
             </a>
           </div>
 

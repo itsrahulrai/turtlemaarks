@@ -14,7 +14,7 @@ class Admin extends Authenticatable
     protected $guard = 'admin';
 
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'avatar', 'is_active', 'role',
+        'name', 'email', 'password', 'phone', 'avatar', 'is_active', 'role', 'role_id',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -25,9 +25,33 @@ class Admin extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function assignedRole()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
     public function isSuperAdmin(): bool
     {
-        return $this->role === 'superadmin';
+        return in_array($this->role, ['superadmin', 'super_admin'], true);
+    }
+
+    /**
+     * Roles & Permissions check.
+     * Super admins always pass. Everyone else needs the permission slug
+     * attached (directly or via their assigned Role) to their account.
+     */
+    public function hasPermission(string $slug): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        return (bool) ($this->role_id && $this->assignedRole?->permissions->contains('slug', $slug));
     }
 
     public function getAvatarUrlAttribute(): string

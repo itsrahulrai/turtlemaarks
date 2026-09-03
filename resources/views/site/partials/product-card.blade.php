@@ -17,7 +17,7 @@
     $savePct = $mrp > $price ? (int) round((($mrp - $price) / $mrp) * 100) : 0;
 
     $badgeText = !empty($p['badge']) ? $p['badge'] : ($savePct > 0 ? $savePct . '% OFF' : 'Authorized');
-    $image     = !empty($p['image']) ? $p['image'] : tm_asset('images/hearing-aid/ric.webp');
+    $image     = !empty($p['image']) ? $p['image'] : asset('frontend-assets/images/no-product/no-product.png');
     $detailUrl = $p['url'] ?? route('product.show', $p['slug'] ?? $p['id']);
 
     $jsItem = "{id:'" . js_str($p['id']) . "', name:'" . js_str($p['name'])
@@ -42,7 +42,7 @@
       </div>
 
       <a href="{{ $detailUrl }}" class="tm-product-img-wrap d-flex align-items-center justify-content-center">
-        <img src="{{ $image }}" alt="{{ $p['name'] }}" class="tm-product-img" loading="lazy">
+        <img src="{{ $image }}" onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';" alt="{{ $p['name'] }}" class="tm-product-img" loading="lazy">
       </a>
     </div>
 

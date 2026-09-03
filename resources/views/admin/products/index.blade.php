@@ -58,7 +58,7 @@
                 <tr>
                     <td>
                         <div class="d-flex align-items-center gap-3">
-                            <img src="{{ $product->thumbnail_url }}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" alt="{{ $product->name }}">
+                            <img src="{{ $product->thumbnail_url }}" onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" alt="{{ $product->name }}">
                             <div>
                                 <div style="font-size:.88rem;font-weight:600;">{{ Str::limit($product->name, 35) }}</div>
                                 @if($product->is_featured)<span class="badge bg-warning text-dark me-1" style="font-size:.65rem;">Featured</span>@endif

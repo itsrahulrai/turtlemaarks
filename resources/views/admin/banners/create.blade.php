@@ -53,7 +53,7 @@
                 </div>
 
                 @if(isset($banner) && $banner->image)
-                    <img src="{{ asset('public/storage/' . $banner->image) }}"
+                    <img src="{{ asset('/storage/' . $banner->image) }}"
                          class="img-fluid rounded border"
                          style="max-height:220px; width:100%; object-fit:cover;">
                 @endif
@@ -81,7 +81,7 @@
                 </div>
 
                 @if(isset($banner) && $banner->mobile_image)
-                    <img src="{{ asset('public/storage/' . $banner->mobile_image) }}"
+                    <img src="{{ asset('/storage/' . $banner->mobile_image) }}"
                          class="img-fluid rounded border"
                          style="max-height:220px; width:100%; object-fit:cover;">
                 @endif

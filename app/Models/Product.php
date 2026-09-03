@@ -72,7 +72,7 @@ class Product extends Model
     {
         return $this->thumbnail
             ? asset('/storage/' . $this->thumbnail)
-            : asset('images/no-image.png');
+            : asset('frontend-assets/images/no-product/no-product.png');
     }
 
     public function getAvgRatingAttribute(): float

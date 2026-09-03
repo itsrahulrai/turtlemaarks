@@ -11,7 +11,7 @@
     $mrp          = (float) ($p['mrp'] ?? $p['price']);
     $savings      = max(0, $mrp - $price);
     $savePct      = $mrp > $price ? (int) round((($mrp - $price) / $mrp) * 100) : 0;
-    $image        = $p['image'] ?: tm_asset('images/hearing-aid/ric.webp');
+    $image        = $p['image'] ?: asset('frontend-assets/images/no-product/no-product.png');
     $jsItem       = "{id:'" . js_str($p['id']) . "', name:'" . js_str($p['name']) . "', brand:'" . js_str($p['brand'])
                   . "', price:" . (int) $price . ", mrp:" . (int) $mrp . ", image:'" . js_str($image) . "'}";
     $warrantyText = $product->warranty_months 
@@ -61,7 +61,7 @@
             </button>
 
             <!-- Main High-Res Image -->
-            <img src="{{ $image }}" id="tmMainProductImg" alt="{{ $p['name'] }}" class="tm-pd-main-img">
+            <img src="{{ $image }}" id="tmMainProductImg" onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';" alt="{{ $p['name'] }}" class="tm-pd-main-img">
 
             <!-- Floating Zoom & Inspection Pill -->
             <div class="tm-zoom-badge">
@@ -72,7 +72,7 @@
           <!-- Secondary Image Thumbnails -->
           <div class="tm-pd-thumbs-wrap mb-4">
             <button type="button" class="tm-pd-thumb-btn active" onclick="switchProductImage('{{ $image }}', this)" title="Main View">
-              <img src="{{ $image }}" alt="{{ $p['name'] }} Main View">
+              <img src="{{ $image }}" onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';" alt="{{ $p['name'] }} Main View">
             </button>
             @if($galleryImages && $galleryImages->count() > 0)
               @foreach ($galleryImages as $idx => $gImg)

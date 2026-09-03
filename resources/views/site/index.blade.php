@@ -639,19 +639,28 @@
         </div>
       </div>
 
-      <!-- 4 Premier Cinematic Video Cards Grid -->
+      <!-- Premier Cinematic Video Cards Grid (dynamic — managed in Admin > Patient Story Videos) -->
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-4">
-        
-        <!-- Video Card 1: Wg Cdr SK Bhatia Shaurya Chakra -->
+
+        @forelse($patientVideos ?? [] as $video)
         <div class="col">
-          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('vrF2ciqFfrg')">
+          <div class="tm-cinematic-card"
+               onclick="openYouTubePatientVideo(this)"
+               data-youtube-id="{{ $video->youtube_id }}"
+               data-title="{{ $video->modal_title_text }}"
+               data-badge="{{ $video->modal_badge_text }}"
+               data-speaker="{{ $video->speaker }}"
+               data-location="{{ $video->location }}"
+               data-desc="{{ $video->modal_description_text }}">
             <div class="tm-cinematic-media">
-              <img src="{{ tm_asset('images/youtube/yt_vrF2ciqFfrg.jpg') }}" alt="Wg Cdr SK Bhatia Testimonial" class="tm-cinematic-thumb">
+              <img src="{{ $video->thumbnail_url }}" alt="{{ $video->title }}" class="tm-cinematic-thumb">
               <div class="tm-cinematic-overlay"></div>
-              
+
               <div class="tm-cinematic-badges">
-                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Patient Story</span>
-                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 3:12</span>
+                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> {{ $video->badge }}</span>
+                @if($video->duration)
+                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> {{ $video->duration }}</span>
+                @endif
               </div>
 
               <div class="tm-cinematic-play">
@@ -660,107 +669,22 @@
             </div>
 
             <div class="tm-cinematic-body">
-              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Veteran Testimonial</div>
-              <h5 class="tm-cinematic-title">Clear Speech Restored for Veteran</h5>
-              <div class="tm-cinematic-speaker">Wg Cdr S.K. Bhatia (Shaurya Chakra) shares his journey of natural hearing clarity.</div>
-              
+              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> {{ $video->topic_label }}</div>
+              <h5 class="tm-cinematic-title">{{ $video->title }}</h5>
+              <div class="tm-cinematic-speaker">{{ $video->card_description }}</div>
+
               <div class="tm-cinematic-footer">
-                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Noida Clinic</span>
+                @if($video->location)
+                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> {{ $video->location }}</span>
+                @endif
                 <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Video Card 2: Better Hearing for Better Social Life -->
-        <div class="col">
-          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('juOmFzxFBMg')">
-            <div class="tm-cinematic-media">
-              <img src="{{ tm_asset('images/youtube/yt_juOmFzxFBMg.jpg') }}" alt="Better Hearing for Better Social Life" class="tm-cinematic-thumb">
-              <div class="tm-cinematic-overlay"></div>
-              
-              <div class="tm-cinematic-badges">
-                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Social Life</span>
-                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:15</span>
-              </div>
-
-              <div class="tm-cinematic-play">
-                <i class="bi bi-play-fill"></i>
-              </div>
-            </div>
-
-            <div class="tm-cinematic-body">
-              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Life Transformation</div>
-              <h5 class="tm-cinematic-title">Better Hearing for Better Social Life</h5>
-              <div class="tm-cinematic-speaker">Overcoming hearing loss to reconnect with family conversations and gatherings.</div>
-              
-              <div class="tm-cinematic-footer">
-                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Greater Noida</span>
-                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Video Card 3: Do you feel People speak with slow voice? -->
-        <div class="col">
-          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('vkNae-Vqu0U')">
-            <div class="tm-cinematic-media">
-              <img src="{{ tm_asset('images/youtube/yt_vkNae-Vqu0U.jpg') }}" alt="Recognizing Early Hearing Loss" class="tm-cinematic-thumb">
-              <div class="tm-cinematic-overlay"></div>
-              
-              <div class="tm-cinematic-badges">
-                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Doctor Advice</span>
-                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:45</span>
-              </div>
-
-              <div class="tm-cinematic-play">
-                <i class="bi bi-play-fill"></i>
-              </div>
-            </div>
-
-            <div class="tm-cinematic-body">
-              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Clinical Guidance</div>
-              <h5 class="tm-cinematic-title">Do Voices Sound Whispered?</h5>
-              <div class="tm-cinematic-speaker">Doctor explains early symptoms of frequency loss & importance of timely PTA tests.</div>
-              
-              <div class="tm-cinematic-footer">
-                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Gaur City Clinic</span>
-                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Video Card 4: 1 in 5 People in India Has Hearing Loss -->
-        <div class="col">
-          <div class="tm-cinematic-card" onclick="openYouTubePatientVideo('gL8awpcAedw')">
-            <div class="tm-cinematic-media">
-              <img src="{{ tm_asset('images/youtube/yt_gL8awpcAedw.jpg') }}" alt="Hearing Loss Awareness India" class="tm-cinematic-thumb">
-              <div class="tm-cinematic-overlay"></div>
-              
-              <div class="tm-cinematic-badges">
-                <span class="tm-badge-yt"><i class="bi bi-youtube"></i> Awareness</span>
-                <span class="tm-badge-duration"><i class="bi bi-play-circle-fill me-1"></i> 1:30</span>
-              </div>
-
-              <div class="tm-cinematic-play">
-                <i class="bi bi-play-fill"></i>
-              </div>
-            </div>
-
-            <div class="tm-cinematic-body">
-              <div class="tm-cinematic-topic"><i class="bi bi-patch-check-fill text-success"></i> Expert Insights</div>
-              <h5 class="tm-cinematic-title">1 in 5 in India Has Hearing Loss</h5>
-              <div class="tm-cinematic-speaker">Medical insights on invisible hearing aids, AI noise reduction & free home trials.</div>
-              
-              <div class="tm-cinematic-footer">
-                <span class="tm-cinematic-loc"><i class="bi bi-geo-alt-fill text-orange"></i> Noida & G. Noida</span>
-                <span class="tm-cinematic-action">Watch Story <i class="bi bi-arrow-right"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
+        @empty
+        {{-- No videos added yet in Admin > Patient Story Videos --}}
+        @endforelse
 
       </div>
 
@@ -1016,28 +940,27 @@
         </div>
       </div>
 
-      <!-- 4 Blog Cards Grid -->
+      <!-- Dynamic Blog Cards Grid (from database) -->
       <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-xl-4">
-        
-        <!-- Blog 1: Hearing Aid Selection Guide -->
+        @forelse($latestBlogs as $blog)
         <div class="col">
           <article class="tm-blog-card shadow-xs">
             <div class="tm-blog-img-wrap">
-              <img src="{{ tm_asset('images/services/hearing-aid-clinic-in-noida-extension.png') }}" alt="How to Choose the Right Hearing Aid" loading="lazy">
-              <span class="tm-blog-badge tm-blog-badge-orange">Buying Guide</span>
-              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 5 min read</span>
+              <img src="{{ $blog->thumbnail_url }}" onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';" alt="{{ $blog->title }}" loading="lazy">
+              <span class="tm-blog-badge tm-blog-badge-orange">{{ $blog->blogCategory?->name ?? 'Hearing Health' }}</span>
+              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> {{ max(1, (int) ceil(str_word_count(strip_tags($blog->body)) / 200)) }} min read</span>
             </div>
             <div class="tm-blog-body">
               <div class="tm-blog-meta">
-                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 24, 2026</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> {{ optional($blog->published_at ?? $blog->created_at)->format('M d, Y') }}</span>
                 <span class="tm-blog-meta-item text-secondary">•</span>
-                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
+                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> {{ $blog->admin?->name ?? SITE_SHORT }}</span>
               </div>
               <h3 class="tm-blog-title">
-                <a href="{{ route('blog.index') }}" class="stretched-link">How to Choose the Right Hearing Aid: 2026 Digital Buyer Guide</a>
+                <a href="{{ route('blog.show', $blog->slug) }}" class="stretched-link">{{ $blog->title }}</a>
               </h3>
               <p class="tm-blog-desc">
-                Discover the key differences between Invisible (IIC/CIC), Receiver-in-Canal (RIC), and Behind-the-Ear (BTE) models with AI-powered speech clarity.
+                {{ Str::limit(strip_tags($blog->excerpt ?: $blog->body), 135) }}
               </p>
             </div>
             <div class="tm-blog-footer">
@@ -1048,96 +971,12 @@
             </div>
           </article>
         </div>
-
-        <!-- Blog 2: Pure Tone Audiometry & Diagnostics -->
-        <div class="col">
-          <article class="tm-blog-card shadow-xs">
-            <div class="tm-blog-img-wrap">
-              <img src="{{ tm_asset('images/services/hearing-test-in-noida-extension.png') }}" alt="Understanding Pure Tone Audiometry & Speech Tests" loading="lazy">
-              <span class="tm-blog-badge tm-blog-badge-navy">Diagnostics</span>
-              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 4 min read</span>
-            </div>
-            <div class="tm-blog-body">
-              <div class="tm-blog-meta">
-                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 18, 2026</span>
-                <span class="tm-blog-meta-item text-secondary">•</span>
-                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
-              </div>
-              <h3 class="tm-blog-title">
-                <a href="{{ route('blog.index') }}" class="stretched-link">Understanding Pure Tone Audiometry (PTA) & Speech Tests</a>
-              </h3>
-              <p class="tm-blog-desc">
-                Learn what actually happens inside a sound-treated booth during diagnostic testing and how to accurately interpret your frequency audiogram report.
-              </p>
-            </div>
-            <div class="tm-blog-footer">
-              <span class="tm-blog-link">
-                Read Guide <i class="bi bi-arrow-right"></i>
-              </span>
-              <span class="tm-blog-author-avatar" title="Diagnostic Specialist"><i class="bi bi-person-fill"></i></span>
-            </div>
-          </article>
+        @empty
+        <div class="col-12 text-center py-4">
+          <p class="text-muted">No published blog articles yet. Check back soon!</p>
         </div>
-
-        <!-- Blog 3: Age-Related Hearing Loss & Senior Care -->
-        <div class="col">
-          <article class="tm-blog-card shadow-xs">
-            <div class="tm-blog-img-wrap">
-              <img src="{{ tm_asset('images/services/audiologist-in-gaur-city.png') }}" alt="5 Early Signs of Age-Related Hearing Loss" loading="lazy">
-              <span class="tm-blog-badge tm-blog-badge-teal">Senior Care</span>
-              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 4 min read</span>
-            </div>
-            <div class="tm-blog-body">
-              <div class="tm-blog-meta">
-                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Aug 10, 2026</span>
-                <span class="tm-blog-meta-item text-secondary">•</span>
-                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
-              </div>
-              <h3 class="tm-blog-title">
-                <a href="{{ route('blog.index') }}" class="stretched-link">5 Early Signs of Age-Related Hearing Loss You Shouldn't Ignore</a>
-              </h3>
-              <p class="tm-blog-desc">
-                Early intervention prevents cognitive fatigue and social isolation. Spot the subtle warning signs in daily conversation and learn about free home visits.
-              </p>
-            </div>
-            <div class="tm-blog-footer">
-              <span class="tm-blog-link">
-                Read Guide <i class="bi bi-arrow-right"></i>
-              </span>
-              <span class="tm-blog-author-avatar" title="Senior Care Audiologist"><i class="bi bi-person-fill"></i></span>
-            </div>
-          </article>
-        </div>
-
-        <!-- Blog 4: Tinnitus & Sound Therapy -->
-        <div class="col">
-          <article class="tm-blog-card shadow-xs">
-            <div class="tm-blog-img-wrap">
-              <img src="{{ tm_asset('images/ear-model.jpg') }}" alt="Managing Tinnitus: Sound Therapy & Modern Relief" loading="lazy">
-              <span class="tm-blog-badge tm-blog-badge-green">Therapy</span>
-              <span class="tm-blog-read-time"><i class="bi bi-clock me-1"></i> 6 min read</span>
-            </div>
-            <div class="tm-blog-body">
-              <div class="tm-blog-meta">
-                <span class="tm-blog-meta-item"><i class="bi bi-calendar3 text-orange"></i> Jul 29, 2026</span>
-                <span class="tm-blog-meta-item text-secondary">•</span>
-                <span class="tm-blog-meta-item"><i class="bi bi-patch-check-fill text-success"></i> Turtle Maarks</span>
-              </div>
-              <h3 class="tm-blog-title">
-                <a href="{{ route('blog.index') }}" class="stretched-link">Managing Tinnitus: Modern Sound Therapy & Digital Relief</a>
-              </h3>
-              <p class="tm-blog-desc">
-                Effective clinical protocols and specialized notch therapy sound masking built into digital hearing aids to quiet persistent ringing in the ears.
-              </p>
-            </div>
-            <div class="tm-blog-footer">
-              <span class="tm-blog-link">
-                Read Guide <i class="bi bi-arrow-right"></i>
-              </span>
-              <span class="tm-blog-author-avatar" title="Tinnitus Specialist"><i class="bi bi-person-fill"></i></span>
-            </div>
-          </article>
-        </div>
+        @endforelse
+      </div>
 
       </div>
 

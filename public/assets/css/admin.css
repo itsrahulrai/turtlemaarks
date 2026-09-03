@@ -518,3 +518,13 @@ textarea.form-control{
 .settings-sidebar .list-group-item.active i{
     color:#fff;
 }
+
+/* Badge helpers */
+.bg-navy-subtle {
+    background-color: #eaf1f7 !important;
+}
+.text-navy,
+.badge.text-navy,
+.badge.bg-navy-subtle {
+    color: #111827 !important;
+}

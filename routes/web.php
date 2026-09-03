@@ -207,73 +207,96 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Categories
-        Route::resource('categories', CategoryController::class)->except(['show']);
-        Route::resource('subcategories', SubcategoryController::class)->except(['show']);
+        Route::resource('categories', CategoryController::class)->except(['show'])->middleware('permission:categories');
+        Route::resource('subcategories', SubcategoryController::class)->except(['show'])->middleware('permission:subcategories');
 
         // Brands
-        Route::resource('brands', BrandController::class)->except(['show']);
+        Route::resource('brands', BrandController::class)->except(['show'])->middleware('permission:brands');
 
         // Products
-        Route::resource('products', ProductController::class);
-        Route::delete('products/images/{image}', [ProductController::class, 'deleteImage'])->name('products.images.destroy');
-        Route::get('categories/{category}/subcategories', [ProductController::class, 'getSubcategories'])->name('categories.subcategories');
+        Route::resource('products', ProductController::class)->middleware('permission:products');
+        Route::delete('products/images/{image}', [ProductController::class, 'deleteImage'])->name('products.images.destroy')->middleware('permission:products');
+        Route::get('categories/{category}/subcategories', [ProductController::class, 'getSubcategories'])->name('categories.subcategories')->middleware('permission:products');
 
         // Services
-        Route::resource('services', AdminServiceController::class)->except(['show']);
+        Route::resource('services', AdminServiceController::class)->except(['show'])->middleware('permission:services');
 
         // Appointments
-        Route::get('appointments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
-        Route::get('appointments/settings', [AdminAppointmentController::class, 'settings'])->name('appointments.settings');
-        Route::post('appointments/settings', [AdminAppointmentController::class, 'updateSettings'])->name('appointments.settings.update');
-        Route::post('appointments/blocks', [AdminAppointmentController::class, 'storeBlock'])->name('appointments.blocks.store');
-        Route::delete('appointments/blocks/{block}', [AdminAppointmentController::class, 'destroyBlock'])->name('appointments.blocks.destroy');
-        Route::get('appointments/{appointment}', [AdminAppointmentController::class, 'show'])->name('appointments.show');
-        Route::patch('appointments/{appointment}/status', [AdminAppointmentController::class, 'updateStatus'])->name('appointments.status');
+        Route::middleware('permission:appointments')->group(function () {
+            Route::get('appointments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
+            Route::get('appointments/settings', [AdminAppointmentController::class, 'settings'])->name('appointments.settings');
+            Route::post('appointments/settings', [AdminAppointmentController::class, 'updateSettings'])->name('appointments.settings.update');
+            Route::post('appointments/blocks', [AdminAppointmentController::class, 'storeBlock'])->name('appointments.blocks.store');
+            Route::delete('appointments/blocks/{block}', [AdminAppointmentController::class, 'destroyBlock'])->name('appointments.blocks.destroy');
+            Route::get('appointments/{appointment}', [AdminAppointmentController::class, 'show'])->name('appointments.show');
+            Route::patch('appointments/{appointment}/status', [AdminAppointmentController::class, 'updateStatus'])->name('appointments.status');
+        });
 
         // Orders
-        Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
-        Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
-        Route::get('orders/{order}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
+        Route::middleware('permission:orders')->group(function () {
+            Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
+            Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+            Route::get('orders/{order}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
+        });
 
         // Customers
-        Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
-        Route::get('customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
-        Route::patch('customers/{customer}/toggle', [CustomerController::class, 'toggleStatus'])->name('customers.toggle');
+        Route::middleware('permission:customers')->group(function () {
+            Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
+            Route::get('customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
+            Route::patch('customers/{customer}/toggle', [CustomerController::class, 'toggleStatus'])->name('customers.toggle');
+        });
 
         // Coupons
-        Route::resource('coupons', CouponController::class)->except(['show']);
+        Route::resource('coupons', CouponController::class)->except(['show'])->middleware('permission:coupons');
 
         // Banners
-        Route::resource('banners', BannerController::class)->except(['show']);
+        Route::resource('banners', BannerController::class)->except(['show'])->middleware('permission:banners');
 
         // Blog
-        Route::resource('blogs', AdminBlogController::class)->except(['show']);
-        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show']);
+        Route::resource('blogs', AdminBlogController::class)->except(['show'])->middleware('permission:blogs');
+        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show'])->middleware('permission:blogs');
 
         // Reviews
-        Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
-        Route::patch('reviews/{review}/status', [ReviewController::class, 'updateStatus'])->name('reviews.status');
-        Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+        Route::middleware('permission:reviews')->group(function () {
+            Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
+            Route::patch('reviews/{review}/status', [ReviewController::class, 'updateStatus'])->name('reviews.status');
+            Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+        });
 
         // Testimonials
-        Route::resource('testimonials', TestimonialController::class)->except(['show']);
+        Route::resource('testimonials', TestimonialController::class)->except(['show'])->middleware('permission:testimonials');
+
+        // Patient Story Videos (homepage "Transforming Lives Through Clear Sound" section)
+        Route::resource('patient-videos', \App\Http\Controllers\Admin\PatientVideoController::class)->except(['show'])->middleware('permission:patient-videos');
 
         // Reports
-        Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
-        Route::get('reports/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
-        Route::get('reports/customers', [ReportController::class, 'customers'])->name('reports.customers');
+        Route::middleware('permission:reports')->group(function () {
+            Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+            Route::get('reports/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
+            Route::get('reports/customers', [ReportController::class, 'customers'])->name('reports.customers');
+        });
 
         // Settings
-        Route::get('settings/general', [SettingsController::class, 'general'])->name('settings.general');
-        Route::post('settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.general.update');
-        Route::get('settings/smtp', [SettingsController::class, 'smtp'])->name('settings.smtp');
-        Route::post('settings/smtp', [SettingsController::class, 'updateSmtp'])->name('settings.smtp.update');
-        Route::get('settings/seo', [SettingsController::class, 'seo'])->name('settings.seo');
-        Route::post('settings/seo', [SettingsController::class, 'updateSeo'])->name('settings.seo.update');
+        Route::middleware('permission:settings')->group(function () {
+            Route::get('settings/general', [SettingsController::class, 'general'])->name('settings.general');
+            Route::post('settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.general.update');
+            Route::get('settings/smtp', [SettingsController::class, 'smtp'])->name('settings.smtp');
+            Route::post('settings/smtp', [SettingsController::class, 'updateSmtp'])->name('settings.smtp.update');
+            Route::get('settings/seo', [SettingsController::class, 'seo'])->name('settings.seo');
+            Route::post('settings/seo', [SettingsController::class, 'updateSeo'])->name('settings.seo.update');
+            Route::get('settings/storage-link', [SettingsController::class, 'storageLink'])->name('settings.storage-link');
+            Route::get('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
+        });
 
-        Route::resource('pages', AdminPageController::class)->except(['show']);
+        Route::resource('pages', AdminPageController::class)->except(['show'])->middleware('permission:pages');
 
-        Route::get('settings/storage-link', [SettingsController::class, 'storageLink'])->name('settings.storage-link');
-        Route::get('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
+        // Roles & Permissions
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class)->except(['show'])->middleware('permission:roles');
+
+        // Admin Users (staff accounts)
+        Route::resource('admin-users', \App\Http\Controllers\Admin\AdminUserController::class)
+            ->except(['show'])
+            ->parameters(['admin-users' => 'adminUser'])
+            ->middleware('permission:admin-users');
     });
 });

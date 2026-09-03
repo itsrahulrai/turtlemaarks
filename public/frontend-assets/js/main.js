@@ -146,73 +146,27 @@ function initGlobalTooltips() {
   }
 }
 
-// 6. OFFICIAL YOUTUBE PATIENT STORIES DATABASE & MODAL CONTROLLER
-const YOUTUBE_PATIENT_VIDEOS = {
-  'vrF2ciqFfrg': {
-    id: 'vrF2ciqFfrg',
-    title: 'Wg Cdr SK Bhatia Shaurya Chakra — Hearing Transformation',
-    badge: 'Patient Testimonial',
-    tagline: 'Clear Speech & Natural Sound Restored for Veteran',
-    speaker: 'Wg Cdr S.K. Bhatia (Shaurya Chakra)',
-    location: 'Noida Clinic',
-    desc: 'Watch Wing Commander S.K. Bhatia (Shaurya Chakra) share his inspiring journey of digital hearing restoration with Turtle Maarks Hearing Health.',
-    model: 'Digital High-Precision Hearing Aid'
-  },
-  'juOmFzxFBMg': {
-    id: 'juOmFzxFBMg',
-    title: 'Better Hearing for Better Social Life',
-    badge: 'Life Transformation',
-    tagline: 'Reconnecting with Family, Friends & Active Social Conversations',
-    speaker: 'Patient Consultation & Journey',
-    location: 'Greater Noida West',
-    desc: 'How advanced digital speech clarity eliminates social isolation and brings confidence back to family gatherings and social outings.',
-    model: 'Oticon Real / Phonak Infinio'
-  },
-  'vkNae-Vqu0U': {
-    id: 'vkNae-Vqu0U',
-    title: 'Do you feel People have started speaking with slow voice?',
-    badge: 'Doctor Consultation',
-    tagline: 'Recognizing Early Hearing Loss & Frequency Drop',
-    speaker: 'Audiology Clinical Team',
-    location: 'Gaur City 2 Clinic',
-    desc: 'Clinical explanation on why voices start sounding muffled or low, and how timely Pure Tone Audiometry (PTA) testing prevents irreversible hearing loss.',
-    model: 'Comprehensive Audiology Diagnostic'
-  },
-  'gL8awpcAedw': {
-    id: 'gL8awpcAedw',
-    title: '1 Out of 5 People in India Has Hearing Loss',
-    badge: 'Audiologist Guide',
-    tagline: 'Modern Digital Technology & Early Intervention in India',
-    speaker: 'Turtle Maarks Hearing Health Team',
-    location: 'Greater Noida West & Noida',
-    desc: 'Important statistics and medical insights on hearing health in India, highlighting invisible hearing aids, AI noise reduction, and free home trials.',
-    model: 'Signia Silk 7IX & Widex PureSound'
-  },
-  '4yAlwfAl_i8': {
-    id: '4yAlwfAl_i8',
-    title: 'Tere Kaano Ki Awaaz | Official Theme Song',
-    badge: 'Official Anthem',
-    tagline: 'Celebrating the Joy and Beauty of Clear Sound',
-    speaker: 'Turtle Maarks Hearing Health',
-    location: 'Official Studio Release',
-    desc: 'The official brand anthem celebrating the joy of listening and restoring sound to every life.',
-    model: 'Turtle Maarks Hearing Health'
-  },
-  'aH7jAW4jz58': {
-    id: 'aH7jAW4jz58',
-    title: 'Gratification Ceremony @TurtleMaarksHearingHealth',
-    badge: 'Celebration Event',
-    tagline: 'Recognizing Excellence in Patient Hearing Restoration',
-    speaker: 'Audiology Team & Patients',
-    location: 'Turtle Maarks Clinic',
-    desc: 'Special gratification and patient care celebration ceremony at Turtle Maarks Hearing Health.',
-    model: 'Excellence in Hearing Care'
-  }
-};
+// 6. YOUTUBE PATIENT STORIES MODAL CONTROLLER (dynamic — data comes from each card's data-* attributes)
+function openYouTubePatientVideo(source) {
+  // `source` is either the clicked card element (dynamic, DB-driven cards)
+  // or a legacy raw YouTube video id string, kept for backward compatibility.
+  let video;
 
-function openYouTubePatientVideo(videoId) {
-  const video = YOUTUBE_PATIENT_VIDEOS[videoId] || YOUTUBE_PATIENT_VIDEOS['vrF2ciqFfrg'];
-  
+  if (source && source.dataset && source.dataset.youtubeId) {
+    video = {
+      id: source.dataset.youtubeId,
+      title: source.dataset.title || 'Patient Hearing Transformation',
+      badge: source.dataset.badge || 'Patient Story',
+      speaker: source.dataset.speaker || 'Turtle Maarks Hearing Health',
+      location: source.dataset.location || '',
+      desc: source.dataset.desc || 'Watch real patient stories and hearing transformations with Turtle Maarks.',
+    };
+  } else if (typeof source === 'string') {
+    video = { id: source, title: 'Patient Hearing Transformation', badge: 'Patient Story', speaker: 'Turtle Maarks Hearing Health', location: '', desc: 'Watch real patient stories and hearing transformations with Turtle Maarks.' };
+  } else {
+    return;
+  }
+
   let modalEl = document.getElementById('tmYouTubeModal');
   if (!modalEl) {
     console.error('YouTube modal not found in DOM');
@@ -232,7 +186,7 @@ function openYouTubePatientVideo(videoId) {
   }
   if (titleEl) titleEl.textContent = video.title;
   if (badgeEl) badgeEl.textContent = video.badge;
-  if (speakerEl) speakerEl.innerHTML = `<i class="bi bi-person-check-fill text-success me-1"></i> ${video.speaker} • <span class="text-muted">${video.location}</span>`;
+  if (speakerEl) speakerEl.innerHTML = `<i class="bi bi-person-check-fill text-success me-1"></i> ${video.speaker}${video.location ? ` • <span class="text-muted">${video.location}</span>` : ''}`;
   if (descEl) descEl.textContent = video.desc;
 
   if (waBtn) {

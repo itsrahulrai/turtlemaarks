@@ -7,6 +7,7 @@ use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\PatientVideo;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\Testimonial;
@@ -45,13 +46,14 @@ class HomeController extends Controller
         $banners      = Banner::active()->get();
         $categories   = Category::active()->orderBy('sort_order')->with('subcategories')->get();
         $testimonials = Testimonial::active()->take(6)->get();
-        $latestBlogs  = Blog::published()->with('blogCategory')->latest('published_at')->take(3)->get();
+        $patientVideos = PatientVideo::active()->take(4)->get();
+        $latestBlogs  = Blog::published()->with(['blogCategory', 'admin'])->latest('published_at')->take(4)->get();
         $brands       = Brand::active()->orderBy('sort_order')->get();
         $services     = Service::active()->orderBy('sort_order')->take(6)->get();
 
         return view('site.index', compact(
             'popularProducts', 'brandProducts', 'topBrand',
-            'banners', 'categories', 'testimonials', 'latestBlogs', 'brands', 'services'
+            'banners', 'categories', 'testimonials', 'patientVideos', 'latestBlogs', 'brands', 'services'
         ));
     }
 }

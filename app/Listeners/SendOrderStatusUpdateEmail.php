@@ -14,9 +14,16 @@ class SendOrderStatusUpdateEmail implements ShouldQueue
 
     public function handle(OrderStatusUpdated $event): void
     {
-        $order = $event->order->load(['items.product', 'user']);
-        if ($order->user && $order->user->email) {
-            Mail::to($order->user->email)->send(new OrderStatusMail($order, $event->previousStatus));
+        try {
+            $order = $event->order->load(['items.product', 'user']);
+            $email = $order->user?->email;
+            if ($email) {
+                Mail::to($email)->send(new OrderStatusMail($order, $event->previousStatus));
+            }
+        } catch (\Throwable $e) {
+            \Log::error('OrderStatusUpdate mail failed: ' . $e->getMessage(), [
+                'order_id' => $event->order->id,
+            ]);
         }
     }
 

@@ -16,10 +16,12 @@
   .status-pending     { background: #fff3cd; color: #856404; }
   .status-confirmed   { background: #d1ecf1; color: #0c5460; }
   .status-processing  { background: #cce5ff; color: #004085; }
-  .status-shipped     { background: #d4edda; color: #155724; }
-  .status-delivered   { background: #eaf1f7; color: #0C3C64; }
-  .status-cancelled   { background: #f8d7da; color: #721c24; }
-  .status-returned    { background: #e2e3e5; color: #383d41; }
+  .status-shipped          { background: #d4edda; color: #155724; }
+  .status-out_for_delivery { background: #d0f0fd; color: #026aa7; }
+  .status-delivered        { background: #eaf1f7; color: #0C3C64; }
+  .status-cancelled        { background: #f8d7da; color: #721c24; }
+  .status-returned         { background: #e2e3e5; color: #383d41; }
+  .status-refunded         { background: #ede7f6; color: #512da8; }
   .order-meta { background: #f7fafc; border: 1px solid #eaf1f7; border-radius: 6px; padding: 14px 18px; margin: 20px 0; font-size: 14px; }
   .order-meta table { width: 100%; border-collapse: collapse; }
   .order-meta td { padding: 3px 0; }
@@ -31,15 +33,17 @@
 <body>
 @php
   $statusMap = [
-    'pending'    => ['icon' => '🕐', 'label' => 'Pending'],
-    'confirmed'  => ['icon' => '✅', 'label' => 'Confirmed'],
-    'processing' => ['icon' => '⚙️',  'label' => 'Processing'],
-    'shipped'    => ['icon' => '🚚', 'label' => 'Shipped'],
-    'delivered'  => ['icon' => '📦', 'label' => 'Delivered'],
-    'cancelled'  => ['icon' => '❌', 'label' => 'Cancelled'],
-    'returned'   => ['icon' => '↩️', 'label' => 'Returned'],
+    'pending'          => ['icon' => '🕐', 'label' => 'Pending'],
+    'confirmed'        => ['icon' => '✅', 'label' => 'Confirmed'],
+    'processing'       => ['icon' => '⚙️',  'label' => 'Processing'],
+    'shipped'          => ['icon' => '🚚', 'label' => 'Shipped'],
+    'out_for_delivery' => ['icon' => '🛵', 'label' => 'Out for Delivery'],
+    'delivered'        => ['icon' => '📦', 'label' => 'Delivered'],
+    'cancelled'        => ['icon' => '❌', 'label' => 'Cancelled'],
+    'returned'         => ['icon' => '↩️', 'label' => 'Returned'],
+    'refunded'         => ['icon' => '💳', 'label' => 'Refunded'],
   ];
-  $current = $statusMap[$order->status] ?? ['icon' => '📋', 'label' => ucfirst($order->status)];
+  $current = $statusMap[$order->status] ?? ['icon' => '📋', 'label' => ucwords(str_replace('_', ' ', $order->status))];
 @endphp
 <div class="wrapper">
   <div class="header">

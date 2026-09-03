@@ -31,6 +31,6 @@ class OrderItem extends Model
     {
         return $this->product_image
             ? asset('/storage/' . $this->product_image)
-            : asset('images/no-image.png');
+            : asset('frontend-assets/images/no-product/no-product.png');
     }
 }

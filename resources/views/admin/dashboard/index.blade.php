@@ -138,7 +138,8 @@
             <div style="padding: 16px;">
                 @foreach($topProducts as $p)
                 <div class="d-flex gap-3 align-items-center mb-3">
-                    <img src="{{ $p->thumbnail ? asset('public/storage/'.$p->thumbnail) : asset('images/no-image.png') }}"
+                    <img src="{{ !empty($p->thumbnail) ? asset('storage/' . $p->thumbnail) : asset('frontend-assets/images/no-product/no-product.png') }}"
+                         onerror="this.onerror=null;this.src='{{ asset('frontend-assets/images/no-product/no-product.png') }}';"
                          style="width:44px;height:44px;border-radius:8px;object-fit:cover;" alt="{{ $p->name }}">
                     <div class="flex-grow-1">
                         <div style="font-size:.85rem;font-weight:600;">{{ Str::limit($p->name, 28) }}</div>

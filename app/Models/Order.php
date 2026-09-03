@@ -40,7 +40,7 @@ class Order extends Model
 
     public static function generateOrderNumber(): string
     {
-        return 'GW-' . strtoupper(substr(uniqid(), -6)) . '-' . date('Ymd');
+        return 'TM-' . strtoupper(substr(uniqid(), -6)) . '-' . date('Ymd');
     }
 
     public function getStatusBadgeAttribute(): string

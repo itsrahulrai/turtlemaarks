@@ -76,9 +76,17 @@
           <img src="{{ asset(SITE_LOGO) }}" alt="{{ SITE_NAME }}" class="tm-brand-logo">
         </a>
 
-        <button class="navbar-toggler border-0 shadow-none p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#tmMobileNav" aria-label="Toggle navigation">
-          <i class="bi bi-list fs-2 text-navy"></i>
-        </button>
+        <!-- Mobile Header Quick Actions (Cart & Toggle) -->
+        <div class="d-flex d-lg-none align-items-center gap-2 ms-auto">
+          <button type="button" class="tm-icon-btn position-relative" data-bs-toggle="offcanvas" data-bs-target="#tmCartDrawer" title="Cart" aria-label="Shopping Cart">
+            <i class="bi bi-bag"></i>
+            <span class="tm-badge-count tm-cart-badge-count" style="{{ ($cartCount ?? 0) > 0 ? '' : 'display:none;' }}">{{ $cartCount ?? 0 }}</span>
+          </button>
+
+          <button class="navbar-toggler border-0 shadow-none p-0 d-flex align-items-center justify-content-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#tmMobileNav" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-2 text-navy"></i>
+          </button>
+        </div>
 
         <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
           <ul class="navbar-nav align-items-center gap-1">
@@ -113,7 +121,7 @@
 
         <div class="d-none d-lg-flex align-items-center gap-2">
           <a href="{{ route('wishlist.index') }}" class="tm-icon-btn" title="Wishlist"><i class="bi bi-heart"></i><span class="tm-badge-count tm-wishlist-badge-count" style="display:none;">0</span></a>
-          <button type="button" class="tm-icon-btn" data-bs-toggle="offcanvas" data-bs-target="#tmCartDrawer" title="Cart"><i class="bi bi-bag"></i><span class="tm-badge-count tm-cart-badge-count" style="display:none;">0</span></button>
+          <button type="button" class="tm-icon-btn position-relative" data-bs-toggle="offcanvas" data-bs-target="#tmCartDrawer" title="Cart"><i class="bi bi-bag"></i><span class="tm-badge-count tm-cart-badge-count" style="{{ ($cartCount ?? 0) > 0 ? '' : 'display:none;' }}">{{ $cartCount ?? 0 }}</span></button>
           @auth
             <a href="{{ route('account.dashboard') }}" class="tm-icon-btn" title="Patient Portal"><i class="bi bi-person-check"></i></a>
           @else
